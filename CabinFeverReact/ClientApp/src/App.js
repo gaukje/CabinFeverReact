@@ -2,9 +2,10 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import NavMenu from './components/NavMenu';
-import Home from './components/Home';
-import About from './components/About';
-import Contact from './components/Contact';
+import Home from './components/pages/Home';
+import About from './components/pages/About';
+import Contact from './components/pages/Contact';
+import Item from './components/Items/Item';
 import './custom.css';
 
 const App = () => {
@@ -13,8 +14,9 @@ const App = () => {
             <NavMenu />
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
+                <Route path="/pages/about" element={<About />} />
+                <Route path="/pages/contact" element={<Contact />} />
+                <Route path="/Items/Item" element={<Item /> } />
                 {/* Add more routes as needed */}
             </Routes>
         </div>

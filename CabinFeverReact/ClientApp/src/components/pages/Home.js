@@ -1,8 +1,8 @@
 // Home.js
 import React from 'react';
-import Banner from './banner';
-import Welcome from './welcome';
-import Carousel from './carousel';
+import Banner from '../banner';
+import Welcome from '../welcome';
+import Carousel from '../carousel';
 
 // Home.js
 const Home = () => {
