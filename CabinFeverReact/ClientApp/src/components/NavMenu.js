@@ -33,6 +33,12 @@ class NavMenu extends Component {
                             <NavItem>
                                 <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                             </NavItem>
+                            <NavItem>
+                                <NavLink tag={Link} className="text-dark" to="/about">About</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink tag={Link} className="text-dark" to="/contact">Contact</NavLink>
+                            </NavItem>
                         </ul>
                     </Collapse>
                 </Navbar>
