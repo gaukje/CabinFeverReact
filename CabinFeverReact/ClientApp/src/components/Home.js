@@ -1,9 +1,10 @@
 // Home.js
 import React from 'react';
-import Banner from './Banner/banner';
-import Welcome from './Welcome/welcome';
-import Carousel from './Carousel/carousel';
+import Banner from './banner';
+import Welcome from './welcome';
+import Carousel from './carousel';
 
+// Home.js
 const Home = () => {
     // Mock data for testing
     const itemsList = [
@@ -14,10 +15,11 @@ const Home = () => {
         <div>
             <Banner />
             <Welcome />
-            <Carousel items={itemsList} />
+            <Carousel itemsList={itemsList} /> {/* Pass the itemsList prop */}
             {/* Add more components as needed */}
         </div>
     );
 };
+
 
 export default Home;

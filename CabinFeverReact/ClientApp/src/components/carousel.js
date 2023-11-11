@@ -1,7 +1,8 @@
 import React from 'react';
-import ItemCard from '../Layout/itemCard'; 
+import ItemCard from './Layout/itemCard'; 
 
 const Carousel = ({ itemsList }) => {
+    console.log(itemsList); 
     return (
         <div className="row mb-5">
             <div id="carouselIndex" className="carousel slide px-4" data-bs-ride="carousel">
