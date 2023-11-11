@@ -25,6 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\components\Banner\" />
+    <Folder Include="ClientApp\src\components\Carousel\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
 
