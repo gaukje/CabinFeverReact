@@ -5,7 +5,7 @@ import NavMenu from './components/NavMenu';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
 import Contact from './components/pages/Contact';
-import Item from './components/Items/Item';
+import Rentals from './components/Items/Rentals';
 import './custom.css';
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/pages/about" element={<About />} />
                 <Route path="/pages/contact" element={<Contact />} />
-                <Route path="/Items/Item" element={<Item /> } />
+                <Route path="/Items/Rentals" element={<Rentals /> } />
                 {/* Add more routes as needed */}
             </Routes>
         </div>
