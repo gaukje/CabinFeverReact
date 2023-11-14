@@ -25,22 +25,22 @@ class NavMenu extends Component {
     render() {
         return (
             <header>
-                <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light>
-                    <NavbarBrand tag={Link} to="/">CabinFeverReact</NavbarBrand>
+                <Navbar className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark mb-3 fixed-top" container light>
+                    <NavbarBrand tag={Link} className="text-light" to="/">CabinFeverReact</NavbarBrand>
                     <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-                    <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-                        <ul className="navbar-nav flex-grow">
+                    <Collapse className="navbar-collapse collapse d-sm-inline-flex justify-content-between" isOpen={!this.state.collapsed} navbar>
+                        <ul className="navbar-nav flex-grow-1">
                             <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
+                                <NavLink tag={Link} className="text-light" to="/">Home</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/pages/about">About</NavLink>
+                                <NavLink tag={Link} className="text-light" to="/pages/about">About</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/pages/contact">Contact</NavLink>
+                                <NavLink tag={Link} className="text-light" to="/pages/contact">Contact</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/Items/Rentals">Rentals</NavLink>
+                                <NavLink tag={Link} className="text-light" to="/Items/Rentals">Rentals</NavLink>
                             </NavItem>
                         </ul>
                     </Collapse>
