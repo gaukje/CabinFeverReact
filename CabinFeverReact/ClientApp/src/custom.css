@@ -1,14 +1,204 @@
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
+
+html {
+    font-size: 14px;
 }
 
-code {
-  color: #E01A76;
+@media (max-width: 768px ) {
+    #cabinpagelayout-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+header {
+    margin-bottom: 3.5rem;
+}
+
+body {
+    margin-bottom: 60px;
+    overflow-x: hidden;
+    background-color: #eeeeee;
+    font-family: 'Cabin', sans-serif;
+    overflow-x: hidden;
+}
+
+h1 {
+    font-family: "Lora", serif;
+    color: #007A6E;
+}
+
+.banner {
+    width: 100vw;
+    height: 500px;
+    overflow: hidden;
+    position: relative;
+    left: calc(-50vw + 50%);
+    top: -16px;
+}
+
+    .banner .container h1, .banner .container h3 {
+        text-shadow: 0px 0px 6px black;
+    }
+
+#background-video {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: brightness(75%)
+}
+
+.banner-link {
+    margin: 50px auto auto auto;
+}
+
+    .banner-link a {
+        text-decoration: none;
+        padding: 10px 20px;
+        color: white;
+        background-color: #1d2420;
+        transition: 0.5s;
+        border: 1px solid white;
+    }
+
+        .banner-link a:hover {
+            background-color: white;
+            color: black;
+        }
+
+.welcome-container {
+    padding: 50px;
+    margin: auto;
+    width: 75%;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+}
+
+.line {
+    flex-grow: 1;
+    height: 0.75px;
+    background-color: black; /* Color of the lines */
+}
+
+.symbol {
+    padding: 0 10px; /* Adjust the spacing around the symbol */
+    font-size: 20px; /* Adjust the symbol's font size */
+    color: black; /* Color of the symbol */
+    user-select: none;
+}
+
+.carousel-text-container {
+    background-color: white;
+    position: relative;
+    top: -20px;
+    padding: 20px 10px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+}
+
+.title {
+    margin-top: 60px;
+}
+
+.text-start a {
+    color: #007A6E;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    background-color: #007A6E;
+    border-color: #007A6E;
+}
+
+    .btn-primary:hover {
+        background-color: #00574E;
+        border-color: #00574E;
+    }
+
+.banner-secondary {
+    width: 100vw;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+    left: calc(-50vw + 50%);
+}
+
+#banner-image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    object-fit: cover;
+    z-index: -1;
+}
+
+#itemcard-image {
+    object-fit: cover;
+}
+
+.form-control[readonly] {
+    background-color: white;
+    cursor: pointer;
+}
+
+#container-description {
+    white-space: pre-wrap;
+}
+
+.ui-datepicker {
+    font-family: 'Cabin', sans-serif;
+}
+
+.ui-datepicker-header {
+    background-color: #007A6E;
+    color: white;
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+    filter: invert(75%);
+}
+
+.carousel-control-next:hover .carousel-control-next-icon,
+.carousel-control-prev:hover .carousel-control-prev-icon {
+    filter: invert(100%); /* Adjust the percentage as needed */
+}
+
+@media (max-width: 768px) {
+    .carousel-control-next-icon,
+    .carousel-control-prev-icon {
+        filter: invert(0%);
+    }
+
+    .carousel-control-next:hover .carousel-control-next-icon,
+    .carousel-control-prev:hover .carousel-control-prev-icon {
+        filter: invert(0%); /* Adjust the percentage as needed */
+    }
+}
+
+.dropdown-item:hover {
+    background-color: transparent !important;
 }
