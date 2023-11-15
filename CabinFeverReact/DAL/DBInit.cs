@@ -11,7 +11,6 @@ public class DBInit
         // Create a scope to access services.
         using var serviceScope = app.ApplicationServices.CreateScope();
         ItemDbContext context = serviceScope.ServiceProvider.GetRequiredService<ItemDbContext>();
-        UserManager<IdentityUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
         // context.Database.EnsureDeleted();
 
         // Ensure the database is created.
