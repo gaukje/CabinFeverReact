@@ -16,7 +16,7 @@ const Banner = () => {
                             <h1 className="text-white">CabinFever</h1>
                             <h3 className="text-white">Escape to the Wild: Your Cabin Getaway Awaits with CabinFever!</h3>
                             <div className="banner-link">
-                                <a href="Home/Rentals">Reserve here</a>
+                                <a href="items/Rentals">Reserve here</a>
                             </div>
                         </div>
                     </div>
