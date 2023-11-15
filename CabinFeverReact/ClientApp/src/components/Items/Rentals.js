@@ -1,81 +1,116 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import ItemCard from '../Layout/ItemCard';
 
 const Rentals = () => {
-    // Mock data for testing
-    const itemsList = [
-        // Your item data here
-    ];
+    const [location, setLocation] = useState('');
+    const [items, setItems] = useState([]);
+    const [filteredItems, setFilteredItems] = useState([]);
 
-    // State for selected location
-    const [selectedLocation, setSelectedLocation] = useState('');
+    useEffect(() => {
+        // Simulate fetching items from an API
+        fetchItems()
+            .then((data) => {
+                setItems(data);
+                setFilteredItems(data);
+            });
+    }, []);
 
-    // Function to handle location search
-    const handleLocationSearch = (e) => {
-        const location = e.target.value;
-        setSelectedLocation(location);
-        searchLocation(location);
+    const fetchItems = async () => {
+        // Replace this with your actual API call to fetch items
+
+
+        // Hardkodet hytter. Må slettes etterhvert
+        return [
+            {
+                Id: 1,
+                Name: 'Item 1',
+                Location: 'Oslo',
+                PricePerNight: 100,
+                Description: 'Description for Item 1',
+                Capacity: 2,
+                ImageUrl: 'https://example.com/item1.jpg',
+            },
+            {
+                Id: 2,
+                Name: 'Item 2',
+                Location: 'Agder',
+                PricePerNight: 150,
+                Description: 'Description for Item 2',
+                Capacity: 4,
+                ImageUrl: 'https://example.com/item2.jpg',
+            },
+            // Add more items here
+        ];
     };
 
-    // Function to filter items by location
-    const searchLocation = (location) => {
-        const itemContainer = document.getElementById('itemContainer');
-        const items = itemContainer.getElementsByClassName('item');
-
-        // Hide all items
-        Array.from(items).forEach((item) => {
-            item.style.display = 'none';
-        });
-
-        // Show items based on the selected location
-        if (location === 'All') {
-            Array.from(items).forEach((item) => {
-                item.style.display = 'block';
-            });
+    const handleLocationChange = (e) => {
+        const selectedLocation = e.target.value;
+        setLocation(selectedLocation);
+        if (selectedLocation === 'All') {
+            setFilteredItems(items);
         } else {
-            const selectedItems = itemContainer.querySelectorAll(`[data-location="${location}"]`);
-            Array.from(selectedItems).forEach((item) => {
-                item.style.display = 'block';
-            });
+            const filtered = items.filter((item) => item.Location === selectedLocation);
+            setFilteredItems(filtered);
         }
-
-        // If no items are visible after filtering, show the no items message
-        const itemEmpty = document.getElementById('itemEmpty');
-        itemEmpty.style.display = itemContainer.querySelectorAll('.item:visible').length === 0 ? 'block' : 'none';
     };
 
     return (
         <div>
-            {/* Banner */}
             <div className="banner-secondary">
-                {/* Your banner content */}
-            </div>
-
-            {/* Location search */}
-            <div className="row">
-                <div className="col-4 d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle mt-5">
-                    <select id="locationSearch" onChange={handleLocationSearch}>
-                        <option value="" selected disabled hidden>
-                            Search by Location
-                        </option>
-                        <option value="All">All</option>
-                        {/* Add other location options */}
-                    </select>
+                <div className="banner-secondary-container">
+                    <img
+                        src="https://images.pexels.com/photos/1724228/pexels-photo-1724228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                        id="banner-image"
+                        alt="Banner Image"
+                    />
+                </div>
+                <div className="row">
+                    <div className="col-12 d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle">
+                        <div className="text-center">
+                            <h1 className="text-white">Rentals</h1>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-4 d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle mt-5">
+                        <select id="locationSearch" onChange={handleLocationChange}>
+                            <option value="" selected disabled hidden>
+                                Search by Location
+                            </option>
+                            <option value="All">All</option>
+                            <option value="Agder">Agder</option>
+                            <option value="Innlandet">Innlandet</option>
+                            <option value="Møre og Romsdal">Møre og Romsdal</option>
+                            <option value="Nordland">Nordland</option>
+                            <option value="Oslo">Oslo</option>
+                            <option value="Rogaland">Rogaland</option>
+                            <option value="Troms og Finnmark">Troms og Finnmark</option>
+                            <option value="Trøndelag">Trøndelag</option>
+                            <option value="Vestfold og Telemark">Vestfold og Telemark</option>
+                            <option value="Vestland">Vestland</option>
+                            <option value="Viken">Viken</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            {/* Item container */}
             <div className="container my-5">
                 <div className="row row-cols-1 row-cols-md-3 g-4" id="itemContainer">
                     <p className="d-none" id="itemEmpty">
                         No items to display.
                     </p>
-                    {/* Map through itemsList and render items */}
-                    {itemsList.map((item) => (
-                        <div className="item" data-location={item.Location} key={item.Id}>
-                            {/* Render your item card component here or use JSX directly */}
-                            {/* <YourItemCardComponent item={item} /> */}
-                        </div>
-                    ))}
+                    {filteredItems.length > 0 ? (
+                        filteredItems.map((item) => (
+                            <div className="item" data-location={item.Location} key={item.Id}>
+                                {/* Use the ItemCard component here */}
+                                <ItemCard item={item} />
+                            </div>
+                        ))
+                    ) : (
+                        <p className="d-none" id="itemEmpty">
+                            No items to display.
+                        </p>
+                    )}
                 </div>
             </div>
         </div>
