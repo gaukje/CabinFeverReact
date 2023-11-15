@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const baseUrl = '/api/item';
 
+console.log("ItemService");
+
 const getItems = async () => {
     try {
         const response = await axios.get(`${baseUrl}`);

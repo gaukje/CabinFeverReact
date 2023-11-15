@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import ItemCard from '../Layout/ItemCard';
+import { ItemService } from './../services/ItemService';
 
 const Rentals = () => {
     const [location, setLocation] = useState('');
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
+
+    useEffect(() => {
+        ItemService.getItems().then(items => {
+            console.log('Items hentet fra databasen:', items);
+        }).catch(error => {
+            console.error('Det oppsto en feil ved henting av items:', error);
+        });
+    }, []); // Tomt avhengighetsarray sikrer at dette kjører kun én gang ved mount
+
 
     useEffect(() => {
         // Simulate fetching items from an API
