@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import ItemCard from '../Layout/ItemCard';
-import { ItemService } from './../services/ItemService';
 
 const Rentals = () => {
     const [location, setLocation] = useState('');
@@ -8,50 +8,18 @@ const Rentals = () => {
     const [filteredItems, setFilteredItems] = useState([]);
 
     useEffect(() => {
-        ItemService.getItems().then(items => {
-            console.log('Items hentet fra databasen:', items);
-        }).catch(error => {
-            console.error('Det oppsto en feil ved henting av items:', error);
-        });
-    }, []); // Tomt avhengighetsarray sikrer at dette kjører kun én gang ved mount
-
-
-    useEffect(() => {
-        // Simulate fetching items from an API
-        fetchItems()
-            .then((data) => {
-                setItems(data);
-                setFilteredItems(data);
+        axios.get('/api/item') // Replace '/api/item' with your actual API endpoint
+            .then(response => {
+                const validItems = Array.isArray(response.data) ? response.data : [];
+                setItems(validItems);
+                setFilteredItems(validItems);
+            })
+            .catch(error => {
+                console.error('Det oppsto en feil ved henting av items:', error);
+                setItems([]); // Set the items state to an empty array on error
+                setFilteredItems([]);
             });
-    }, []);
-
-    const fetchItems = async () => {
-        // Replace this with your actual API call to fetch items
-
-
-        // Hardkodet hytter. Må slettes etterhvert
-        return [
-            {
-                Id: 1,
-                Name: 'Item 1',
-                Location: 'Oslo',
-                PricePerNight: 100,
-                Description: 'Description for Item 1',
-                Capacity: 2,
-                ImageUrl: 'https://example.com/item1.jpg',
-            },
-            {
-                Id: 2,
-                Name: 'Item 2',
-                Location: 'Agder',
-                PricePerNight: 150,
-                Description: 'Description for Item 2',
-                Capacity: 4,
-                ImageUrl: 'https://example.com/item2.jpg',
-            },
-            // Add more items here
-        ];
-    };
+    }, []); // Dependency array is empty to ensure this runs only once on mount
 
     const handleLocationChange = (e) => {
         const selectedLocation = e.target.value;
@@ -64,7 +32,7 @@ const Rentals = () => {
         }
     };
 
-    return (
+    return(
         <div>
             <div className="banner-secondary">
                 <div className="banner-secondary-container">
@@ -106,20 +74,14 @@ const Rentals = () => {
 
             <div className="container my-5">
                 <div className="row row-cols-1 row-cols-md-3 g-4" id="itemContainer">
-                    <p className="d-none" id="itemEmpty">
-                        No items to display.
-                    </p>
                     {filteredItems.length > 0 ? (
                         filteredItems.map((item) => (
                             <div className="item" data-location={item.Location} key={item.Id}>
-                                {/* Use the ItemCard component here */}
                                 <ItemCard item={item} />
                             </div>
                         ))
                     ) : (
-                        <p className="d-none" id="itemEmpty">
-                            No items to display.
-                        </p>
+                        <p>No items to display.</p>
                     )}
                 </div>
             </div>
