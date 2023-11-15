@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using CabinFeverReact.Models.CabinFeverReact.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace CabinFeverReact.Models
