@@ -81,7 +81,7 @@ public class ItemRepository : IItemRepository
         try
         {
             // Find the existing item in the database using the item's Id
-            var existingItem = await _db.Items.FindAsync(item.Id);
+            var existingItem = await _db.Items.FindAsync(item.ItemId);
 
             // If an existing item is found, detach it from the DbContext
             // This is to avoid Entity Framework from tracking two instances with the same key

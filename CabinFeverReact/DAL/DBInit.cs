@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
+using CabinFeverReact.Models;
 
-namespace CabinFeverReact.Models;
+namespace CabinFeverReact.DAL;
 
 public class DBInit
 {
@@ -17,7 +16,7 @@ public class DBInit
 
         // Ensure the database is created.
         context.Database.EnsureCreated();
-
+        /*
         // Add users if they don't exist.
         if (!context.Users.Any())
         {
@@ -198,5 +197,6 @@ public class DBInit
             context.AddRange(orders);
             context.SaveChanges();
         }
+        */
     }
 }
