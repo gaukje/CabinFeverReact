@@ -13,13 +13,13 @@ const Carousel = ({ itemsList }) => {
                 </div>
                 <div className="carousel-inner">
                     <div className="carousel-item active">
-                        <img src="~/images/hytte_stock_1.jpg" className="d-block w-100" alt="Hytte 1" />
+                        <img src="images/hytte_stock_1.jpg" className="d-block w-100" alt="Hytte 1" />
                     </div>
                     <div className="carousel-item">
-                        <img src="~/images/hytte_stock_2.jpg" className="d-block w-100" alt="Hytte 2" />
+                        <img src="images/hytte_stock_2.jpg" className="d-block w-100" alt="Hytte 2" />
                     </div>
                     <div className="carousel-item">
-                        <img src="~/images/hytte_stock_3.jpg" className="d-block w-100" alt="Hytte 3" />
+                        <img src="images/hytte_stock_3.jpg" className="d-block w-100" alt="Hytte 3" />
                     </div>
                 </div>
             </div>
