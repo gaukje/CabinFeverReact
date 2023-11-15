@@ -38,15 +38,16 @@ const Carousel = ({ itemsList }) => {
                         ))}
                     </div>
 
-                    <a className="carousel-control-prev" href="#carouselIndex" role="button" data-bs-slide="prev">
+                    <a className="carousel-control-prev" href="#carouselImages" role="button" data-bs-slide="prev">
                         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span className="visually-hidden">Previous</span>
                     </a>
 
-                    <a className="carousel-control-next" href="#carouselIndex" role="button" data-bs-slide="next">
+                    <a className="carousel-control-next" href="#carouselImages" role="button" data-bs-slide="next">
                         <span className="carousel-control-next-icon" aria-hidden="true"></span>
                         <span className="visually-hidden">Next</span>
                     </a>
+
                 </div>
             </div>
         </>
