@@ -13,7 +13,7 @@ public class ItemController : Controller
         _logger = logger;
     }
 
-    [HttpGet]
+    [HttpGet("GetAll")]
     public async Task<IActionResult> GetAll()
     {
         var items = await _itemRepository.GetAll();
@@ -22,6 +22,6 @@ public class ItemController : Controller
             _logger.LogError("[ItemController] Item list not found while executing _itemRepository.GetAll()");
             return NotFound("Item list not found");
         }
-        return Ok(items);
-    }   
+        return Json(items);
+    }
 }

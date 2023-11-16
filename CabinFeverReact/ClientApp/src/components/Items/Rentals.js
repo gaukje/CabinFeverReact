@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import ItemCard from '../Layout/ItemCard';
 
 const Rentals = () => {
@@ -7,17 +6,33 @@ const Rentals = () => {
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
 
-    useEffect(() => {
-        axios.get('/api/item') // Update with your API endpoint
-            .then(response => {
-                console.log('Fetched items:', response.data);
-                const validItems = Array.isArray(response.data) ? response.data : [];
-                setItems(validItems);
-            })
-            .catch(error => {
-                console.error('Error fetching items:', error);
-                setItems([]);
+    const fetchItems = async () => {
+        try {
+            const response = await fetch('https://localhost:7248/api/Item/GetAll', {
+                method: 'GET',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'text/plain',
+                },
             });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                const data = await response.json();
+                console.log('Hurra!')
+            } else {
+                console.error('Response is not in JSON format');
+            }
+
+        } catch (error) {
+            console.error('Error fetching data: ', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchItems();
     }, []);
 
     const handleLocationChange = (e) => {
@@ -30,6 +45,7 @@ const Rentals = () => {
             setFilteredItems(filtered);
         }
     };
+
     return(
         <div>
             <div className="banner-secondary">
@@ -56,12 +72,12 @@ const Rentals = () => {
                             <option value="All">All</option>
                             <option value="Agder">Agder</option>
                             <option value="Innlandet">Innlandet</option>
-                            <option value="MÃ¸re og Romsdal">MÃ¸re og Romsdal</option>
+                            <option value="Møre og Romsdal">Møre og Romsdal</option>
                             <option value="Nordland">Nordland</option>
                             <option value="Oslo">Oslo</option>
                             <option value="Rogaland">Rogaland</option>
                             <option value="Troms og Finnmark">Troms og Finnmark</option>
-                            <option value="TrÃ¸ndelag">TrÃ¸ndelag</option>
+                            <option value="Trøndelag">Trøndelag</option>
                             <option value="Vestfold og Telemark">Vestfold og Telemark</option>
                             <option value="Vestland">Vestland</option>
                             <option value="Viken">Viken</option>
