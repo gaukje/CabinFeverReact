@@ -8,18 +8,17 @@ const Rentals = () => {
     const [filteredItems, setFilteredItems] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/item') // Replace '/api/item' with your actual API endpoint
+        axios.get('/api/item') // Update with your API endpoint
             .then(response => {
+                console.log('Fetched items:', response.data);
                 const validItems = Array.isArray(response.data) ? response.data : [];
                 setItems(validItems);
-                setFilteredItems(validItems);
             })
             .catch(error => {
-                console.error('Det oppsto en feil ved henting av items:', error);
-                setItems([]); // Set the items state to an empty array on error
-                setFilteredItems([]);
+                console.error('Error fetching items:', error);
+                setItems([]);
             });
-    }, []); // Dependency array is empty to ensure this runs only once on mount
+    }, []);
 
     const handleLocationChange = (e) => {
         const selectedLocation = e.target.value;
@@ -27,11 +26,10 @@ const Rentals = () => {
         if (selectedLocation === 'All') {
             setFilteredItems(items);
         } else {
-            const filtered = items.filter((item) => item.Location === selectedLocation);
+            const filtered = items.filter((item) => item.location === selectedLocation);
             setFilteredItems(filtered);
         }
     };
-
     return(
         <div>
             <div className="banner-secondary">
@@ -74,9 +72,9 @@ const Rentals = () => {
 
             <div className="container my-5">
                 <div className="row row-cols-1 row-cols-md-3 g-4" id="itemContainer">
-                    {filteredItems.length > 0 ? (
-                        filteredItems.map((item) => (
-                            <div className="item" data-location={item.Location} key={item.Id}>
+                    {items.length > 0 ? (
+                        items.map((item) => (
+                            <div className="item" data-location={item.location} key={item.id}>
                                 <ItemCard item={item} />
                             </div>
                         ))

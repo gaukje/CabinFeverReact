@@ -7,7 +7,6 @@ public class ItemController : Controller
 {
     private readonly IItemRepository _itemRepository;
     private readonly ILogger<ItemController> _logger;
-
     public ItemController(IItemRepository itemRepository, ILogger<ItemController> logger)
     {
         _itemRepository = itemRepository;
@@ -24,5 +23,5 @@ public class ItemController : Controller
             return NotFound("Item list not found");
         }
         return Ok(items);
-    }
+    }   
 }
