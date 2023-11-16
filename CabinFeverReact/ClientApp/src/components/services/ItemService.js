@@ -6,8 +6,29 @@ console.log("ItemService");
 
 const getItems = async () => {
     try {
-        const response = await axios.get(`${baseUrl}`);
-        return response.data;
+        // Hard-coded list of items
+        const items = [
+            {
+                Id: 1,
+                Name: 'Item 1',
+                Location: 'Oslo',
+                PricePerNight: 100,
+                Description: 'Description for Item 1',
+                Capacity: 2,
+                ImageUrl: 'https://example.com/item1.jpg',
+            },
+            {
+                Id: 2,
+                Name: 'Item 2',
+                Location: 'Agder',
+                PricePerNight: 150,
+                Description: 'Description for Item 2',
+                Capacity: 4,
+                ImageUrl: 'https://example.com/item2.jpg',
+            },
+        ];
+
+        return items;
     } catch (error) {
         // Handle error
         console.error(error);

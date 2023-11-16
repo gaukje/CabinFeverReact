@@ -1,38 +1,21 @@
-import React, { useEffect, useState } from 'react';
+ï»¿import React, { useEffect, useState } from 'react';
 import ItemCard from '../Layout/ItemCard';
+import { ItemService } from './../services/ItemService';
 
 const Rentals = () => {
     const [location, setLocation] = useState('');
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
 
-    const fetchItems = async () => {
-        try {
-            const response = await fetch('https://localhost:7248/api/Item/GetAll', {
-                method: 'GET',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'text/plain',
-                },
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
-                const data = await response.json();
-                console.log('Hurra!')
-            } else {
-                console.error('Response is not in JSON format');
-            }
-
-        } catch (error) {
-            console.error('Error fetching data: ', error);
-        }
-    };
-
     useEffect(() => {
-        fetchItems();
+        ItemService.getItems()
+            .then(itemsData => {
+                console.log('Items hentet fra databasen:', itemsData);
+                setItems(itemsData); // Update the items state with the fetched data
+            })
+            .catch(error => {
+                console.error('Det oppsto en feil ved henting av items:', error);
+            });
     }, []);
 
     const handleLocationChange = (e) => {
@@ -72,12 +55,12 @@ const Rentals = () => {
                             <option value="All">All</option>
                             <option value="Agder">Agder</option>
                             <option value="Innlandet">Innlandet</option>
-                            <option value="Møre og Romsdal">Møre og Romsdal</option>
+                            <option value="MÃ¸re og Romsdal">MÃ¸re og Romsdal</option>
                             <option value="Nordland">Nordland</option>
                             <option value="Oslo">Oslo</option>
                             <option value="Rogaland">Rogaland</option>
                             <option value="Troms og Finnmark">Troms og Finnmark</option>
-                            <option value="Trøndelag">Trøndelag</option>
+                            <option value="TrÃ¸ndelag">TrÃ¸ndelag</option>
                             <option value="Vestfold og Telemark">Vestfold og Telemark</option>
                             <option value="Vestland">Vestland</option>
                             <option value="Viken">Viken</option>
@@ -88,7 +71,7 @@ const Rentals = () => {
 
             <div className="container my-5">
                 <div className="row row-cols-1 row-cols-md-3 g-4" id="itemContainer">
-                    {items.length > 0 ? (
+                    {filteredItems.length > 0 ? (
                         items.map((item) => (
                             <div className="item" data-location={item.location} key={item.id}>
                                 <ItemCard item={item} />
