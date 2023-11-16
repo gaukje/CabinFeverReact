@@ -12,6 +12,7 @@ const Rentals = () => {
             .then(itemsData => {
                 console.log('Items hentet fra databasen:', itemsData);
                 setItems(itemsData); // Update the items state with the fetched data
+                setFilteredItems(itemsData);
             })
             .catch(error => {
                 console.error('Det oppsto en feil ved henting av items:', error);

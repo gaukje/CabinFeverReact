@@ -9,22 +9,22 @@ const getItems = async () => {
         // Hard-coded list of items
         const items = [
             {
-                Id: 1,
-                Name: 'Item 1',
-                Location: 'Oslo',
-                PricePerNight: 100,
-                Description: 'Description for Item 1',
-                Capacity: 2,
-                ImageUrl: 'https://example.com/item1.jpg',
+                id: 1,
+                name: 'Item 1',
+                location: 'Oslo',
+                pricePerNight: 100,
+                description: 'Description for Item 1',
+                capacity: 2,
+                imageUrl: '/images/hytte_stock_1.jpg',
             },
             {
-                Id: 2,
-                Name: 'Item 2',
-                Location: 'Agder',
-                PricePerNight: 150,
-                Description: 'Description for Item 2',
-                Capacity: 4,
-                ImageUrl: 'https://example.com/item2.jpg',
+                id: 2,
+                name: 'Item 2',
+                location: 'Agder',
+                pricePerNight: 150,
+                description: 'Description for Item 2',
+                capacity: 4,
+                imageUrl: '/images/hytte_stock_2.jpg',
             },
         ];
 
