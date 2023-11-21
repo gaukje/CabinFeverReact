@@ -3,12 +3,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ItemCard = ({ item }) => {
-    if (!item || typeof item.pricePerNight !== 'number') {
-        return (
-            <div className="col">
-                <p>Error: Invalid item</p>
-            </div>
-        );
+    if (!item) {
+        return <div className="col">Item is undefined</div>;
+    }
+    if (typeof item.pricePerNight !== 'number') {
+        console.error('Invalid item price', item);
+        return <div className="col">Invalid item price</div>;
     }
 
     return (
@@ -27,7 +27,7 @@ const ItemCard = ({ item }) => {
                                 <p>{item.location}</p>
                             </div>
                             <div>
-                                <b className="text-end">{item.pricePerNight.toFixed(2)} kr</b>
+                                <b className="text-end">{item.pricePerNight.toFixed(2) || '0.00'} kr</b>
                                 <p className="text-end">per night</p>
                             </div>
                         </div>

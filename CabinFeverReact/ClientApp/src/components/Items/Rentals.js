@@ -1,34 +1,32 @@
 ﻿import React, { useEffect, useState } from 'react';
 import ItemCard from './ItemCard';
-import { ItemService } from './../services/ItemService';
+import { ItemService } from '../services/ItemService';
+
 
 const Rentals = () => {
-    const [location, setLocation] = useState('');
+    const [selectedLocation, setSelectedLocation] = useState('');
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
 
     useEffect(() => {
         ItemService.getItems()
-            .then(itemsData => {
-                console.log('Items hentet fra databasen:', itemsData);
-                setItems(itemsData); // Update the items state with the fetched data
-                setFilteredItems(itemsData);
+            .then(fetchedItems => {
+                setItems(fetchedItems);
+                setFilteredItems(fetchedItems); // Initially, all items are shown
             })
             .catch(error => {
-                console.error('Det oppsto en feil ved henting av items:', error);
+                console.error('Failed to fetch items:', error);
+                // Optionally, show an error message in the UI
             });
     }, []);
 
     const handleLocationChange = (e) => {
         const selectedLocation = e.target.value;
-        setLocation(selectedLocation);
-        if (selectedLocation === 'All') {
-            setFilteredItems(items);
-        } else {
-            const filtered = items.filter((item) => item.location === selectedLocation);
-            setFilteredItems(filtered);
-        }
+        setSelectedLocation(selectedLocation);
+        const filtered = selectedLocation === 'All' ? items : items.filter(item => item.location === selectedLocation);
+        setFilteredItems(filtered);
     };
+
 
     return(
         <div>
@@ -49,8 +47,8 @@ const Rentals = () => {
                 </div>
                 <div className="row">
                     <div className="col-4 d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle mt-5">
-                        <select id="locationSearch" onChange={handleLocationChange}>
-                            <option value="" selected disabled hidden>
+                        <select id="locationSearch" value={selectedLocation} onChange={handleLocationChange}>
+                            <option value="" disabled hidden>
                                 Search by Location
                             </option>
                             <option value="All">All</option>
@@ -73,7 +71,7 @@ const Rentals = () => {
             <div className="container my-5">
                 <div className="row row-cols-1 row-cols-md-3 g-4" id="itemContainer">
                     {filteredItems.length > 0 ? (
-                        items.map((item) => (
+                        filteredItems.map(item => (
                             <div className="item" data-location={item.location} key={item.id}>
                                 <ItemCard item={item} />
                             </div>

@@ -22,7 +22,8 @@ public class ItemController : Controller
             _logger.LogError("[ItemController] Item list not found while executing _itemRepository.GetAll()");
             return NotFound("Item list not found");
         }
-        return Json(items);
+        //return Json(items);
+        return Ok(items);
     }
 
     [HttpGet("{id}")]
@@ -30,9 +31,9 @@ public class ItemController : Controller
     {
         var item = await _itemRepository.GetItemById(id);
         if (item == null)
-        {
-            return NotFound();
-        }
+            {
+                return NotFound();
+            }   
         return Ok(item);
     }
 }

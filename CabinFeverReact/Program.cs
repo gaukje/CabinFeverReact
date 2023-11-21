@@ -6,8 +6,16 @@ using Serilog.Events;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
+//builder.Services.AddControllersWithViews();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader());
+});
 
 builder.Services.AddDbContext<ItemDbContext>(options => {
     options.UseSqlite(
@@ -38,12 +46,20 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseCors("CorsPolicy");
 
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers(); // To handle API routes
+    endpoints.MapFallbackToFile("index.html"); // For your React app's routing
+});
+/*
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html"); ;
-
+*/
 app.Run();
 

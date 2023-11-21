@@ -1,12 +1,36 @@
 import axios from 'axios';
-
-const baseUrl = '/api/item';
+import { Item } from '../Items/item.ts';
+const baseUrl = 'http://localhost:44400/api/item';
 
 console.log("ItemService");
 
+function isValidItem(item) {
+    return typeof item.id === 'number' &&
+        typeof item.name === 'string' &&
+        typeof item.pricePerNight === 'number' &&
+        item.fromDate instanceof Date && // Checking if fromDate is a Date object
+        item.toDate instanceof Date;     // Checking if toDate is a Date object
+}
+
 const getItems = async () => {
     try {
-        // Hard-coded list of items
+        const response = await axios.get(`${baseUrl}/GetAll`);
+        if (!response.data.every(isValidItem)) {
+            console.error('Invalid item structure:', response.data);
+            throw new Error('Invalid item structure');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching items:', error);
+        throw error;
+    }
+};
+/*
+const getItems = async () => {
+    try {
+        const response = await axios.get(`${baseUrl}/GetAll`);
+        return response.data;
+         Hard-coded list of items
         const items = [
             {
                 id: 1,
@@ -29,11 +53,16 @@ const getItems = async () => {
         ];
 
         return items;
+        
+        
     } catch (error) {
         // Handle error
-        console.error(error);
+        console.error('Error fetching items:', error);
+        throw error;
     }
 };
+*/
+
 
 const createItem = async (newItem) => {
     try {
