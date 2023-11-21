@@ -1,5 +1,5 @@
 import React from 'react';
-import ItemCard from './Layout/ItemCard';
+import ItemCard from './Items/ItemCard';
 
 const Carousel = ({ itemsList }) => {
     console.log(itemsList);

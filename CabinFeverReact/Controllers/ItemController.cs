@@ -24,4 +24,15 @@ public class ItemController : Controller
         }
         return Json(items);
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetItemById(int id)
+    {
+        var item = await _itemRepository.GetItemById(id);
+        if (item == null)
+        {
+            return NotFound();
+        }
+        return Ok(item);
+    }
 }

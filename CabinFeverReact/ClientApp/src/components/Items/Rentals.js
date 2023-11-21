@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import ItemCard from '../Layout/ItemCard';
+import ItemCard from './ItemCard';
 import { ItemService } from './../services/ItemService';
 
 const Rentals = () => {
