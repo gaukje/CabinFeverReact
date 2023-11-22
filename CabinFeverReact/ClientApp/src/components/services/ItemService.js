@@ -6,32 +6,11 @@ console.log("ItemService");
 
 const getItems = async () => {
     try {
-        // Hard-coded list of items
-        const items = [
-            {
-                id: 1,
-                name: 'Item 1',
-                location: 'Oslo',
-                pricePerNight: 100,
-                description: 'Description for Item 1',
-                capacity: 2,
-                imageUrl: '/images/hytte_stock_1.jpg',
-            },
-            {
-                id: 2,
-                name: 'Item 2',
-                location: 'Agder',
-                pricePerNight: 150,
-                description: 'Description for Item 2',
-                capacity: 4,
-                imageUrl: '/images/hytte_stock_2.jpg',
-            },
-        ];
-
-        return items;
+        const response = await axios.get('https://localhost:7248/api/Item/GetAll');
+        console.log(response.data);
+        return response.data;
     } catch (error) {
-        // Handle error
-        console.error(error);
+        console.error('Error fetching data: ', error);
     }
 };
 

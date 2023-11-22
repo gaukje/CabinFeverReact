@@ -4,8 +4,19 @@ using CabinFeverReact.Models;
 using Serilog;
 using Serilog.Events;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:7248/",
+                              "https://localhost:44400");
+                      });
+});
 
 builder.Services.AddControllersWithViews();
 
@@ -37,6 +48,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 
 app.MapControllerRoute(

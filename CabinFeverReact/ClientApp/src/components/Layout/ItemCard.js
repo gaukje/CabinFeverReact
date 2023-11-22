@@ -13,7 +13,7 @@ const ItemCard = ({ item }) => {
     return (
         <div className="col">
             <div className="bg-white border border-dark-subtle rounded-3">
-                <a href={`/item/details/${item.id}`} className="ratio ratio-4x3">
+                <a href={`/Items/Details/${item.id}`} className="ratio ratio-4x3">
                     <img src={item.imageUrl} className="card-img-top img-fluid" alt={item.name} id="itemcard-image" />
                 </a>
                 <div>
