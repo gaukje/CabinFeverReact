@@ -28,10 +28,13 @@ builder.Services.AddDbContext<ItemDbContext>(options => {
         builder.Configuration["ConnectionStrings:ItemDbContextConnection"]);
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddEntityFrameworkStores<ItemDbContext>();
 
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
+
+builder.Services.AddRazorPages(); ;
+builder.Services.AddSession();
 
 var loggerConfiguration = new LoggerConfiguration()
     .MinimumLevel.Information() // levels: Trace< Information < Warning < Erorr < Fatal
