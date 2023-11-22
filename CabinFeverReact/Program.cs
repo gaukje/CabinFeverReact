@@ -33,6 +33,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>()
 
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
+//Tell the serializer to keep track of references and handle circular references correctly:
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+});
+
+
 builder.Services.AddRazorPages(); ;
 builder.Services.AddSession();
 
