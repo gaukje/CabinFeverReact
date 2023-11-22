@@ -7,7 +7,7 @@ using CabinFeverReact.DAL;
 using System.Linq;
 using System.Security.Claims;
 
-namespace CabinFever.Controllers
+namespace CabinFeverReact.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

@@ -7,7 +7,7 @@ const Rentals = () => {
     const [selectedLocation, setSelectedLocation] = useState('');
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
-
+    
     useEffect(() => {
         ItemService.getItems()
             .then(fetchedItems => {
@@ -19,14 +19,14 @@ const Rentals = () => {
                 // Optionally, show an error message in the UI
             });
     }, []);
-
+    
     const handleLocationChange = (e) => {
         const selectedLocation = e.target.value;
         setSelectedLocation(selectedLocation);
         const filtered = selectedLocation === 'All' ? items : items.filter(item => item.location === selectedLocation);
         setFilteredItems(filtered);
     };
-
+    
 
     return(
         <div>

@@ -1,4 +1,5 @@
 ﻿using CabinFeverReact.DAL;
+using CabinFeverReact.Models;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -12,7 +13,7 @@ public class ItemController : Controller
         _itemRepository = itemRepository;
         _logger = logger;
     }
-
+    
     [HttpGet("GetAll")]
     public async Task<IActionResult> GetAll()
     {
@@ -25,7 +26,7 @@ public class ItemController : Controller
         //return Json(items);
         return Ok(items);
     }
-
+   
     [HttpGet("{id}")]
     public async Task<IActionResult> GetItemById(int id)
     {

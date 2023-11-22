@@ -3,24 +3,33 @@ using CabinFeverReact.DAL;
 using CabinFeverReact.Models;
 using Serilog;
 using Serilog.Events;
+using Microsoft.AspNetCore.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 //builder.Services.AddControllersWithViews();
 
+var connectionString = builder.Configuration.GetConnectionString("ItemDbContextConnection") ?? throw new
+    InvalidOperationException("Connection string 'ItemDbContextConnection' not found.");
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("CorsPolicy", builder =>
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader());
+    options.AddPolicy("CorsPolicy",
+        builder => builder.WithOrigins("http://localhost:44400") // Your React app's URL
+                          .AllowAnyMethod()
+                          .AllowAnyHeader()
+                          .AllowCredentials());
 });
+
 
 builder.Services.AddDbContext<ItemDbContext>(options => {
     options.UseSqlite(
         builder.Configuration["ConnectionStrings:ItemDbContextConnection"]);
 });
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ItemDbContext>();
 
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
@@ -45,6 +54,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseCors("CorsPolicy");
 

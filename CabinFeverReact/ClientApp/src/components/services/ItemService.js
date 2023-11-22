@@ -3,7 +3,7 @@ import { Item } from '../Items/item.ts';
 const baseUrl = 'http://localhost:44400/api/item';
 
 console.log("ItemService");
-
+/*
 function isValidItem(item) {
     return typeof item.id === 'number' &&
         typeof item.name === 'string' &&
@@ -25,12 +25,12 @@ const getItems = async () => {
         throw error;
     }
 };
-/*
+*/
 const getItems = async () => {
     try {
         const response = await axios.get(`${baseUrl}/GetAll`);
         return response.data;
-         Hard-coded list of items
+         /*Hard-coded list of items
         const items = [
             {
                 id: 1,
@@ -53,7 +53,7 @@ const getItems = async () => {
         ];
 
         return items;
-        
+        */
         
     } catch (error) {
         // Handle error
@@ -61,7 +61,7 @@ const getItems = async () => {
         throw error;
     }
 };
-*/
+
 
 
 const createItem = async (newItem) => {

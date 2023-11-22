@@ -11,41 +11,12 @@ public class DBInit
         // Create a scope to access services.
         using var serviceScope = app.ApplicationServices.CreateScope();
         ItemDbContext context = serviceScope.ServiceProvider.GetRequiredService<ItemDbContext>();
-        //UserManager<IdentityUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+        UserManager<IdentityUser> userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
         // context.Database.EnsureDeleted();
 
         // Ensure the database is created.
         context.Database.EnsureCreated();
-        if (!context.Items.Any())
-        {
-            var items = new List<Item>()
-            {
-                new Item
-                {
-                    Name = "Oslomarka",
-                    PricePerNight = 2000,
-                    Description = "The most outstanding cabin in the heart of Norway.",
-                    ImageUrl = "/images/hytte_stock_1.jpg",
-                    Capacity = 4,
-                    Location = "Oslo"
-                },
-
-                new Item
-                {
-                    Name = "Haugesund",
-                    PricePerNight = 3000,
-                    Description = "Nothing else like the coziest cabin in Haugesund perfect for a romantic get away.",
-                    ImageUrl = "/images/hytte_stock_2.jpg",
-                    Capacity = 2,
-                    Location = "Vestland"
-                },
-            };
-            context.AddRange(items);
-            context.SaveChanges();
-        }
-
         
-        /*
         // Add users if they don't exist.
         if (!context.Users.Any())
         {
@@ -162,7 +133,7 @@ public class DBInit
                     {
                         Date = date,
                         IsAvailable = isAvailable,
-                        ItemId = item.Id
+                        ItemId = item.ItemId
                     });
                 }
             }
@@ -170,7 +141,7 @@ public class DBInit
             context.AddRange(itemAvailabilities);
             context.SaveChanges();
         }
-
+        /*
         // Add orders if they don't exist.
         if (!context.Orders.Any())
         {
@@ -225,6 +196,7 @@ public class DBInit
             };
             context.AddRange(orders);
             context.SaveChanges();
+        
         }
         */
     }
