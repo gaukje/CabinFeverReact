@@ -7,6 +7,7 @@ const Rentals = () => {
     const [selectedLocation, setSelectedLocation] = useState('');
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         ItemService.getItems()
@@ -22,20 +23,29 @@ const Rentals = () => {
             });
     }, []);
 
-    const filterItemsByLocation = (location) => {
-        if (location === 'All' || location === '') {
+    const filterItemsBySearchTerm = (searchTerm) => {
+        if (!searchTerm.trim()) {
             return items;
         }
-        return items.filter(item => item.location === location);
+        const lowerCaseSearchTerm = searchTerm.trim().toLowerCase();
+        const filtered = items.filter(item => {
+            const itemName = item.name?.trim().toLowerCase(); // Replace 'name' with the actual property you want to filter on
+            return itemName?.includes(lowerCaseSearchTerm);
+        });
+
+        // Add a log to check what's going on after filtering
+        console.log('Filtered Items:', filtered);
+
+        return filtered;
     };
 
-    const handleLocationChange = (e) => {
-        const newLocation = e.target.value;
-        setSelectedLocation(newLocation);
-        const filtered = filterItemsByLocation(newLocation);
+    const handleSearchChange = (e) => {
+        const newSearchTerm = e.target.value;
+        setSearchTerm(newSearchTerm);
+        const filtered = filterItemsBySearchTerm(newSearchTerm);
         setFilteredItems(filtered);
-        console.log('Filtered Items:', filtered);
     };
+
     
 
     return(
@@ -57,26 +67,16 @@ const Rentals = () => {
                 </div>
                 <div className="row">
                     <div className="col-4 d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle mt-5">
-                        <select id="locationSearch" value={selectedLocation} onChange={handleLocationChange}>
-                            <option value="" disabled hidden>
-                                Search by Location
-                            </option>
-                            <option value="All">All</option>
-                            <option value="Agder">Agder</option>
-                            <option value="Innlandet">Innlandet</option>
-                            <option value="Møre og Romsdal">Møre og Romsdal</option>
-                            <option value="Nordland">Nordland</option>
-                            <option value="Oslo">Oslo</option>
-                            <option value="Rogaland">Rogaland</option>
-                            <option value="Troms og Finnmark">Troms og Finnmark</option>
-                            <option value="Trøndelag">Trøndelag</option>
-                            <option value="Vestfold og Telemark">Vestfold og Telemark</option>
-                            <option value="Vestland">Vestland</option>
-                            <option value="Viken">Viken</option>
-                        </select>
+                        <input
+                            type="text"
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            placeholder="Search for location"
+                        />
                     </div>
                 </div>
             </div>
+           
 
             <div className="container my-5">
                 <div className="row row-cols-1 row-cols-md-3 g-4" id="itemContainer">
