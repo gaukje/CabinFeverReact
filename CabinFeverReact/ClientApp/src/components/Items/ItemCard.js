@@ -15,7 +15,7 @@ const ItemCard = ({ item }) => {
     return (
         <div className="col">
             <div className="bg-white border border-dark-subtle rounded-3">
-                <Link to={`/Item/Details/${item.ItemId}`}>
+                <Link to={`/Items/Details/${item.ItemId}`}>
                     <div className="ratio ratio-4x3">
                         <img src={item.ImageUrl} className="card-img-top img-fluid" alt={item.Name} id="itemcard-image" />
                     </div>
@@ -24,7 +24,7 @@ const ItemCard = ({ item }) => {
                     <div className="d-flex justify-content-between pt-2 mx-2">
                         <div>
                             <b className="text-start">
-                                <Link to={`/Item/Details/${item.ItemId}`}>{item.Name}</Link>
+                                <Link to={`/Items/Details/${item.ItemId}`}>{item.Name}</Link>
                             </b>
                             <p>{item.Location}</p>
                         </div>

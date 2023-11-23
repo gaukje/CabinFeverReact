@@ -21,9 +21,31 @@ const ItemDetails = () => {
     }
 
     return (
-        <div>
-            <h1>{item.name}</h1>
-            {/* Display other details of the item */}
+        <div className="container my-4">
+            <div className="row mb-4">
+                <h2>{item.Name}</h2>
+                <p><strong>Location:</strong> {item.Location}</p>
+                <div className="container">
+                    <div className="ratio ratio-16x9">
+                        <img src={item.ImageUrl} alt={item.Name} className="img-fluid rounded" id="itemcard-image" />
+                    </div>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col-lg-8">
+                    <h4>Cabin owned by: </h4>
+                    {item.Capacity > 1 ? (
+                        <p>{item.Capacity} guests</p>
+                    ) : (
+                        <p>{item.Capacity} guest</p>
+                    )}
+                    <hr className="hr hr-blurry" />
+
+                    <p id="container-description">{item.Description}</p>
+                </div>
+
+            </div>
         </div>
     );
 };
