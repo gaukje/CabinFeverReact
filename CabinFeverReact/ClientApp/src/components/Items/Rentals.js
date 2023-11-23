@@ -4,7 +4,6 @@ import { ItemService } from '../services/ItemService';
 
 
 const Rentals = () => {
-    const [selectedLocation, setSelectedLocation] = useState('');
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -12,29 +11,27 @@ const Rentals = () => {
     useEffect(() => {
         ItemService.getItems()
             .then(fetchedItems => {
-                console.log(fetchedItems);
-                const itemsArray = fetchedItems.$values || []; // Fallback to empty array if $values is not defined
+                const itemsArray = fetchedItems.$values || [];
+                console.log('Detailed properties:', JSON.stringify(itemsArray[0], null, 2)); // Should show actual properties
                 setItems(itemsArray);
-                setFilteredItems(itemsArray); // Initially, all items are shown
+                setFilteredItems(itemsArray);
             })
             .catch(error => {
                 console.error('Failed to fetch items:', error);
-                // Optionally, show an error message in the UI
             });
     }, []);
 
+
     const filterItemsBySearchTerm = (searchTerm) => {
-        if (!searchTerm.trim()) {
+        const lowerCaseSearchTerm = searchTerm.trim().toLowerCase();
+        if (!lowerCaseSearchTerm) {
             return items;
         }
-        const lowerCaseSearchTerm = searchTerm.trim().toLowerCase();
-        const filtered = items.filter(item => {
-            const itemName = item.name?.trim().toLowerCase(); // Replace 'name' with the actual property you want to filter on
-            return itemName?.includes(lowerCaseSearchTerm);
-        });
 
-        // Add a log to check what's going on after filtering
-        console.log('Filtered Items:', filtered);
+        const filtered = items.filter(item => {
+            const itemLocation = item.Location?.trim().toLowerCase(); // Use Location (PascalCase)
+            return itemLocation?.includes(lowerCaseSearchTerm);
+        });
 
         return filtered;
     };
@@ -45,8 +42,6 @@ const Rentals = () => {
         const filtered = filterItemsBySearchTerm(newSearchTerm);
         setFilteredItems(filtered);
     };
-
-    
 
     return(
         <div>
