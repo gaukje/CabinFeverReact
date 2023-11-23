@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ItemService } from './../services/ItemService';
 import { useParams } from 'react-router-dom';
+import ItemDetailsDescription from './ItemDetailsDescription';
+import ItemDetailsOrder from './ItemDetailsOrder';
 
 const ItemDetails = () => {
     const { id } = useParams();
@@ -34,18 +36,14 @@ const ItemDetails = () => {
 
             <div className="row">
                 <div className="col-lg-8">
-                    <h4>Cabin owned by: </h4>
-                    {item.Capacity > 1 ? (
-                        <p>{item.Capacity} guests</p>
-                    ) : (
-                        <p>{item.Capacity} guest</p>
-                    )}
-                    <hr className="hr hr-blurry" />
-
-                    <p id="container-description">{item.Description}</p>
+                    <ItemDetailsDescription item={item} />
                 </div>
 
+                <div class="col-lg-4">
+                    <ItemDetailsOrder item={item} />
+                </div>
             </div>
+
         </div>
     );
 };
