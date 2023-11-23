@@ -7,25 +7,34 @@ const Rentals = () => {
     const [selectedLocation, setSelectedLocation] = useState('');
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
-    
+
     useEffect(() => {
         ItemService.getItems()
             .then(fetchedItems => {
-                console.log(fetchedItems)
-                setItems(fetchedItems);
-                setFilteredItems(fetchedItems); // Initially, all items are shown
+                console.log(fetchedItems);
+                const itemsArray = fetchedItems.$values || []; // Fallback to empty array if $values is not defined
+                setItems(itemsArray);
+                setFilteredItems(itemsArray); // Initially, all items are shown
             })
             .catch(error => {
                 console.error('Failed to fetch items:', error);
                 // Optionally, show an error message in the UI
             });
     }, []);
-    
+
+    const filterItemsByLocation = (location) => {
+        if (location === 'All' || location === '') {
+            return items;
+        }
+        return items.filter(item => item.location === location);
+    };
+
     const handleLocationChange = (e) => {
-        const selectedLocation = e.target.value;
-        setSelectedLocation(selectedLocation);
-        const filtered = selectedLocation === 'All' ? items : items.filter(item => item.location === selectedLocation);
+        const newLocation = e.target.value;
+        setSelectedLocation(newLocation);
+        const filtered = filterItemsByLocation(newLocation);
         setFilteredItems(filtered);
+        console.log('Filtered Items:', filtered);
     };
     
 
@@ -71,7 +80,7 @@ const Rentals = () => {
 
             <div className="container my-5">
                 <div className="row row-cols-1 row-cols-md-3 g-4" id="itemContainer">
-                    {filteredItems.length && filteredItems > 0 ? (
+                    {filteredItems.length > 0 ? (
                         filteredItems.map(item => (
                             <div className="item" data-location={item.location} key={item.id}>
                                 <ItemCard item={item} />
