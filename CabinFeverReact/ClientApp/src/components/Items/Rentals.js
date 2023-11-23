@@ -82,7 +82,7 @@ const Rentals = () => {
                 <div className="row row-cols-1 row-cols-md-3 g-4" id="itemContainer">
                     {filteredItems.length > 0 ? (
                         filteredItems.map(item => (
-                            <div className="item" data-location={item.location} key={item.id}>
+                            <div className="item" data-location={item.Location} key={item.ItemId}>
                                 <ItemCard item={item} />
                             </div>
                         ))
@@ -91,6 +91,7 @@ const Rentals = () => {
                     )}
                 </div>
             </div>
+
         </div>
     );
 };

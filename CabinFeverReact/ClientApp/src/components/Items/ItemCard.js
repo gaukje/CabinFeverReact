@@ -15,28 +15,30 @@ const ItemCard = ({ item }) => {
     return (
         <div className="col">
             <div className="bg-white border border-dark-subtle rounded-3">
-                <Link to={`/item/details/${item.id}`}>
+                <Link to={`/Item/Details/${item.ItemId}`}>
                     <div className="ratio ratio-4x3">
-                        <img src={item.imageUrl} className="card-img-top img-fluid" alt={item.name} id="itemcard-image" />
+                        <img src={item.ImageUrl} className="card-img-top img-fluid" alt={item.Name} id="itemcard-image" />
                     </div>
                 </Link>
                 <div>
                     <div className="d-flex justify-content-between pt-2 mx-2">
                         <div>
                             <b className="text-start">
-                                <Link to={`/item/details/${item.id}`}>{item.name}</Link>
+                                <Link to={`/Item/Details/${item.ItemId}`}>{item.Name}</Link>
                             </b>
-                            <p>{item.location}</p>
+                            <p>{item.Location}</p>
                         </div>
                         <div>
-                            <b className="text-end">{formattedPrice}</b>
+                            <b className="text-end">
+                                {item.Price !== undefined ? item.Price.toFixed(2) : '0.00'} kr
+                            </b>
                             <p className="text-end">per night</p>
                         </div>
                     </div>
                     <div className="mx-2">
-                        <p className="text-truncate">{item.description}</p>
+                        <p className="text-truncate">{item.Description}</p>
                         <hr className="hr hr-blurry" />
-                        <p className="bi bi-person">{item.capacity}</p>
+                        <p className="bi bi-person">{item.Capacity}</p>
                     </div>
                 </div>
             </div>
