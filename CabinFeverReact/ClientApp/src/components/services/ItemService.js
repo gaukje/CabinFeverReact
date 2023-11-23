@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Item } from '../Items/item.ts';
-const baseUrl = 'http://localhost:44400/api/item';
-
+const baseUrl = `${ window.location.protocol }//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}/api/item`;
 console.log("ItemService");
 /*
 function isValidItem(item) {

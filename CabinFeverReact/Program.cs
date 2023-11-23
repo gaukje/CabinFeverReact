@@ -5,7 +5,6 @@ using Serilog;
 using Serilog.Events;
 using Microsoft.AspNetCore.Identity;
 
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 //builder.Services.AddControllersWithViews();

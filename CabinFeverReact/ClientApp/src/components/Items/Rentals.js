@@ -11,6 +11,7 @@ const Rentals = () => {
     useEffect(() => {
         ItemService.getItems()
             .then(fetchedItems => {
+                console.log(fetchedItems)
                 setItems(fetchedItems);
                 setFilteredItems(fetchedItems); // Initially, all items are shown
             })
@@ -70,7 +71,7 @@ const Rentals = () => {
 
             <div className="container my-5">
                 <div className="row row-cols-1 row-cols-md-3 g-4" id="itemContainer">
-                    {filteredItems.length > 0 ? (
+                    {filteredItems.length && filteredItems > 0 ? (
                         filteredItems.map(item => (
                             <div className="item" data-location={item.location} key={item.id}>
                                 <ItemCard item={item} />
