@@ -51,6 +51,12 @@ class NavMenu extends Component {
                                 <NavLink tag={Link} className="text-light" to="/MinSide">Min Side</NavLink>
                             </NavItem>
                             {/* Her kan du inkludere din innloggingsportal */}
+                            <NavItem>
+                                <NavLink tag={Link} className="text-light" to="/register">Register</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink tag={Link} className="text-light" to="/login">Login</NavLink>
+                            </NavItem>
                         </ul>
                     </Collapse>
                 </Navbar>
