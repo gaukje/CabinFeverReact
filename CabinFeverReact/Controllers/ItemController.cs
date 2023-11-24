@@ -37,4 +37,63 @@ public class ItemController : Controller
             }   
         return Ok(item);
     }
+
+    /*
+    // POST: api/Item/Create
+    [HttpPost("Create")]
+    public async Task<IActionResult> Create([FromBody] Item item)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        await _itemRepository.CreateItem(item);
+        return CreatedAtAction(nameof(GetItemById), new { id = item.Id }, item);
+    }
+    */
+
+    /*
+    // PUT: api/Item/Update/"id"
+    // Id til item skal stå istedenfor "id"
+    [HttpPut("Update/{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] Item item)
+    {
+        if (id != item.Id)
+        {
+            return BadRequest();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var existingItem = await _itemRepository.GetItemById(id);
+        if (existingItem == null)
+        {
+            return NotFound();
+        }
+
+        await _itemRepository.UpdateItem(item);
+        return NoContent();
+    }
+    */
+
+    /*
+    // DELETE: api/Item/Delete/"id"
+    // Id til item skal stå istedenfor "id"
+    [HttpDelete("Delete/{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var item = await _itemRepository.GetItemById(id);
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        await _itemRepository.DeleteItem(id);
+        return NoContent();
+    }
+    */
 }

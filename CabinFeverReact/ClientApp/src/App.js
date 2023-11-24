@@ -7,6 +7,9 @@ import About from './components/pages/About';
 import Contact from './components/pages/Contact';
 import Rentals from './components/Items/Rentals';
 import ItemDetails from './components/Items/ItemDetails';
+import ItemCreate from './components/Items/ItemCreate';
+import ItemEdit from './components/Items/ItemEdit';
+import ItemDelete from './components/Items/ItemDelete';
 import './custom.css';
 
 const App = () => {
@@ -19,7 +22,9 @@ const App = () => {
                 <Route path="/pages/contact" element={<Contact />} />
                 <Route path="/Items/Rentals" element={<Rentals />} />
                 <Route path="/Items/Details/:id" element={<ItemDetails />} />
-                {/* Add more routes as needed */}
+                <Route path="/Items/Create" element={<ItemCreate />} />
+                <Route path="/Items/Edit/:id" element={<ItemEdit />} />
+                <Route path="/Items/Delete/:id" element={<ItemDelete />} />
             </Routes>
         </div>
     );

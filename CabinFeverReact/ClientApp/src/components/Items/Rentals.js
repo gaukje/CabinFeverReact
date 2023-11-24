@@ -72,7 +72,7 @@ const Rentals = () => {
                 </div>
             </div>
            
-
+            
             <div className="container my-5">
                 <div className="row row-cols-1 row-cols-md-3 g-4" id="itemContainer">
                     {filteredItems.length > 0 ? (
