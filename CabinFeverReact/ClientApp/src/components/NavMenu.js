@@ -45,6 +45,13 @@ class NavMenu extends Component {
                                 <NavLink tag={Link} className="text-light" to="/Items/Rentals">Rentals</NavLink>
                             </NavItem>
                         </ul>
+                        <ul className="navbar-nav">
+                            {/* Lenker eller komponenter på høyre side */}
+                            <NavItem>
+                                <NavLink tag={Link} className="text-light" to="/MinSide">Min Side</NavLink>
+                            </NavItem>
+                            {/* Her kan du inkludere din innloggingsportal */}
+                        </ul>
                     </Collapse>
                 </Navbar>
             </header>

@@ -43,6 +43,16 @@ public class ItemDbContext : IdentityDbContext
             .HasForeignKey(o => o.ItemId) // Define the foreign key for the relationship
             .OnDelete(DeleteBehavior.SetNull); // Specify the deletion behavior
 
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Items)
+            .WithOne(i => i.User)
+            .HasForeignKey(i => i.UserId);
+
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Orders)
+            .WithOne(o => o.User)
+            .HasForeignKey(o => o.UserId);
+
         // Optionally, add more configurations for ItemAvailability here if needed
     }
 }

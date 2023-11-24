@@ -17,7 +17,7 @@ namespace CabinFeverReact.Models
         public string? UserId { get; set; }
 
         [JsonPropertyName("User")]
-        public virtual IdentityUser? User { get; set; }
+        public virtual User? User { get; set; }
 
         [JsonPropertyName("TotalPrice")]
         public decimal TotalPrice { get; set; }

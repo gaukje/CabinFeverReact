@@ -10,6 +10,7 @@ import ItemDetails from './components/Items/ItemDetails';
 import ItemCreate from './components/Items/ItemCreate';
 import ItemEdit from './components/Items/ItemEdit';
 import ItemDelete from './components/Items/ItemDelete';
+import MinSide from './components/pages/MinSide';
 import './custom.css';
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
                 <Route path="/Items/Create" element={<ItemCreate />} />
                 <Route path="/Items/Edit/:id" element={<ItemEdit />} />
                 <Route path="/Items/Delete/:id" element={<ItemDelete />} />
+                <Route path="/MinSide" element={<MinSide />} />
             </Routes>
         </div>
     );

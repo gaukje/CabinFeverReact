@@ -4,6 +4,7 @@ using CabinFeverReact.Models;
 using Serilog;
 using Serilog.Events;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -68,6 +69,7 @@ app.UseAuthentication();
 
 app.UseCors("CorsPolicy");
 
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
