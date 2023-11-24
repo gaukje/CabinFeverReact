@@ -6,10 +6,12 @@ const ItemCreate = () => {
     const [item, setItem] = useState({
         Name: '',
         Location: '',
-        PricePerNight: 0,
+        PricePerNight: '',
         Capacity: 1, // Start with the minimum number of guests
         Description: '',
-        IsAvailable: true,
+        CheckIn: '',
+        CheckOut: '',
+        Guests: 1,
     });
     const navigate = useNavigate();
 
@@ -117,15 +119,35 @@ const ItemCreate = () => {
                     />
                 </div>
                 <div className="form-group mb-2">
-                    <label>Capacity</label>
+                    <label>Check-In</label>
                     <input
-                        type="number"
-                        name="Capacity"
-                        value={item.Capacity}
+                        type="date"
+                        name="CheckIn"
+                        value={item.CheckIn}
                         onChange={handleInputChange}
                         className="form-control"
-                        required
-                        min="1"
+                    />
+                </div>
+                <div className="form-group mb-2">
+                    <label>Checkout</label>
+                    <input
+                        type="date"
+                        name="CheckOut"
+                        value={item.CheckOut}
+                        onChange={handleInputChange}
+                        className="form-control"
+                    />
+                </div>
+                <div className="form-group mb-2">
+                    <label>Guests</label>
+                    <input
+                        type="number"
+                        name="Guests"
+                        value={item.Guests}
+                        onChange={handleInputChange}
+                        className="form-control"
+                        min="1" // Minimum value
+                        max="10" // Set a maximum value if needed
                     />
                 </div>
 
