@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CabinFeverReact.Models;
 using Microsoft.EntityFrameworkCore;
-//using CabinFeverReact.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using CabinFeverReact.DAL;
 using Microsoft.AspNetCore.Authorization; // Import the necessary namespace for authorization
