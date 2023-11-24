@@ -65,13 +65,14 @@ const getItems = async () => {
 
 const createItem = async (newItem) => {
     try {
-        const response = await axios.post(`${baseUrl}/create`, newItem);
+        const response = await axios.post(`${baseUrl}/Create`, newItem);
         return response.data;
     } catch (error) {
-        // Handle error
-        console.error(error);
+        console.error('Error creating item:', error);
+        throw error;
     }
 };
+
 
 const getItemById = async (itemId) => {
     try {

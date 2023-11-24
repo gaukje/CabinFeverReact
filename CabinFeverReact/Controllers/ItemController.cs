@@ -38,22 +38,27 @@ public class ItemController : Controller
         return Ok(item);
     }
 
-    /*
     // POST: api/Item/Create
     [HttpPost("Create")]
-    public async Task<IActionResult> Create([FromBody] Item item)
+    public async Task<IActionResult> Create([FromForm] Item item)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        await _itemRepository.CreateItem(item);
-        return CreatedAtAction(nameof(GetItemById), new { id = item.Id }, item);
-    }
-    */
+        bool created = await _itemRepository.Create(item);
+        if (!created)
+        {
+            _logger.LogError("Creation of item failed.");
+            return StatusCode(500, "A problem happened while handling your request.");
+        }
 
-    /*
+        return CreatedAtAction(nameof(GetItemById), new { id = item.ItemId }, item);
+    }
+
+
+    /* --- UPDATE ---
     // PUT: api/Item/Update/"id"
     // Id til item skal stå istedenfor "id"
     [HttpPut("Update/{id}")]

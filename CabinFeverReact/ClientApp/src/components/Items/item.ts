@@ -9,7 +9,7 @@ export interface Item {
     //fylke?: string;
     location: string;
     imageUrl: string;
-    //isAvailable?: boolean;
+    isAvailable?: boolean;
     //userId?: string;
     //user?: {
         // Assuming IdentityUser has an id and other properties you want to use
