@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CabinFeverReact.Migrations
 {
     [DbContext(typeof(ItemDbContext))]
-    [Migration("20231122205438_i")]
-    partial class i
+    [Migration("20231124082353_InitialCommit")]
+    partial class InitialCommit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
