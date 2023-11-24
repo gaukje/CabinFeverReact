@@ -141,7 +141,7 @@ public class DBInit
             context.AddRange(itemAvailabilities);
             context.SaveChanges();
         }
-        /*
+
         // Add orders if they don't exist.
         if (!context.Orders.Any())
         {
@@ -196,8 +196,8 @@ public class DBInit
             };
             context.AddRange(orders);
             context.SaveChanges();
-        
+
         }
-        */
+
     }
 }

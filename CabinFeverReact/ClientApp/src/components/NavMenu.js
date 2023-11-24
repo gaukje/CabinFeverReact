@@ -28,7 +28,7 @@ class NavMenu extends Component {
                 <Navbar className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark mb-3 fixed-top" container light>
                     <NavbarBrand tag={Link} className="text-light" to="/">CabinFeverReact</NavbarBrand>
                     <NavbarToggler onClick={this.toggleNavbar} className="mr-2 border-dark">
-                        <i class="bi bi-list text-light fs-1"></i>
+                        <i className="bi bi-list text-light fs-1"></i>
                     </NavbarToggler>
                     <Collapse className="navbar-collapse collapse d-sm-inline-flex justify-content-between" isOpen={!this.state.collapsed} navbar>
                         <ul className="navbar-nav flex-grow-1">
