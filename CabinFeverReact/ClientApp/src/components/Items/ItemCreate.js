@@ -6,12 +6,10 @@ const ItemCreate = () => {
     const [item, setItem] = useState({
         Name: '',
         Location: '',
-        PricePerNight: '',
+        PricePerNight: 0,
         Capacity: 1, // Start with the minimum number of guests
         Description: '',
-        CheckIn: '',
-        CheckOut: '',
-        Guests: 1,
+        IsAvailable: true,
     });
     const navigate = useNavigate();
 
@@ -119,35 +117,15 @@ const ItemCreate = () => {
                     />
                 </div>
                 <div className="form-group mb-2">
-                    <label>Check-In</label>
-                    <input
-                        type="date"
-                        name="CheckIn"
-                        value={item.CheckIn}
-                        onChange={handleInputChange}
-                        className="form-control"
-                    />
-                </div>
-                <div className="form-group mb-2">
-                    <label>Checkout</label>
-                    <input
-                        type="date"
-                        name="CheckOut"
-                        value={item.CheckOut}
-                        onChange={handleInputChange}
-                        className="form-control"
-                    />
-                </div>
-                <div className="form-group mb-2">
-                    <label>Guests</label>
+                    <label>Capacity</label>
                     <input
                         type="number"
-                        name="Guests"
-                        value={item.Guests}
+                        name="Capacity"
+                        value={item.Capacity}
                         onChange={handleInputChange}
                         className="form-control"
-                        min="1" // Minimum value
-                        max="10" // Set a maximum value if needed
+                        required
+                        min="1"
                     />
                 </div>
 
