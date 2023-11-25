@@ -8,8 +8,8 @@ const Login = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('api/user/login', { email, password });
-            localStorage.setItem('token', response.data.token); // Assuming the token is returned
+            const response = await axios.post('api/login', { email, password });
+            localStorage.setItem('token', response.data.token); // Store the JWT token
             // Redirect to home page or dashboard
         } catch (error) {
             console.error('Login failed:', error);
