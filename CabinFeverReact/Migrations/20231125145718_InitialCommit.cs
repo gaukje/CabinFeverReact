@@ -30,8 +30,6 @@ namespace CabinFeverReact.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Discriminator = table.Column<string>(type: "TEXT", nullable: false),
-                    FullName = table.Column<string>(type: "TEXT", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -50,6 +48,19 @@ namespace CabinFeverReact.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TestUsers",
+                columns: table => new
+                {
+                    TestUserId = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestUsers", x => x.TestUserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -174,16 +185,17 @@ namespace CabinFeverReact.Migrations
                     Location = table.Column<string>(type: "TEXT", nullable: false),
                     ImageUrl = table.Column<string>(type: "TEXT", nullable: false),
                     IsAvailable = table.Column<bool>(type: "INTEGER", nullable: true),
-                    UserId = table.Column<string>(type: "TEXT", nullable: true)
+                    TestUserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Items", x => x.ItemId);
                     table.ForeignKey(
-                        name: "FK_Items_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        name: "FK_Items_TestUsers_TestUserId",
+                        column: x => x.TestUserId,
+                        principalTable: "TestUsers",
+                        principalColumn: "TestUserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -214,7 +226,7 @@ namespace CabinFeverReact.Migrations
                     OrderId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: true),
+                    TestUserId = table.Column<string>(type: "TEXT", nullable: true),
                     TotalPrice = table.Column<decimal>(type: "TEXT", nullable: false),
                     ItemId = table.Column<int>(type: "INTEGER", nullable: false),
                     FromDate = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -225,16 +237,16 @@ namespace CabinFeverReact.Migrations
                 {
                     table.PrimaryKey("PK_Orders", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Orders_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Orders_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
                         principalColumn: "ItemId",
                         onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Orders_TestUsers_TestUserId",
+                        column: x => x.TestUserId,
+                        principalTable: "TestUsers",
+                        principalColumn: "TestUserId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -280,9 +292,9 @@ namespace CabinFeverReact.Migrations
                 column: "ItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Items_UserId",
+                name: "IX_Items_TestUserId",
                 table: "Items",
-                column: "UserId");
+                column: "TestUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ItemId",
@@ -290,9 +302,9 @@ namespace CabinFeverReact.Migrations
                 column: "ItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_UserId",
+                name: "IX_Orders_TestUserId",
                 table: "Orders",
-                column: "UserId");
+                column: "TestUserId");
         }
 
         /// <inheritdoc />
@@ -323,10 +335,13 @@ namespace CabinFeverReact.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "Items");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "TestUsers");
         }
     }
 }

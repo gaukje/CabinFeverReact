@@ -148,7 +148,7 @@ public class ItemRepository : IItemRepository
     {
         // Query the Orders DbSet to retrieve orders for a specific user
         var orders = await _db.Orders
-            .Where(o => o.UserId == userId)
+            .Where(o => o.TestUserId == userId)
             .ToListAsync();
 
         return orders;

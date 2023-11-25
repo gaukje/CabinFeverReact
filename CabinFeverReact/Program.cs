@@ -59,7 +59,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    DBInit.Seed(app);
+    DBInit.Seed(app, app.Services.GetRequiredService<ILogger<DBInit>>());
 }
 
 app.UseStaticFiles();

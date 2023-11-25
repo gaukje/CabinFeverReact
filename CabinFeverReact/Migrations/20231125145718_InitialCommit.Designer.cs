@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CabinFeverReact.Migrations
 {
     [DbContext(typeof(ItemDbContext))]
-    [Migration("20231124145626_InitialCommit")]
+    [Migration("20231125145718_InitialCommit")]
     partial class InitialCommit
     {
         /// <inheritdoc />
@@ -72,17 +72,18 @@ namespace CabinFeverReact.Migrations
                         .HasColumnType("TEXT")
                         .HasAnnotation("Relational:JsonPropertyName", "Price");
 
+                    b.Property<string>("TestUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "TestUserId");
+
                     b.Property<DateTime>("ToDate")
                         .HasColumnType("TEXT")
                         .HasAnnotation("Relational:JsonPropertyName", "ToDate");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "UserId");
-
                     b.HasKey("ItemId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("TestUserId");
 
                     b.ToTable("Items");
 
@@ -136,6 +137,10 @@ namespace CabinFeverReact.Migrations
                         .HasColumnType("TEXT")
                         .HasAnnotation("Relational:JsonPropertyName", "OrderDate");
 
+                    b.Property<string>("TestUserId")
+                        .HasColumnType("TEXT")
+                        .HasAnnotation("Relational:JsonPropertyName", "TestUserId");
+
                     b.Property<DateTime>("ToDate")
                         .HasColumnType("TEXT")
                         .HasAnnotation("Relational:JsonPropertyName", "ToDate");
@@ -144,19 +149,35 @@ namespace CabinFeverReact.Migrations
                         .HasColumnType("TEXT")
                         .HasAnnotation("Relational:JsonPropertyName", "TotalPrice");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "UserId");
-
                     b.HasKey("OrderId");
 
                     b.HasIndex("ItemId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("TestUserId");
 
                     b.ToTable("Orders");
 
                     b.HasAnnotation("Relational:JsonPropertyName", "Orders");
+                });
+
+            modelBuilder.Entity("CabinFeverReact.Models.TestUser", b =>
+                {
+                    b.Property<string>("TestUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("TestUserId");
+
+                    b.ToTable("TestUsers");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "TestUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -220,10 +241,6 @@ namespace CabinFeverReact.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -274,10 +291,6 @@ namespace CabinFeverReact.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -363,26 +376,15 @@ namespace CabinFeverReact.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CabinFeverReact.Models.User", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasDiscriminator().HasValue("User");
-
-                    b.HasAnnotation("Relational:JsonPropertyName", "User");
-                });
-
             modelBuilder.Entity("CabinFeverReact.Models.Item", b =>
                 {
-                    b.HasOne("CabinFeverReact.Models.User", "User")
+                    b.HasOne("CabinFeverReact.Models.TestUser", "TestUser")
                         .WithMany("Items")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("TestUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("TestUser");
                 });
 
             modelBuilder.Entity("CabinFeverReact.Models.ItemAvailability", b =>
@@ -404,13 +406,13 @@ namespace CabinFeverReact.Migrations
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
-                    b.HasOne("CabinFeverReact.Models.User", "User")
+                    b.HasOne("CabinFeverReact.Models.TestUser", "TestUser")
                         .WithMany("Orders")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("TestUserId");
 
                     b.Navigation("Item");
 
-                    b.Navigation("User");
+                    b.Navigation("TestUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -471,7 +473,7 @@ namespace CabinFeverReact.Migrations
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("CabinFeverReact.Models.User", b =>
+            modelBuilder.Entity("CabinFeverReact.Models.TestUser", b =>
                 {
                     b.Navigation("Items");
 

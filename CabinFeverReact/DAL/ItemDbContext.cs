@@ -23,6 +23,8 @@ public class ItemDbContext : IdentityDbContext
     // DbSet for ItemAvailability, representing a table for storing ItemAvailability objects
     public DbSet<ItemAvailability> ItemAvailability { get; set; } // Add this line
 
+    public DbSet<TestUser> TestUsers { get; set; }
+
     // Override the OnConfiguring method to specify options for the context
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -43,15 +45,15 @@ public class ItemDbContext : IdentityDbContext
             .HasForeignKey(o => o.ItemId) // Define the foreign key for the relationship
             .OnDelete(DeleteBehavior.SetNull); // Specify the deletion behavior
 
-        modelBuilder.Entity<User>()
+        modelBuilder.Entity<TestUser>()
             .HasMany(u => u.Items)
-            .WithOne(i => i.User)
-            .HasForeignKey(i => i.UserId);
+            .WithOne(i => i.TestUser)
+            .HasForeignKey(i => i.TestUserId);
 
-        modelBuilder.Entity<User>()
+        modelBuilder.Entity<TestUser>()
             .HasMany(u => u.Orders)
-            .WithOne(o => o.User)
-            .HasForeignKey(o => o.UserId);
+            .WithOne(o => o.TestUser)
+            .HasForeignKey(o => o.TestUserId);
 
         // Optionally, add more configurations for ItemAvailability here if needed
     }

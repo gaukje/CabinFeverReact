@@ -1,6 +1,8 @@
-﻿using CabinFeverReact.DAL;
+﻿using Microsoft.AspNetCore.Mvc;
 using CabinFeverReact.Models;
-using Microsoft.AspNetCore.Mvc;
+using CabinFeverReact.DAL;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -8,12 +10,13 @@ public class ItemController : Controller
 {
     private readonly IItemRepository _itemRepository;
     private readonly ILogger<ItemController> _logger;
+
     public ItemController(IItemRepository itemRepository, ILogger<ItemController> logger)
     {
         _itemRepository = itemRepository;
         _logger = logger;
     }
-    
+
     [HttpGet("GetAll")]
     public async Task<IActionResult> GetAll()
     {
@@ -40,7 +43,7 @@ public class ItemController : Controller
 
     // POST: api/Item/Create
     [HttpPost("Create")]
-    public async Task<IActionResult> Create([FromForm] Item item)
+    public async Task<IActionResult> Create([FromBody] Item item)
     {
         if (!ModelState.IsValid)
         {

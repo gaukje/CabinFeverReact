@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CabinFeverReact.Models;
 
@@ -18,7 +19,7 @@ public class Item
 
     [JsonPropertyName("Price")]
     [Required]
-    [Range(0.01, double.MaxValue, ErrorMessage = "The Price must be greater than 0.")]
+    //[Range(0.01, double.MaxValue, ErrorMessage = "The Price must be greater than 0.")]
     public decimal PricePerNight { get; set; }
 
     [JsonPropertyName("FromDate")]
@@ -59,11 +60,12 @@ public class Item
     [JsonPropertyName("IsAvailable")]
     public bool? IsAvailable { get; set; }
 
-    [JsonPropertyName("UserId")]
-    public string? UserId { get; set; }
+    [JsonPropertyName("TestUserId")]
+    public string TestUserId { get; set; }
 
-    [JsonPropertyName("User")]
-    public virtual User? User { get; set; }
+    [JsonPropertyName("TestUser")]
+    [ForeignKey("TestUserId")]
+    public virtual TestUser? TestUser { get; set; }
 
     [JsonPropertyName("Orders")]
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();

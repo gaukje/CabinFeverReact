@@ -28,6 +28,7 @@ const getItems = async () => {
 const getItems = async () => {
     try {
         const response = await axios.get(`${baseUrl}/GetAll`);
+        console.log('Response data:', response.data);
         return response.data;
          /*Hard-coded list of items
         const items = [
@@ -63,15 +64,18 @@ const getItems = async () => {
 
 
 
-const createItem = async (newItem) => {
+const createItem = async (itemData) => {
     try {
-        const response = await axios.post(`${baseUrl}/Create`, newItem);
+        console.log('Data sendt til server for oppretting av item:', itemData);
+        const response = await axios.post(`${baseUrl}/Create`, itemData);
+        console.log('Response:', response);
         return response.data;
     } catch (error) {
         console.error('Error creating item:', error);
         throw error;
     }
 };
+
 
 
 const getItemById = async (itemId) => {

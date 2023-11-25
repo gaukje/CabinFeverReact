@@ -13,11 +13,11 @@ namespace CabinFeverReact.Models
         [JsonPropertyName("OrderDate")]
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
-        [JsonPropertyName("UserId")]
-        public string? UserId { get; set; }
+        [JsonPropertyName("TestUserId")]
+        public string? TestUserId { get; set; }
 
-        [JsonPropertyName("User")]
-        public virtual User? User { get; set; }
+        [JsonPropertyName("TestUser")]
+        public virtual TestUser? TestUser { get; set; }
 
         [JsonPropertyName("TotalPrice")]
         public decimal TotalPrice { get; set; }

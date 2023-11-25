@@ -34,7 +34,7 @@ public class OrderController : Controller
                 {
                     order.OrderId,
                     order.OrderDate,
-                    order.UserId,
+                    order.TestUserId,
                     // User = order.User, // Du kan velge å sende spesifikke brukerdata hvis nødvendig
                     order.TotalPrice,
                     order.ItemId,

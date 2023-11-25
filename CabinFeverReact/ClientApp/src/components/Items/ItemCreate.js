@@ -1,139 +1,75 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { ItemService } from './../services/ItemService';
 import { useNavigate } from 'react-router-dom';
 
 const ItemCreate = () => {
-    const [item, setItem] = useState({
-        Name: '',
-        Location: '',
-        PricePerNight: 0,
-        Capacity: 1, // Start with the minimum number of guests
-        Description: '',
-        IsAvailable: true,
-    });
-    const navigate = useNavigate();
-
-    const [selectedFile, setSelectedFile] = useState(null);
-
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setItem({ ...item, [name]: value });
+    // Hardkodede verdier for å teste opprettelse av et nytt item
+    const itemToCreate = {
+        ItemId: 7,
+        Name: 'Testhytte',
+        PricePerNight: 1000,
+        FromDate: '2023-11-30', // Bruk et gyldig datoformat, f.eks. 'ÅÅÅÅ-MM-DD'
+        ToDate: '2023-12-05',   // Samme her, pass på at det er etter FromDate
+        Capacity: 4,
+        Description: 'Dette er en testbeskrivelse.',
+        Location: 'Oslo',
+        ImageUrl: '/images/hytte_stock_5.jpg',
+        TestUserId: '1', // Bruk en gyldig bruker-ID
+        IsAvailable: true // Dette feltet er valgfritt, men kan inkluderes
     };
 
-    const handleFileChange = (event) => {
-        setSelectedFile(event.target.files[0]);
-    };
+    useEffect(() => {
+        const createItem = async () => {
+            try {
+                const response = await ItemService.createItem(itemToCreate);
+                console.log('Item opprettet:', response);
+            } catch (error) {
+                console.error('Feil under oppretting av item:', error);
+            }
+        };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        console.log('Form submitted, preparing FormData.');
+        createItem();
+    }, []);
 
-        const formData = new FormData();
-        Object.keys(item).forEach(key => formData.append(key, item[key]));
+    return <div>Oppretter test-item...</div>;
+};
 
-        if (selectedFile) {
-            console.log('Appending file to FormData.');
-            formData.append('file', selectedFile);
-        }
+const ItemList = () => {
+    const [items, setItems] = useState([]);
 
-        try {
-            console.log('Sending data to the server...');
-            const response = await ItemService.createItem(formData);
-            console.log('Response received:', response);
-            navigate('/Items/Rentals'); // Redirect to the list of items
-        } catch (error) {
-            console.error('Error creating item:', error);
-            // Handle the error state appropriately in the UI
-        }
-    };
-
+    useEffect(() => {
+        ItemService.getItems()
+            .then(data => {
+                console.log('Fetched items:', data); // Logg hele responsobjektet
+                const itemsArray = data.$values || []; // Fallback til et tomt array hvis $values ikke er definert
+                setItems(itemsArray);
+            })
+            .catch(error => {
+                console.error('Error fetching items:', error);
+            });
+    }, []);
 
     return (
-        <div className="container my-4">
-            <h2 className="mb-3">Create New Item</h2>
-            <form onSubmit={handleSubmit} encType="multipart/form-data">
-                <div className="form-group mb-2">
-                    <label>Name</label><span className="text-danger">*</span>
-                    <input
-                        name="Name"
-                        value={item.Name}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        required
-                    />
-                </div>
-                <div className="form-group mb-2">
-                    <label>Location</label><span className="text-danger">*</span>
-                    <select
-                        name="Location"
-                        value={item.Location}
-                        onChange={handleInputChange}
-                        className="form-select"
-                        required
-                    >
-                        <option value="">Choose a location</option>
-                        <option value="Agder">Agder</option>
-                        <option value="Innlandet">Innlandet</option>
-                        <option value="Møre og Romsdal">Møre og Romsdal</option>
-                        <option value="Nordland">Nordland</option>
-                        <option value="Oslo">Oslo</option>
-                        <option value="Rogaland">Rogaland</option>
-                        <option value="Troms og Finnmark">Troms og Finnmark</option>
-                        <option value="Trøndelag">Trøndelag</option>
-                        <option value="Vestfold og Telemark">Vestfold og Telemark</option>
-                        <option value="Vestlandet">Vestlandet</option>
-                        <option value="Viken">Viken</option>
-                    </select>
-                </div>
-                <div className="form-group mb-2">
-                    <label>Price per night</label><span className="text-danger">*</span>
-                    <input
-                        name="PricePerNight"
-                        type="number"
-                        value={item.PricePerNight}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        required
-                    />
-                </div>
-                <div className="form-group mb-4">
-                    <label>Description</label><span className="text-danger">*</span>
-                    <textarea
-                        name="Description"
-                        value={item.Description}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        rows="5"
-                        required
-                    ></textarea>
-                </div>
-                <div className="form-group mb-4">
-                    <label>Select an image to upload</label>
-                    <input
-                        type="file"
-                        name="file"
-                        onChange={handleFileChange}
-                        className="form-control"
-                    />
-                </div>
-                <div className="form-group mb-2">
-                    <label>Capacity</label>
-                    <input
-                        type="number"
-                        name="Capacity"
-                        value={item.Capacity}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        required
-                        min="1"
-                    />
-                </div>
-
-                <button type="submit" className="btn btn-primary">Create</button>
-                <button type="button" onClick={() => navigate(-1)} className="btn btn-secondary">Cancel</button>
-            </form>
+        <div>
+            <h1>Items</h1>
+            <ul>
+                {items.map(item => (
+                    <li key={item.ItemId}>{item.Name}</li> // Anta at 'Name' og 'ItemId' er feltene i item-objektet
+                ))}
+            </ul>
         </div>
     );
 };
 
-export default ItemCreate;
+
+
+const ItemManagementPage = () => {
+    return (
+        <div>
+            <ItemCreate />
+            <ItemList />
+        </div>
+    );
+};
+
+export default ItemManagementPage;
