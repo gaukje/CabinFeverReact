@@ -21,8 +21,11 @@ const ItemCreate = () => {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setItem({ ...item, [name]: value });
+        const newValue = event.target.type === 'number' ? Number(value) : value;
+        setItem({ ...item, [name]: newValue });
     };
+
+
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
@@ -150,11 +153,11 @@ const ItemCreate = () => {
                     />
                 </div>
                 <div className="form-group mb-2">
-                    <label>Guests</label>
+                    <label>Capacity</label>
                     <input
                         type="number"
-                        name="Guests"
-                        value={item.Guests}
+                        name="Capacity"
+                        value={item.Capacity}
                         onChange={handleInputChange}
                         className="form-control"
                         min="1" // Minimum value
