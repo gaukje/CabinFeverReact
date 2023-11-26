@@ -20,6 +20,8 @@ public class ItemDbContext : IdentityDbContext
     // DbSet for Orders, representing a table for storing Order objects
     public DbSet<Order> Orders { get; set; }
 
+    public DbSet<User> User { get; set; }
+
     // DbSet for ItemAvailability, representing a table for storing ItemAvailability objects
     public DbSet<ItemAvailability> ItemAvailability { get; set; } // Add this line
 
