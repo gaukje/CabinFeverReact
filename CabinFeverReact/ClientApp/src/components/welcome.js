@@ -11,14 +11,25 @@ const Welcome = () => {
                     <div className="line"></div>
                 </div>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Velit egestas dui id ornare arcu. Id diam maecenas ultricies mi eget mauris pharetra et.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce posuere, tortor
+                    vel hendrerit cursus, justo lectus facilisis nisi, sed interdum quam nisi sed
+                    justo. Fusce interdum odio ut velit venenatis, eu vestibulum urna faucibus. Sed
+                    vehicula, lectus quis dictum efficitur, odio nisi scelerisque quam, sed dignissim
+                    ex leo nec urna. Vivamus at libero eu justo congue fringilla ac eu massa.
                 </p>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                    dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    Praesent cursus lacus vel leo auctor, id tristique justo consequat. Nulla
+                    facilisi. Nullam placerat euismod lectus, a dictum massa pharetra eget. Sed
+                    vestibulum, arcu vel dictum venenatis, odio justo malesuada metus, nec iaculis
+                    lectus ligula eu ante. Curabitur hendrerit, risus non auctor mattis, justo ligula
+                    cursus nisi, id tristique justo augue vel nisi.
+                </p>
+                <p>
+                    Duis at eleifend arcu, nec varius dolor. Nam in libero eu arcu vestibulum
+                    condimentum. Sed malesuada, ante at scelerisque posuere, quam odio placerat
+                    ex, a lacinia urna felis eu odio. Sed viverra tortor in tellus mattis, at
+                    sodales arcu laoreet. Nunc dapibus tellus eu augue cursus, non fermentum justo
+                    viverra. In hac habitasse platea dictumst. Sed id interdum est.
                 </p>
             </div>
         </div>

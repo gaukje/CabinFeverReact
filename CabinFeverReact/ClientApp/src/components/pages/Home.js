@@ -1,37 +1,33 @@
 // Home.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Banner from '../banner';
 import Welcome from '../welcome';
 import Carousel from '../carousel';
+import { ItemService } from '../services/ItemService';
 
 
 // Home.js
 const Home = () => {
-    // Mock data for testing
-    const itemsList = [
-        {
-            title: "Oslomarka",
-            imageUrl: "/images/hytte_stock_1.jpg", // Replace with actual image path
-            description: "The most outstanding cabin in the heart of Norway."
-        },
-        {
-            title: "Haugesund",
-            imageUrl: "/images/hytte_stock_2.jpg", // Replace with actual image path
-            description: "Nothing else like the coziest cabin in Haugesund perfect for a romantic get away."
-        },
-        {
-            title: "Geilo",
-            imageUrl: "/images/hytte_stock_3.jpg", // Replace with actual image path
-            description: "Have an unforgettable night with the family in this memorable viking cabin."
-        },
-        // Your item data here
-    ];
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        ItemService.getItems()
+            .then(fetchedItems => {
+                // Randomise the fetched list to simulate social media algorithm
+                const itemsArray = (fetchedItems.$values || []).sort(() => Math.random() - 0.5);
+                console.log('Detailed properties:', JSON.stringify(itemsArray[0], null, 2)); // Burde vise de faktiske ""properties
+                setItems(itemsArray);
+            })
+            .catch(error => {
+                console.error('Failed to fetch items:', error);
+            });
+    }, []);
 
     return (
         <div>
             <Banner />
             <Welcome />
-            <Carousel itemsList={itemsList} /> {/* Pass the itemsList prop */}
+            <Carousel itemsList={items} /> {/* Pass the itemsList prop */}
             {/* Add more components as needed */}
         </div>
     );

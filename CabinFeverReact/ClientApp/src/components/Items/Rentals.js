@@ -63,6 +63,7 @@ const Rentals = () => {
                 <div className="row">
                     <div className="col-4 d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle mt-5">
                         <input
+                            className="w-100"
                             type="text"
                             value={searchTerm}
                             onChange={handleSearchChange}

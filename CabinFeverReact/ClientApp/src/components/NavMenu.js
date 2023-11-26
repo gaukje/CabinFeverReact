@@ -26,7 +26,7 @@ class NavMenu extends Component {
         return (
             <header>
                 <Navbar className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark mb-3 fixed-top" container light>
-                    <NavbarBrand tag={Link} className="text-light" to="/">CabinFeverReact</NavbarBrand>
+                    <NavbarBrand tag={Link} className="text-light py-0" to="/"><img src="images/logo.png" width="40px"></img></NavbarBrand>
                     <NavbarToggler onClick={this.toggleNavbar} className="mr-2 border-dark">
                         <i className="bi bi-list text-light fs-1"></i>
                     </NavbarToggler>
