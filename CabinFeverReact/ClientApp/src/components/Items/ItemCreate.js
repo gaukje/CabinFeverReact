@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const ItemCreate = () => {
     const [item, setItem] = useState({
         Name: '',
-        PricePerNight: 0, // This should be a number if the server expects a decimal
+        PricePerNight: '', // This should be a number if the server expects a decimal
         FromDate: '', // You need to add a way for users to input these dates
         ToDate: '',
         Capacity: 1,
@@ -108,6 +108,7 @@ const ItemCreate = () => {
                         onChange={handleInputChange}
                         className="form-control"
                         required
+                        placeholder="0"
                     />
                 </div>
                 <div className="form-group mb-4">
