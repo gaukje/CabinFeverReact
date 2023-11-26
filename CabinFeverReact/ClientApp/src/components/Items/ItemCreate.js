@@ -5,13 +5,15 @@ import { useNavigate } from 'react-router-dom';
 const ItemCreate = () => {
     const [item, setItem] = useState({
         Name: '',
-        Location: '',
-        PricePerNight: '',
-        Capacity: 1, // Start with the minimum number of guests
+        PricePerNight: 0, // This should be a number if the server expects a decimal
+        FromDate: '', // You need to add a way for users to input these dates
+        ToDate: '',
+        Capacity: 1,
         Description: '',
-        CheckIn: '',
-        CheckOut: '',
-        Guests: 1,
+        Location: '',
+        ImageUrl: '/images/hytte_stock_5.jpg', // You need to handle file upload and possibly store the image URL
+        UserId: '', // You may need to obtain this from the user's session or context
+        IsAvailable: true, // Assuming you want new items to be available by default
     });
     const navigate = useNavigate();
 
@@ -126,23 +128,25 @@ const ItemCreate = () => {
                     />
                 </div>
                 <div className="form-group mb-2">
-                    <label>Check-In</label>
+                    <label>From Date</label><span className="text-danger">*</span>
                     <input
                         type="date"
-                        name="CheckIn"
-                        value={item.CheckIn}
+                        name="FromDate"
+                        value={item.FromDate}
                         onChange={handleInputChange}
                         className="form-control"
+                        required
                     />
                 </div>
                 <div className="form-group mb-2">
-                    <label>Checkout</label>
+                    <label>To Date</label><span className="text-danger">*</span>
                     <input
                         type="date"
-                        name="CheckOut"
-                        value={item.CheckOut}
+                        name="ToDate"
+                        value={item.ToDate}
                         onChange={handleInputChange}
                         className="form-control"
+                        required
                     />
                 </div>
                 <div className="form-group mb-2">
