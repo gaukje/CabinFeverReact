@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { ItemService } from './../services/ItemService';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,9 +31,16 @@ const ItemCreate = () => {
         const formData = new FormData();
         Object.keys(item).forEach(key => formData.append(key, item[key]));
 
+        console.log('Current item state:', item);
+
         if (selectedFile) {
             console.log('Appending file to FormData.');
             formData.append('file', selectedFile);
+        }
+
+        // Logging FormData entries for debugging
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
         }
 
         try {
