@@ -2,6 +2,16 @@ import React, { createContext, useState, useContext } from 'react';
 
 const AuthContext = createContext();
 
+const login = (token) => {
+    localStorage.setItem('token', token);
+    setCurrentUser({ ...currentUser, token }); // Update the current user with the token
+};
+
+const logout = () => {
+    localStorage.removeItem('token');
+    setCurrentUser(null);
+};
+
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {

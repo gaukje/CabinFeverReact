@@ -12,6 +12,8 @@ import ItemEdit from './components/Items/ItemEdit';
 import ItemDelete from './components/Items/ItemDelete';
 import MinSide from './components/pages/MinSide';
 import './custom.css';
+import Register from './components/Authentication/Register';
+import Login from './components/Authentication/Login';
 
 const App = () => {
     return (
@@ -27,6 +29,8 @@ const App = () => {
                 <Route path="/Items/Edit/:id" element={<ItemEdit />} />
                 <Route path="/Items/Delete/:id" element={<ItemDelete />} />
                 <Route path="/MinSide" element={<MinSide />} />
+                <Route path="/Register" element={<Register />} />
+                <Route path="/Login" element={<Login />} />
             </Routes>
         </div>
     );

@@ -11,10 +11,10 @@ const Banner = () => {
             </div>
             <div className="container">
                 <div className="row">
-                    <div className="col-12 d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle">
+                    <div className="col-12 d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle pb-5 mb-5">
                         <div className="text-center">
-                            <h1 className="text-white">CabinFever</h1>
-                            <h3 className="text-white">Escape to the Wild: Your Cabin Getaway Awaits with CabinFever!</h3>
+                            <img className="pe-none user-select-none" src="images/logo.png" width="200px" unselectable="on" style={{ filter: 'drop-shadow(0px 0px 1px black)' }} />
+                            <h3 className="text-white pe-none user-select-none">Escape to the Wild: Your Cabin Getaway Awaits with CabinFever!</h3>
                             <div className="banner-link">
                                 <a href="items/Rentals">Reserve here</a>
                             </div>
