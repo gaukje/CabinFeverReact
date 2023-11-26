@@ -21,7 +21,7 @@ var connectionString = builder.Configuration.GetConnectionString("ItemDbContextC
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
-        builder => builder.WithOrigins("https://localhost:7248") // Your React app's URL
+        builder => builder.WithOrigins("https://localhost:44400") // Your React app's URL
                           .AllowAnyHeader()
                           .AllowAnyMethod());
 });
