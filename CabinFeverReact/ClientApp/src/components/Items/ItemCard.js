@@ -7,10 +7,9 @@ const ItemCard = ({ item }) => {
         return <div className="col">Item is undefined</div>;
     }
 
-    const formattedPrice = new Intl.NumberFormat('no-NO', {
-        style: 'currency',
-        currency: 'NOK',
-    }).format(item.pricePerNight);
+    function formatCurrency(value) {
+        return value.toLocaleString('nb-NO', { style: 'currency', currency: 'NOK' }).replace('kr', '').trim() + " kr";
+    }
 
     return (
         <div className="col">
@@ -30,7 +29,7 @@ const ItemCard = ({ item }) => {
                         </div>
                         <div>
                             <b className="text-end">
-                                {item.Price !== undefined ? item.Price.toFixed(2) : '0.00'} kr
+                                {formatCurrency(item.Price)}
                             </b>
                             <p className="text-end">per night</p>
                         </div>

@@ -17,25 +17,28 @@ const ItemDetailsOrder = ({ item }) => {
 
     const [showListReserve, setShowListReserve] = useState(false); // Initialize visibility state
 
+    function formatCurrency(value) {
+        return value.toLocaleString('nb-NO', { style: 'currency', currency: 'NOK' }).replace('kr', '').trim() + " kr";
+    }
+
     useEffect(() => {
         var price = item.Price;
 
         var pricePerNight = price * timeDifference;
-        setCostPerNight(pricePerNight.toFixed(2) + " kr");
+        setCostPerNight(formatCurrency(pricePerNight));
 
         var cleaningFee = 400 + (price * 0.05);
-        setCleaningFee(cleaningFee.toFixed(2) + " kr");
+        setCleaningFee(formatCurrency(cleaningFee));
 
         var serviceFee = pricePerNight * 0.10;
-        setServiceFee(serviceFee.toFixed(2) + " kr");
+        setServiceFee(formatCurrency(serviceFee));
 
         var taxes = pricePerNight * 0.025;
-        setTaxes(taxes.toFixed(2) + " kr");
+        setTaxes(formatCurrency(taxes));
 
         var totalPrice = pricePerNight + cleaningFee + serviceFee + taxes;
         setTotalPrice(totalPrice.toFixed(2));
-        setTotalPriceString(totalPrice.toFixed(2) + " kr");
-
+        setTotalPriceString(formatCurrency(totalPrice));
 
     }, [timeDifference]);
 
@@ -114,7 +117,7 @@ const ItemDetailsOrder = ({ item }) => {
         <div>
             <div className="bg-light border border-dark-subtle rounded-3 p-4">
                 <div className="row mb-2">
-                    <b>{item.Price.toFixed(2)} kr per night</b>
+                    <b>{formatCurrency(item.Price)} per night</b>
                 </div>
 
                 <form asp-controller="Order" asp-action="Create" method="post" id="reservationForm">
@@ -151,7 +154,7 @@ const ItemDetailsOrder = ({ item }) => {
                     <div className={`section mb-4 ${showListReserve ? "" : "d-none"}`} id="listReserve">
                         <div className="row">
                             <div className="col-7">
-                                <p>{item.Price.toFixed(2)} kr &#215; {timeDifference} {timeDifference > 1 ? 'nights' : 'night'}</p>
+                                <p>{formatCurrency(item.Price)} &#215; {timeDifference} {timeDifference > 1 ? 'nights' : 'night'}</p>
                             </div>
                             <div className="col-5 text-end">
                                 <p>{costPerNight}</p>
