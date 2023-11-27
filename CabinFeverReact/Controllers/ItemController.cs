@@ -44,6 +44,7 @@ public class ItemController : Controller
     {
         if (!ModelState.IsValid)
         {
+            _logger.LogError("Validation errors: {@ValidationErrors}", ModelState.Values.SelectMany(v => v.Errors));
             return BadRequest(ModelState);
         }
 
@@ -85,7 +86,6 @@ public class ItemController : Controller
     }
     */
 
-
     //DELETE: api/Item/Delete/"id"
     // Id til item skal stå istedenfor "id"
     [HttpDelete("Delete/{id}")]
@@ -101,5 +101,35 @@ public class ItemController : Controller
         return NoContent();
     }
 
-}
+    // POST: api/Item/Upload
+    [HttpPost("Upload")]
+    public async Task<IActionResult> Upload(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest("No file uploaded.");
+        }
 
+        var folderName = "images"; // Folder name without 'wwwroot'
+        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp/public", folderName);
+
+        if (!Directory.Exists(pathToSave))
+        {
+            Directory.CreateDirectory(pathToSave);
+        }
+
+        var fileName = Path.GetFileNameWithoutExtension(file.FileName);
+        var extension = Path.GetExtension(file.FileName);
+        var uniqueFileName = $"{fileName}_{DateTime.Now.Ticks}{extension}";
+        var filePath = Path.Combine(pathToSave, uniqueFileName);
+        var dbPath = Path.Combine(folderName, uniqueFileName); // This is the relative path
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        // Return the relative URL path to the uploaded file
+        return Ok(new { imageUrl = "/" + dbPath.Replace("\\", "/") });
+    }
+}
