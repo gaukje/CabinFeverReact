@@ -13,7 +13,7 @@ public class ItemController : Controller
         _itemRepository = itemRepository;
         _logger = logger;
     }
-    
+
     [HttpGet("GetAll")]
     public async Task<IActionResult> GetAll()
     {
@@ -26,15 +26,15 @@ public class ItemController : Controller
         //return Json(items);
         return Ok(items);
     }
-   
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetItemById(int id)
     {
         var item = await _itemRepository.GetItemById(id);
         if (item == null)
-            {
-                return NotFound();
-            }   
+        {
+            return NotFound();
+        }
         return Ok(item);
     }
 
@@ -86,8 +86,7 @@ public class ItemController : Controller
     }
     */
 
-    /*
-    // DELETE: api/Item/Delete/"id"
+    //DELETE: api/Item/Delete/"id"
     // Id til item skal stå istedenfor "id"
     [HttpDelete("Delete/{id}")]
     public async Task<IActionResult> Delete(int id)
@@ -98,10 +97,9 @@ public class ItemController : Controller
             return NotFound();
         }
 
-        await _itemRepository.DeleteItem(id);
+        await _itemRepository.Delete(id);
         return NoContent();
     }
-    */
 
     // POST: api/Item/Upload
     [HttpPost("Upload")]

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using CabinFeverReact.Models;
 
 namespace CabinFeverReact.DAL;
@@ -116,32 +117,36 @@ public class ItemRepository : IItemRepository
     {
         try
         {
-            // Find the item by its ID in the database
-            var item = await _db.Items.FindAsync(id);
+            var item = await _db.Items
+                .Include(i => i.Orders) // Assuming `Orders` is a navigation property on `Item`
+                .FirstOrDefaultAsync(i => i.ItemId == id);
+
             if (item == null)
             {
-                // Log an error if the item is not found and return false
-                _logger.LogError("[ItemRepository] item not found for the Id {Id:0000}", id);
+                _logger.LogError("[ItemRepository] Item not found for Id {Id}", id);
                 return false;
             }
 
-            // Remove the item from the Items DbSet
-            _db.Items.Remove(item);
+            // If there are related orders, you need to decide how to handle them.
+            // For example, you could remove them or set their reference to null depending on your requirements.
+            // Here's how you might remove them:
+            foreach (var order in item.Orders.ToList())
+            {
+                _db.Orders.Remove(order);
+            }
 
-            // Save the changes to the database
+            _db.Items.Remove(item);
             await _db.SaveChangesAsync();
 
-            // Return true to indicate the success of item deletion
             return true;
         }
         catch (Exception e)
         {
-            // Log any errors that occur during the operation and return false
-            _logger.LogError("[ItemRepository] item deletion failed for Id {Id:0000}" +
-                "error message; {e}", id, e.Message);
+            _logger.LogError("[ItemRepository] Error deleting item for Id {Id}: {Message}", id, e.Message);
             return false;
         }
     }
+
 
     // Method to retrieve orders for a specific user
     public async Task<IEnumerable<Order>> GetOrdersForUser(string userId)
