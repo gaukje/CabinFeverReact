@@ -23,7 +23,7 @@ const ItemDetails = () => {
     }
 
     return (
-        <div className="container my-4 pt-4">
+        <div className="container my-4 pt-4 pb-5">
             <div className="row mb-4">
                 <h2>{item.Name}</h2>
                 <p><strong>Location:</strong> {item.Location}</p>

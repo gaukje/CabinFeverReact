@@ -8,7 +8,8 @@ const About = () => {
             <div className="banner-secondary">
                 <div className="banner-secondary-container">
                     {/* Midlertidig */}
-                    <img src="https://images.pexels.com/photos/5365875/pexels-photo-5365875.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Banner" />
+                    <img src="https://images.pexels.com/photos/5365875/pexels-photo-5365875.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" id="banner-image" alt="Banner" />
+
                 </div>
                 <div className="row">
                     <div className="col-12 d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle">
@@ -21,7 +22,7 @@ const About = () => {
             </div>
 
             {/* About content */}
-            <div className="container my-5">
+            <div className="container my-5 w-75 pb-5">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel
                     justo non enim bibendum ullamcorper. Proin dapibus facilisis ante, eu
