@@ -60,6 +60,31 @@ public class OrderController : Controller
         }
     }
 
+    // Action method to retriece date ranges for a specific item.
+    [HttpGet("GetDateRange")]
+    public IActionResult GetDateRange(int itemId)
+    {
+        // Retrieving date ranges from the database based on the item ID
+        var dateRanges = _itemDbContext.Orders.Where(order => order.ItemId == itemId && order.ToDate >= DateTime.Today)
+            .Select(order => new { order.FromDate, order.ToDate })
+            .ToList();
+
+        // Creating a list of date strings from the retrieved date ranges
+        var dateList = new List<String>();
+
+        foreach (var dateRange in dateRanges)
+        {
+            for (var date = dateRange.FromDate; date <= dateRange.ToDate; date = date.AddDays(1))
+            {
+                var stringDate = date.ToString("yyyy-MM-dd");
+                dateList.Add(stringDate);
+            }
+        }
+
+        // Returning the dateList as JSON
+        return Ok(dateList);
+    }
+
     // Her kan du legge til flere API endepunkter for å opprette, oppdatere og slette ordre, osv.
 }
 

@@ -170,12 +170,15 @@ body {
 
 .ui-datepicker {
     font-family: 'Cabin', sans-serif;
+    z-index: 9999 !important;
 }
 
 .ui-datepicker-header {
     background-color: #007A6E;
     color: white;
 }
+
+
 
 .carousel-control-next-icon,
 .carousel-control-prev-icon {

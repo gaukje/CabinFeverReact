@@ -1,6 +1,9 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { ItemService } from './../services/ItemService';
 import { useParams } from 'react-router-dom';
+import axios from 'axios'; // Import axios
+import { OrderService } from '../services/OrderService';
+
 
 const ItemDetailsOrder = ({ item }) => {
     const [selectedFromDate, setSelectedFromDate] = useState('');
@@ -17,6 +20,50 @@ const ItemDetailsOrder = ({ item }) => {
     const [totalPriceString, setTotalPriceString] = useState('')
 
     const [showListReserve, setShowListReserve] = useState(false); // Initialize visibility state
+    const [listReservedDates, setListReservedDates] = useState([]); // Initialize an empty array for reserved dates
+    const [errorDateOverlap, setErrorDateOverlap] = useState('');
+
+    const [isLoading, setIsLoading] = useState(true);
+
+    const controllDate = (fromDate, toDate) => {
+        const fromDateObj = new Date(fromDate);
+        const toDateObj = new Date(toDate);
+
+        console.log("fromDateObj", fromDateObj);
+        console.log("toDateObj", toDateObj)
+
+        // Initialize a flag to track overlap status
+        let overlapFound = false;
+
+        // Looping through the date range from "From"-date to "To"-date
+        for (let currentDate = fromDateObj; currentDate <= toDateObj; currentDate.setDate(currentDate.getDate() + 1)) {
+            // Converts the current date to a string in 'yyyy-mm-dd' format (same format as "listReserveDate")
+            const currentDateStr = currentDate.toISOString().split('T')[0];
+
+            // Checks if the current date is in the list of reserved dates
+            if (listReservedDates.includes(currentDateStr)) {
+                // Sets the overlap flag to true if an overlap is found
+                overlapFound = true;
+                // Exits the loop since an overlap has been detected
+                break;
+            }
+        }
+
+        // You can now use the 'overlapFound' variable to handle the overlap status as needed
+        if (overlapFound) {
+            // Handle overlap case
+            console.log('Overlap found!');
+            setErrorDateOverlap('Please choose alternative dates, as the selected dates are overlapping with existing reservations.'); // Set the error message
+            setShowListReserve(false); // Show "listReserve" when changing "Checkout" date
+
+
+        } else {
+            // Handle non-overlap case
+            console.log('No overlap found.');
+            setErrorDateOverlap(''); // Clear the error message
+            setShowListReserve(true); // Hide "listReserve" when changing "Checkout" date
+        }
+    };
 
     const formatCurrency = (value) => {
         return value.toLocaleString('nb-NO', { style: 'currency', currency: 'NOK' }).replace('kr', '').trim() + " kr";
@@ -33,6 +80,7 @@ const ItemDetailsOrder = ({ item }) => {
             setSelectedGuests(Number(selectedGuests) - 1);
         }
     };
+
 
     useEffect(() => {
         var price = item.Price;
@@ -73,9 +121,6 @@ const ItemDetailsOrder = ({ item }) => {
 
 
     useEffect(() => {
-        const listReservedDates = []; // Replace this with your list of reserved dates
-        var array = ["2023-12-14", "2023-12-15", "2023-12-16", "2023-12-27", "2023-12-28", "2023-12-29"];
-
         // Initialize the attributes of the check-in calendar
         window.jQuery("#fromDate").datepicker({
             dateFormat: "yy-mm-dd",
@@ -83,15 +128,15 @@ const ItemDetailsOrder = ({ item }) => {
             minDate: new Date(),
             beforeShowDay: function (date) {
                 var dateString = window.jQuery.datepicker.formatDate('yy-mm-dd', date);
-                return [array.indexOf(dateString) === -1];
+                return [listReservedDates.indexOf(dateString) === -1];
             },
 
-            onSelect: function (date) {
-                console.log("Handle From Date called: ", date);
-                setSelectedFromDate(date); // Update the selectedFromDate state
+            onSelect: function (fromDate) {
+                console.log("Handle From Date called: ", fromDate);
+                setSelectedFromDate(fromDate); // Update the selectedFromDate state
 
                 // Calculate the validation for the checkout date by adding one day to the selected date from the check-in input
-                var fromDateAddOneDay = new Date(new Date(date).setDate(new Date(date).getDate() + 1));
+                var fromDateAddOneDay = new Date(new Date(fromDate).setDate(new Date(fromDate).getDate() + 1));
 
                 window.jQuery("#toDate").datepicker("destroy");
                 window.jQuery("#toDate").datepicker({
@@ -100,12 +145,14 @@ const ItemDetailsOrder = ({ item }) => {
                     minDate: fromDateAddOneDay,
                     beforeShowDay: function (date) {
                         var dateString = window.jQuery.datepicker.formatDate('yy-mm-dd', date);
-                        return [array.indexOf(dateString) == -1]
+                        return [listReservedDates.indexOf(dateString) == -1]
                     },
-                    onSelect: function (date) {
-                        console.log("Handle To Date called: ", date);
-                        setSelectedToDate(date); // Update the selectedFromDate state
-                        setShowListReserve(true); // Show "listReserve" when changing "Checkout" date
+                    onSelect: function (toDate) {
+                        console.log("Handle To Date called: ", toDate);
+                        setSelectedToDate(toDate); // Update the selectedFromDate state
+
+                        // Call the controllDate function and check its result
+                        controllDate(fromDate, toDate);
                     }
                 });
 
@@ -121,10 +168,30 @@ const ItemDetailsOrder = ({ item }) => {
             minDate: new Date(),
             beforeShowDay: function (date) {
                 var dateString = window.jQuery.datepicker.formatDate('yy-mm-dd', date);
-                return [array.indexOf(dateString) === -1];
+                return [listReservedDates.indexOf(dateString) === -1];
             }
         });
-    }, []); // The empty dependency array ensures it runs only once after mount
+    }, [listReservedDates]);
+
+    useEffect(() => {
+        // Load the data you need first
+        OrderService.getDateRange(item.ItemId)
+            .then((fetchedItems) => {
+                const dateArray = fetchedItems.$values || [];
+                console.log('Detailed properties:', JSON.stringify(dateArray, null, 2));
+                setListReservedDates(dateArray);
+                setIsLoading(false); // Set isLoading to false once the data is loaded
+            })
+            .catch((error) => {
+                console.error('Failed to fetch items:', error);
+                setIsLoading(false); // Set isLoading to false in case of an error
+            });
+    }, []);
+
+    // Render the component conditionally based on the isLoading state
+    if (isLoading) {
+        return <div>Loading...</div>; // You can replace this with a loading spinner or any other loading indicator
+    }
 
     return (
         <div>
@@ -202,9 +269,9 @@ const ItemDetailsOrder = ({ item }) => {
                                 <span className="text-danger"></span>
                             </div>
                         </div>
-
                     </div>
-                    <p><span className="text-danger" id="errorDateOverlap"></span></p>
+
+                    <p><span className="text-danger" id="errorDateOverlap">{errorDateOverlap}</span></p>
 
                     <div className={`section mb-4 ${showListReserve ? "" : "d-none"}`} id="listReserve">
                         <div className="row">
@@ -270,8 +337,8 @@ const ItemDetailsOrder = ({ item }) => {
 
                     <button
                         type="submit"
-                        class="btn btn-primary w-100"
-                        disabled={!(selectedFromDate && selectedToDate && selectedGuests)}
+                        className="btn btn-primary w-100"
+                        disabled={!(selectedFromDate && selectedToDate && selectedGuests && showListReserve)}
                     >
                         Reserve
                     </button>

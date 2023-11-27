@@ -15,6 +15,16 @@ const getOrders = async () => {
     }
 };
 
+const getDateRange = async (itemId) => {
+    try {
+        const response = await axios.get(`${baseUrl}/GetDateRange?itemId=${itemId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        throw error;
+    }
+}
+
 // Du kan legge til flere funksjoner for å håndtere oppretting, oppdatering og sletting av ordre
 const createOrder = async (newOrder) => {
     // Implementer funksjonalitet for å opprette en ny ordre
@@ -33,4 +43,5 @@ export const OrderService = {
     createOrder,
     updateOrder,
     deleteOrder,
+    getDateRange,
 };
