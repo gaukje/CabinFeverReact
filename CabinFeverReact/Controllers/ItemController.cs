@@ -44,7 +44,6 @@ public class ItemController : Controller
     {
         if (!ModelState.IsValid)
         {
-            _logger.LogError("Validation errors: {@ValidationErrors}", ModelState.Values.SelectMany(v => v.Errors));
             return BadRequest(ModelState);
         }
 
@@ -59,9 +58,17 @@ public class ItemController : Controller
     }
 
 
+    /* --- UPDATE ---
+    // PUT: api/Item/Update/"id"
+    // Id til item skal stå istedenfor "id"
     [HttpPut("Update/{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] Item updatedItem)
+    public async Task<IActionResult> Update(int id, [FromBody] Item item)
     {
+        if (id != item.Id)
+        {
+            return BadRequest();
+        }
+
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -70,27 +77,13 @@ public class ItemController : Controller
         var existingItem = await _itemRepository.GetItemById(id);
         if (existingItem == null)
         {
-            return NotFound($"Item with id {id} not found.");
+            return NotFound();
         }
 
-        // Oppdater feltene i existingItem med verdier fra updatedItem
-        existingItem.Name = updatedItem.Name;
-        existingItem.PricePerNight = updatedItem.PricePerNight;
-        existingItem.FromDate = updatedItem.FromDate;
-        existingItem.ToDate = updatedItem.ToDate;
-        existingItem.Capacity = updatedItem.Capacity;
-        existingItem.Description = updatedItem.Description;
-        existingItem.Location = updatedItem.Location;
-        // Legg til flere felt oppdateringer etter behov
-
-        bool updated = await _itemRepository.Update(existingItem);
-        if (!updated)
-        {
-            return StatusCode(500, "A problem happened while updating the item.");
-        }
-
-        return Ok(existingItem);
+        await _itemRepository.UpdateItem(item);
+        return NoContent();
     }
+    */
 
 
     //DELETE: api/Item/Delete/"id"
@@ -108,35 +101,5 @@ public class ItemController : Controller
         return NoContent();
     }
 
-    // POST: api/Item/Upload
-    [HttpPost("Upload")]
-    public async Task<IActionResult> Upload(IFormFile file)
-    {
-        if (file == null || file.Length == 0)
-        {
-            return BadRequest("No file uploaded.");
-        }
-
-        var folderName = "images"; // Folder name without 'wwwroot'
-        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp/public", folderName);
-
-        if (!Directory.Exists(pathToSave))
-        {
-            Directory.CreateDirectory(pathToSave);
-        }
-
-        var fileName = Path.GetFileNameWithoutExtension(file.FileName);
-        var extension = Path.GetExtension(file.FileName);
-        var uniqueFileName = $"{fileName}_{DateTime.Now.Ticks}{extension}";
-        var filePath = Path.Combine(pathToSave, uniqueFileName);
-        var dbPath = Path.Combine(folderName, uniqueFileName); // This is the relative path
-
-        using (var stream = new FileStream(filePath, FileMode.Create))
-        {
-            await file.CopyToAsync(stream);
-        }
-
-        // Return the relative URL path to the uploaded file
-        return Ok(new { imageUrl = "/" + dbPath.Replace("\\", "/") });
-    }
 }
+
