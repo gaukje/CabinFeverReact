@@ -8,18 +8,12 @@ const ItemDelete = () => {
     const { id } = useParams(); // Extracting id from URL
 
     const handleDelete = async () => {
-        console.log(`Attempting to delete item with id: ${id}`); // Logging for debugging
+        console.log(`Attempting to delete item with id: ${id}`);
         setIsDeleting(true);
         try {
-            // Use the ItemService to send a delete request
-            const deleted = await ItemService.deleteItem(id);
-            if (deleted) {
-                console.log('Item deleted successfully');
-                navigate('/Items/Rentals'); // Redirect to the list of items
-            } else {
-                console.error('Deletion failed. Item might not exist.');
-                setIsDeleting(false);
-            }
+            await ItemService.deleteItem(id);
+            console.log('Item deleted successfully');
+            navigate('/Items/Rentals');
         } catch (error) {
             console.error('Error deleting item:', error);
             setIsDeleting(false);
