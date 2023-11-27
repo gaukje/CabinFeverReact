@@ -18,9 +18,21 @@ const ItemDetailsOrder = ({ item }) => {
 
     const [showListReserve, setShowListReserve] = useState(false); // Initialize visibility state
 
-    function formatCurrency(value) {
+    const formatCurrency = (value) => {
         return value.toLocaleString('nb-NO', { style: 'currency', currency: 'NOK' }).replace('kr', '').trim() + " kr";
     }
+
+    const handleIncrementGuests = () => {
+        if (selectedGuests < item.Capacity) {
+            setSelectedGuests(Number(selectedGuests) + 1);
+        }
+    };
+
+    const handleDecrementGuests = () => {
+        if (selectedGuests > 1) {
+            setSelectedGuests(Number(selectedGuests) - 1);
+        }
+    };
 
     useEffect(() => {
         var price = item.Price;
@@ -128,14 +140,30 @@ const ItemDetailsOrder = ({ item }) => {
                             <div className="col-sm-6">
                                 <div className="form-group">
                                     <label htmlFor="FromDate">Check-In</label>
-                                    <input name="FromDate" className="form-control" id="fromDate" min={new Date().toISOString().split('T')[0]} value={selectedFromDate} placeholder="Add dates" readOnly />
+                                    <input
+                                        name="FromDate"
+                                        className="form-control"
+                                        id="fromDate"
+                                        min={new Date().toISOString().split('T')[0]}
+                                        value={selectedFromDate}
+                                        placeholder="Add dates"
+                                        readOnly
+                                    />
                                     <span className="text-danger"></span>
                                 </div>
                             </div>
                             <div className="col-sm-6">
                                 <div className="form-group">
                                     <label htmlFor="ToDate">Checkout</label>
-                                    <input name="ToDate" className="form-control" id="toDate" min={new Date().toISOString().split('T')[0]} value={selectedToDate} placeholder="Add dates" readOnly />
+                                    <input
+                                        name="ToDate"
+                                        className="form-control"
+                                        id="toDate"
+                                        min={new Date().toISOString().split('T')[0]}
+                                        value={selectedToDate}
+                                        placeholder="Add dates"
+                                        readOnly
+                                    />
                                     <span className="text-danger"></span>
                                 </div>
                             </div>
@@ -144,7 +172,33 @@ const ItemDetailsOrder = ({ item }) => {
                         <div className="row">
                             <div className="form-group">
                                 <label htmlFor="Guests">Guests</label>
-                                <input name="Guests" type="number" className="form-control" min="1" max={item.Capacity} value={selectedGuests} onChange={(e) => setSelectedGuests(e.target.value)} placeholder="Add guests" />
+                                <div className="input-group">
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-secondary"
+                                        onClick={handleDecrementGuests}
+                                    >
+                                        <i class="bi bi-dash"></i>
+                                    </button>
+                                    <input
+                                        name="Guests"
+                                        type="number"
+                                        className="form-control text-center"
+                                        min="1"
+                                        max={item.Capacity}
+                                        value={selectedGuests}
+                                        onChange={(e) => setSelectedGuests(e.target.value)}
+                                        placeholder="Add guests"
+                                        readOnly
+                                    />
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-secondary"
+                                        onClick={handleIncrementGuests}
+                                    >
+                                        <i class="bi bi-plus-lg"></i>
+                                    </button>
+                                </div>
                                 <span className="text-danger"></span>
                             </div>
                         </div>
@@ -203,12 +257,24 @@ const ItemDetailsOrder = ({ item }) => {
 
                     <div className="form-group d-none">
                         <label htmlFor="TotalPrice">Total Price</label>
-                        <input name="TotalPrice" type="number" step="0.01" className="form-control" id="totalPrice" value={totalPrice} />
+                        <input
+                            name="TotalPrice"
+                            type="number"
+                            step="0.01"
+                            className="form-control"
+                            id="totalPrice"
+                            value={totalPrice}
+                        />
                         <span className="text-danger">@ViewData["TotalPriceError"]</span>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100" disabled={!(selectedFromDate && selectedToDate && selectedGuests)}>Reserve</button>
-
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                        disabled={!(selectedFromDate && selectedToDate && selectedGuests)}
+                    >
+                        Reserve
+                    </button>
                 </form>
             </div>
         </div>
