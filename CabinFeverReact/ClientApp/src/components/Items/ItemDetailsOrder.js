@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 const ItemDetailsOrder = ({ item }) => {
     const [selectedFromDate, setSelectedFromDate] = useState('');
     const [selectedToDate, setSelectedToDate] = useState('');
+    const [selectedGuests, setSelectedGuests] = useState('');
 
     const [timeDifference, setTimeDifference] = useState(0);
 
@@ -143,7 +144,7 @@ const ItemDetailsOrder = ({ item }) => {
                         <div className="row">
                             <div className="form-group">
                                 <label htmlFor="Guests">Guests</label>
-                                <input name="Guests" type="number" className="form-control" min="1" max={item.Capacity} placeholder="Add guests" />
+                                <input name="Guests" type="number" className="form-control" min="1" max={item.Capacity} value={selectedGuests} onChange={(e) => setSelectedGuests(e.target.value)} placeholder="Add guests" />
                                 <span className="text-danger"></span>
                             </div>
                         </div>
@@ -206,7 +207,7 @@ const ItemDetailsOrder = ({ item }) => {
                         <span className="text-danger">@ViewData["TotalPriceError"]</span>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">Reserve</button>
+                    <button type="submit" class="btn btn-primary w-100" disabled={!(selectedFromDate && selectedToDate && selectedGuests)}>Reserve</button>
 
                 </form>
             </div>
