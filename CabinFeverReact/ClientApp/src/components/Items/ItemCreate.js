@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { ItemService } from './../services/ItemService';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const ItemCreate = () => {
     const [item, setItem] = useState({
@@ -11,7 +12,7 @@ const ItemCreate = () => {
         Capacity: 1,
         Description: '',
         Location: '',
-        ImageUrl: '/images/hytte_stock_5.jpg', // You need to handle file upload and possibly store the image URL
+        ImageUrl: '', // You need to handle file upload and possibly store the image URL
         UserId: '', // You may need to obtain this from the user's session or context
         IsAvailable: true, // Assuming you want new items to be available by default
     });
@@ -25,39 +26,63 @@ const ItemCreate = () => {
         setItem({ ...item, [name]: newValue });
     };
 
-
-
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('Form submitted, preparing FormData.');
 
-        const formData = new FormData();
-        Object.keys(item).forEach(key => formData.append(key, item[key]));
-
-        console.log('Current item state:', item);
+        let newItemData = { ...item };
 
         if (selectedFile) {
-            console.log('Appending file to FormData.');
-            formData.append('file', selectedFile);
+            try {
+                // Upload the file and get the URL
+                const imageUrl = await uploadImageAndGetUrl(selectedFile);
+                newItemData.ImageUrl = imageUrl;
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                return;
+            }
         }
 
-        // Logging FormData entries for debugging
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
+        // Construct FormData to send to the server
+        const formData = new FormData();
+        for (const key in newItemData) {
+            formData.append(key, newItemData[key]);
         }
+
+        console.log(formData);
 
         try {
-            console.log('Sending data to the server...');
+            // Send FormData to the server
             const response = await ItemService.createItem(formData);
-            console.log('Response received:', response);
-            navigate('/Items/Rentals'); // Redirect to the list of items
+            console.log('Item created:', response);
+            navigate('/Items/Rentals');
         } catch (error) {
             console.error('Error creating item:', error);
-            // Handle the error state appropriately in the UI
+        }
+    };
+
+
+
+
+
+    const uploadImageAndGetUrl = async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            const uploadResponse = await axios.post('/api/item/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log('uploadRespone.data.imageUrl: ', uploadResponse.data.imageUrl);
+            // Assuming the server response contains the imageUrl field with the correct URL
+            return uploadResponse.data.imageUrl; // or just "/images/..."
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            throw error; // This will prevent further execution in the calling function
         }
     };
 

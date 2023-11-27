@@ -42,6 +42,7 @@
     <Folder Include="ClientApp\src\components\Authentication\" />
     <Folder Include="ClientApp\src\components\services\" />
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
