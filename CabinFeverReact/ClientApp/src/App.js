@@ -14,6 +14,7 @@ import MinSide from './components/pages/MinSide';
 import './custom.css';
 import Register from './components/Authentication/Register';
 import Login from './components/Authentication/Login';
+import Footer from './components/Items/Footer';
 
 const App = () => {
     return (
@@ -32,6 +33,7 @@ const App = () => {
                 <Route path="/Register" element={<Register />} />
                 <Route path="/Login" element={<Login />} />
             </Routes>
+            <Footer />
         </div>
     );
 };
