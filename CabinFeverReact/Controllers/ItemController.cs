@@ -59,17 +59,9 @@ public class ItemController : Controller
     }
 
 
-    /* --- UPDATE ---
-    // PUT: api/Item/Update/"id"
-    // Id til item skal stå istedenfor "id"
     [HttpPut("Update/{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] Item item)
+    public async Task<IActionResult> Update(int id, [FromBody] Item updatedItem)
     {
-        if (id != item.Id)
-        {
-            return BadRequest();
-        }
-
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -78,13 +70,28 @@ public class ItemController : Controller
         var existingItem = await _itemRepository.GetItemById(id);
         if (existingItem == null)
         {
-            return NotFound();
+            return NotFound($"Item with id {id} not found.");
         }
 
-        await _itemRepository.UpdateItem(item);
-        return NoContent();
+        // Oppdater feltene i existingItem med verdier fra updatedItem
+        existingItem.Name = updatedItem.Name;
+        existingItem.PricePerNight = updatedItem.PricePerNight;
+        existingItem.FromDate = updatedItem.FromDate;
+        existingItem.ToDate = updatedItem.ToDate;
+        existingItem.Capacity = updatedItem.Capacity;
+        existingItem.Description = updatedItem.Description;
+        existingItem.Location = updatedItem.Location;
+        // Legg til flere felt oppdateringer etter behov
+
+        bool updated = await _itemRepository.Update(existingItem);
+        if (!updated)
+        {
+            return StatusCode(500, "A problem happened while updating the item.");
+        }
+
+        return Ok(existingItem);
     }
-    */
+
 
     //DELETE: api/Item/Delete/"id"
     // Id til item skal stå istedenfor "id"
