@@ -27,21 +27,42 @@ const getDateRange = async (itemId) => {
 
 // Du kan legge til flere funksjoner for å håndtere oppretting, oppdatering og sletting av ordre
 const createOrder = async (newOrder) => {
-    // Implementer funksjonalitet for å opprette en ny ordre
+    try {
+        const response = await axios.post(`${baseUrl}/Create`, newOrder);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating order:', error);
+        throw error;
+    }
 };
 
+/*
 const updateOrder = async (orderId, updatedOrder) => {
-    // Implementer funksjonalitet for å oppdatere en eksisterende ordre
+    try {
+        const response = await axios.put(`${baseUrl}/Update/${orderId}`, updatedOrder);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating order:', error);
+        throw error;
+    }
 };
+
 
 const deleteOrder = async (orderId) => {
-    // Implementer funksjonalitet for å slette en ordre
+    try {
+        const response = await axios.delete(`${baseUrl}/Delete/${orderId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting order:', error);
+        throw error;
+    }
 };
+*/
 
 export const OrderService = {
     getOrders,
     createOrder,
-    updateOrder,
-    deleteOrder,
+    //updateOrder,
+    //deleteOrder,
     getDateRange,
 };
