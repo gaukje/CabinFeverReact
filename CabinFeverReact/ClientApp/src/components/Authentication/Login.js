@@ -34,7 +34,7 @@ const Login = () => {
             <div
                 className="vh-100"
                 style={{
-                    backgroundImage: "url('https://img.freepik.com/free-photo/wide-shot-brown-house-surrounded-by-forest-spruce-trees-clouds_181624-5123.jpg?w=1380')",
+                    backgroundImage: "url('images/login_background.jpg')",
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                 }}
@@ -62,7 +62,7 @@ const Login = () => {
                                             value={userName}
                                             onChange={(e) => setUserName(e.target.value)}
                                             placeholder="E-mail" />
-                                        <label for="floatingInput">Email address</label>
+                                        <label for="floatingInput">E-mail address</label>
 
                                     </div>
                                     <div className="form-floating mb-2">
