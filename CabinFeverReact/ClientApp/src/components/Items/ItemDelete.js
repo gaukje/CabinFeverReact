@@ -1,18 +1,30 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ItemService } from './../services/ItemService';
 
 const ItemDelete = () => {
     const [isDeleting, setIsDeleting] = useState(false);
+    const [item, setItem] = useState(null);
     const navigate = useNavigate();
-    const { id } = useParams(); // Extracting id from URL
+    const { id } = useParams();
+
+    useEffect(() => {
+        const fetchItem = async () => {
+            try {
+                const fetchedItem = await ItemService.getItemById(id);
+                setItem(fetchedItem);
+            } catch (error) {
+                console.error('Error fetching item:', error);
+            }
+        };
+
+        fetchItem();
+    }, [id]);
 
     const handleDelete = async () => {
-        console.log(`Attempting to delete item with id: ${id}`);
         setIsDeleting(true);
         try {
             await ItemService.deleteItem(id);
-            console.log('Item deleted successfully');
             navigate('/Items/Rentals');
         } catch (error) {
             console.error('Error deleting item:', error);
@@ -20,23 +32,25 @@ const ItemDelete = () => {
         }
     };
 
+    if (!item) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div className="container my-4">
             <h2>Are you sure you want to delete this item?</h2>
+            <div>
+
+                <p><strong>Name:</strong> {item.Name}</p>
+                <p><strong>Price:</strong> {item.Price}</p>
+                <p><strong>Description:</strong> {item.Description}</p>
+
+            </div>
             <div className="d-flex justify-content-center">
-                <button
-                    onClick={handleDelete}
-                    type="button" // Ensure this is set to 'button' if within a form
-                    className="btn btn-danger me-2"
-                    disabled={isDeleting}
-                >
+                <button onClick={handleDelete} type="button" className="btn btn-danger me-2" disabled={isDeleting}>
                     {isDeleting ? 'Deleting...' : 'Delete'}
                 </button>
-                <button
-                    onClick={() => navigate(-1)}
-                    type="button" // Same as above
-                    className="btn btn-secondary"
-                >
+                <button onClick={() => navigate(-1)} type="button" className="btn btn-secondary">
                     Cancel
                 </button>
             </div>
