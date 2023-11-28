@@ -1,30 +1,33 @@
 import React, { createContext, useState, useContext } from 'react';
 
-const AuthContext = createContext();
-
-const login = (token) => {
-    localStorage.setItem('token', token);
-    setCurrentUser({ ...currentUser, token }); // Update the current user with the token
-};
-
-const logout = () => {
-    localStorage.removeItem('token');
-    setCurrentUser(null);
-};
+export const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
-    // Add methods to log in, log out, register, etc.
+    const login = (token) => {
+        localStorage.setItem('token', token);
+        setCurrentUser({ token });
+    };
+
+    const logout = () => {
+        localStorage.removeItem('token');
+        setCurrentUser(null);
+    };
+
+    const isAuthenticated = () => {
+        return currentUser != null;
+    };
 
     return (
-        <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
+        <AuthContext.Provider value={{ currentUser, isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
+
 
 /*
 import { AuthProvider } from './AuthContext'; // Adjust the path based on your file structure

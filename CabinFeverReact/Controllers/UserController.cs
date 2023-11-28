@@ -39,7 +39,7 @@ public class UserController : ControllerBase
         if (await _userService.Login(user))
         {
             var tokenString = _userService.GenerateTokenString(user);
-            return Ok("Done");
+            return Ok(new { token = tokenString });
         }
         return BadRequest();
     }
