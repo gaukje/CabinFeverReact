@@ -1,23 +1,12 @@
 // Contact.js
 import React from 'react';
+import ImageBanner from '../ImageBanner';
+
 
 const Contact = () => {
     return (
         <div>
-            {/* Banner */}
-            <div className="banner-secondary">
-                <div className="banner-secondary-container">
-                    {/* Midlertidig */}
-                    <img src="https://images.pexels.com/photos/513710/pexels-photo-513710.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" id="banner-image" alt="Banner" />                </div>
-                <div className="row">
-                    <div className="col-12 d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle">
-                        <div className="text-center">
-                            {/* The text */}
-                            <h1 className="text-white">Contact</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ImageBanner imageSrc="images/banners/pexels-photo-513710.jpeg" titleText="Contact" ></ImageBanner>
 
             {/* Contact information */}
             <div className="container pb-5 w-75">
