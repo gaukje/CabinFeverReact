@@ -59,9 +59,45 @@ class NavMenu extends Component {
                         </ul>
                         <ul className="navbar-nav">
                             {isAuthenticated() ? (
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-light" to="/MinSide">Min Side</NavLink>
-                                </NavItem>
+                                <>
+                                    <NavItem>
+                                        <NavLink tag={Link} className="text-light" to="/Items/Create">List your property</NavLink>
+                                    </NavItem>
+
+
+
+                                    <li class="nav-item dropdown d-none d-sm-block">
+                                        <a class="btn btn-dark dropdown-toggle bi bi-person-circle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">&#9;</a>
+
+                                        <ul class="dropdown-menu bg-dark border-0" aria-labelledby="dropdownMenuLink">
+                                            <li>
+                                                <NavItem>
+                                                    <NavLink tag={Link} className="text-light" to="/MinSide">My profile</NavLink>
+                                                </NavItem>
+                                                <NavItem>
+                                                    <NavLink tag={Link} className="text-light" to="/">Logout</NavLink>
+                                                </NavItem>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <div class="d-block d-sm-none">
+                                        <NavItem>
+                                            <NavLink tag={Link} className="text-light" to="/MinSide">My profile</NavLink>
+                                        </NavItem>
+                                        <NavItem>
+                                            <NavLink tag={Link} className="text-light" to="/">Logout</NavLink>
+                                        </NavItem>
+                                    </div>
+
+
+
+
+
+
+                                </>
+
+
                             ) : (
                                 <>
                                     <NavItem>
