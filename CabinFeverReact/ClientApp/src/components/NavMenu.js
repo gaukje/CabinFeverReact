@@ -56,6 +56,8 @@ class NavMenu extends Component {
                             <NavItem>
                                 <NavLink tag={Link} className="text-light" to="/pages/about">About</NavLink>
                             </NavItem>
+                        </ul>
+                        <ul className="navbar-nav">
                             {isAuthenticated() ? (
                                 <NavItem>
                                     <NavLink tag={Link} className="text-light" to="/MinSide">Min Side</NavLink>
