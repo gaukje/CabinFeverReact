@@ -18,6 +18,10 @@ class NavMenu extends Component {
         };
     }
 
+    handleLogout = () => {
+        this.context.logout(); // Call the logout function from AuthContext
+    }
+
     toggleNavbar() {
         this.setState({
             collapsed: !this.state.collapsed,
@@ -75,7 +79,7 @@ class NavMenu extends Component {
                                                     <NavLink tag={Link} className="text-light" to="/MinSide">My profile</NavLink>
                                                 </NavItem>
                                                 <NavItem>
-                                                    <NavLink tag={Link} className="text-light" to="/">Logout</NavLink>
+                                                    <NavLink tag={Link} className="text-light" to="/" onClick={this.handleLogout}>Logout</NavLink>
                                                 </NavItem>
                                             </li>
                                         </ul>
