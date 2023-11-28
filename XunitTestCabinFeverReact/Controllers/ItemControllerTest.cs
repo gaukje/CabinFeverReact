@@ -25,7 +25,7 @@ namespace XunitTestCabinFeverReact.Controllers
 
         // Tests that 'GetAll' returns a list of items when items exist in the repository
         [Fact]
-        public async Task GetAll_ItemsExist_ReturnsCorrectItems() 
+        public async Task GetAll_ItemsExist_ReturnsCorrectItems()
         {
             // Mock repository to return a list of items and then call GetAll
             //Verify the results is 'OkObjectResult' and contains the correct number of the items
