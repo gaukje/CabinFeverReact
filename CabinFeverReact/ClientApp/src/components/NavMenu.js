@@ -1,17 +1,15 @@
-// NavMenu.js
+// NavMenu.js!!
 import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
-import { AuthContext } from '../AuthContext'; 
-
-
 
 class NavMenu extends Component {
-    static contextType = AuthContext; // Set the context type
+    static displayName = NavMenu.name;
 
     constructor(props) {
         super(props);
+
         this.toggleNavbar = this.toggleNavbar.bind(this);
         this.state = {
             collapsed: true,
@@ -25,19 +23,6 @@ class NavMenu extends Component {
     }
 
     render() {
-        const context = this.context;
-
-
-        if (!context) {
-            console.error("AuthContext not found");
-            return null; // or some fallback UI
-        }
-
-        const { isAuthenticated } = context;
-
-        console.log("Context:", context);
-        console.log("Is Authenticated:", context.isAuthenticated());
-
         return (
             <header>
                 <Navbar className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark mb-3 fixed-top" container light>
@@ -56,20 +41,19 @@ class NavMenu extends Component {
                             <NavItem>
                                 <NavLink tag={Link} className="text-light" to="/pages/about">About</NavLink>
                             </NavItem>
-                            {isAuthenticated() ? (
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-light" to="/MinSide">Min Side</NavLink>
-                                </NavItem>
-                                ) : (
-                                <>
-                                    <NavItem>
-                                        <NavLink tag={Link} className="text-light" to="/register">Register</NavLink>
-                                    </NavItem>
-                                    <NavItem>
-                                        <NavLink tag={Link} className="text-light" to="/login">Login</NavLink>
-                                    </NavItem>
-                                </>
-                            )}
+                        </ul>
+                        <ul className="navbar-nav">
+                            {/* Lenker eller komponenter på høyre side */}
+                            <NavItem>
+                                <NavLink tag={Link} className="text-light" to="/MinSide">Min Side</NavLink>
+                            </NavItem>
+                            {/* Her kan du inkludere din innloggingsportal */}
+                            <NavItem>
+                                <NavLink tag={Link} className="text-light" to="/register">Register</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink tag={Link} className="text-light" to="/login">Login</NavLink>
+                            </NavItem>
                         </ul>
                     </Collapse>
                 </Navbar>
@@ -79,26 +63,3 @@ class NavMenu extends Component {
 }
 
 export default NavMenu;
-/*
-<AuthContext.Consumer>
-    {({ isAuthenticated }) => (
-        <ul className="navbar-nav">
-            {!isAuthenticated() && (
-                <>
-                    <NavItem>
-                        <NavLink tag={Link} className="text-light" to="/register">Register</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} className="text-light" to="/login">Login</NavLink>
-                    </NavItem>
-                </>
-            )}
-            {isAuthenticated() && (
-                <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/MinSide">Min Side</NavLink>
-                </NavItem>
-            )}
-        </ul>
-    )}
-</AuthContext.Consumer>
-*/
