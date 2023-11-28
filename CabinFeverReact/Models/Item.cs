@@ -21,20 +21,6 @@ public class Item
     [Range(0.01, double.MaxValue, ErrorMessage = "The Price must be greater than 0.")]
     public decimal PricePerNight { get; set; }
 
-    [JsonPropertyName("FromDate")]
-    [Display(Name = "From Date")]
-    [DataType(DataType.Date)]
-    [Required(ErrorMessage = "Please select a From Date.")]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime FromDate { get; set; }
-
-    [JsonPropertyName("ToDate")]
-    [Display(Name = "To Date")]
-    [DataType(DataType.Date)]
-    [Required(ErrorMessage = "Please select a To Date.")]
-    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-    public DateTime ToDate { get; set; }
-
     [JsonPropertyName("Capacity")]
     [Required]
     [Range(1, int.MaxValue, ErrorMessage = "The Capacity must be greater than 0.")]

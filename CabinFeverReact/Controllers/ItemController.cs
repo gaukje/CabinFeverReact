@@ -76,8 +76,6 @@ public class ItemController : Controller
         // Oppdater feltene i existingItem med verdier fra updatedItem
         existingItem.Name = updatedItem.Name;
         existingItem.PricePerNight = updatedItem.PricePerNight;
-        existingItem.FromDate = updatedItem.FromDate;
-        existingItem.ToDate = updatedItem.ToDate;
         existingItem.Capacity = updatedItem.Capacity;
         existingItem.Description = updatedItem.Description;
         existingItem.Location = updatedItem.Location;

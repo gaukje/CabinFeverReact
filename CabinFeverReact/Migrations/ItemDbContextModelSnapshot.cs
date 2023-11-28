@@ -38,10 +38,6 @@ namespace CabinFeverReact.Migrations
                         .HasColumnType("TEXT")
                         .HasAnnotation("Relational:JsonPropertyName", "Description");
 
-                    b.Property<DateTime>("FromDate")
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "FromDate");
-
                     b.Property<string>("Fylke")
                         .HasColumnType("TEXT")
                         .HasAnnotation("Relational:JsonPropertyName", "Fylke");
@@ -68,10 +64,6 @@ namespace CabinFeverReact.Migrations
                     b.Property<decimal>("PricePerNight")
                         .HasColumnType("TEXT")
                         .HasAnnotation("Relational:JsonPropertyName", "Price");
-
-                    b.Property<DateTime>("ToDate")
-                        .HasColumnType("TEXT")
-                        .HasAnnotation("Relational:JsonPropertyName", "ToDate");
 
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT")

@@ -7,8 +7,6 @@ const ItemCreate = () => {
     const [item, setItem] = useState({
         Name: '',
         PricePerNight: '', // This should be a number if the server expects a decimal
-        FromDate: '', // You need to add a way for users to input these dates
-        ToDate: '',
         Capacity: 1,
         Description: '',
         Location: '',
@@ -52,7 +50,9 @@ const ItemCreate = () => {
             formData.append(key, newItemData[key]);
         }
 
-        console.log(formData);
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
 
         try {
             // Send FormData to the server
@@ -63,10 +63,6 @@ const ItemCreate = () => {
             console.error('Error creating item:', error);
         }
     };
-
-
-
-
 
     const uploadImageAndGetUrl = async (file) => {
         const formData = new FormData();
@@ -85,7 +81,6 @@ const ItemCreate = () => {
             throw error; // This will prevent further execution in the calling function
         }
     };
-
 
     return (
         <div className="container my-4">
@@ -154,28 +149,6 @@ const ItemCreate = () => {
                         name="file"
                         onChange={handleFileChange}
                         className="form-control"
-                    />
-                </div>
-                <div className="form-group mb-2">
-                    <label>From Date</label><span className="text-danger">*</span>
-                    <input
-                        type="date"
-                        name="FromDate"
-                        value={item.FromDate}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        required
-                    />
-                </div>
-                <div className="form-group mb-2">
-                    <label>To Date</label><span className="text-danger">*</span>
-                    <input
-                        type="date"
-                        name="ToDate"
-                        value={item.ToDate}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        required
                     />
                 </div>
                 <div className="form-group mb-2">
