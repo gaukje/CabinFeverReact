@@ -16,7 +16,7 @@ const ItemCard = ({ item }) => {
             <div className="bg-white border border-dark-subtle rounded-3">
                 <Link to={`/Items/Details/${item.ItemId}`}>
                     <div className="ratio ratio-4x3">
-                        <img src={item.ImageUrl} className="card-img-top img-fluid" alt={item.Name} id="itemcard-image" />
+                        <img src={item.ImageUrl} className="card-img-top img-fluid rounded-top" alt={item.Name} id="itemcard-image" />
                     </div>
                 </Link>
                 <div>
