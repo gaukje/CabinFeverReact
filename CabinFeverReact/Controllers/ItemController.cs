@@ -67,28 +67,29 @@ public class ItemController : Controller
             return BadRequest(ModelState);
         }
 
-        var existingItem = await _itemRepository.GetItemById(id);
-        if (existingItem == null)
+        if (id != updatedItem.ItemId)
         {
-            return NotFound($"Item with id {id} not found.");
+            return BadRequest("Mismatched item ID.");
         }
 
-        // Oppdater feltene i existingItem med verdier fra updatedItem
-        existingItem.Name = updatedItem.Name;
-        existingItem.PricePerNight = updatedItem.PricePerNight;
-        existingItem.Capacity = updatedItem.Capacity;
-        existingItem.Description = updatedItem.Description;
-        existingItem.Location = updatedItem.Location;
-        // Legg til flere felt oppdateringer etter behov
-
-        bool updated = await _itemRepository.Update(existingItem);
-        if (!updated)
+        try
         {
-            return StatusCode(500, "A problem happened while updating the item.");
+            var updateSuccessful = await _itemRepository.Update(updatedItem);
+            if (!updateSuccessful)
+            {
+                return NotFound($"Item with id {id} not found.");
+            }
+            return Ok(updatedItem);
         }
-
-        return Ok(existingItem);
+        catch (Exception e)
+        {
+            // Log the error.
+            _logger.LogError(e, "An unexpected error occurred.");
+            return StatusCode(500, "An unexpected error occurred.");
+        }
     }
+
+
 
 
     //DELETE: api/Item/Delete/"id"

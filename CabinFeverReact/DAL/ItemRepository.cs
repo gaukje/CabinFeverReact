@@ -79,38 +79,35 @@ public class ItemRepository : IItemRepository
     // Method to update an item in the database asynchronously
     public async Task<bool> Update(Item item)
     {
+        // Assuming that null-checking of 'item' is done outside of this method.
+
+        var existingItem = await _db.Items.FindAsync(item.ItemId);
+        if (existingItem == null)
+        {
+            // Log an appropriate message indicating the item was not found.
+            _logger.LogError($"Item with id {item.ItemId} not found.");
+            return false; // Item not found, no need to throw an exception.
+        }
+
+        // Copy the values from 'item' to 'existingItem' as needed.
+        existingItem.Name = item.Name;
+        existingItem.PricePerNight = item.PricePerNight;
+        // ... copy other fields as necessary.
+
         try
         {
-            // Find the existing item in the database using the item's Id
-            var existingItem = await _db.Items.FindAsync(item.ItemId);
-
-            // If an existing item is found, detach it from the DbContext
-            // This is to avoid Entity Framework from tracking two instances with the same key
-            if (existingItem != null)
-            {
-                _db.Entry(existingItem).State = EntityState.Detached;
-            }
-
-            // Update the item in the DbSet
-            // This marks the entity as Modified, so that it will be updated in the database when SaveChanges is called
-            _db.Items.Update(item);
-
-            // Save the changes to the database
             await _db.SaveChangesAsync();
-
-            // Return true to indicate that the update was successful
-            return true;
+            return true; // Update successful.
         }
         catch (Exception e)
         {
-            // Log any errors that occur during the update
-            _logger.LogError("[ItemRepository] item FindAsync(id) failed when updating the Id" +
-                "{Id:0000}, error message; {e}", item, e.Message);
-
-            // Return false to indicate that the update failed
-            return false;
+            // Log the exception with as much detail as possible.
+            _logger.LogError(e, $"An error occurred while updating the item with id {item.ItemId}.");
+            throw; // Rethrow the exception to handle it in the controller.
         }
     }
+
+
 
     // Method to delete an item by its ID asynchronously
     public async Task<bool> Delete(int id)
