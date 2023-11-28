@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 
 export const AuthContext = createContext();
 
@@ -6,6 +6,14 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
+
+    useEffect(() => {
+        // Check for an existing token in local storage when the component mounts
+        const token = localStorage.getItem('token');
+        if (token) {
+            setCurrentUser({ token });
+        }
+    }, []);
 
     // Oppdatert login-funksjon
     const login = (token) => {
