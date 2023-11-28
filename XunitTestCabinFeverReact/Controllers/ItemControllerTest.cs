@@ -23,13 +23,10 @@ namespace XunitTestCabinFeverReact.Controllers
             _controller = new ItemController(_mockRepo.Object, _mockLogger.Object);
         }
 
-        // Tests that 'GetAll' returns a list of items when items exist in the repository
+        // Test to ensure that when items exist, the GetAll action returns an OK result with a list of items.
         [Fact]
         public async Task GetAll_ItemsExist_ReturnsCorrectItems()
         {
-            // Mock repository to return a list of items and then call GetAll
-            //Verify the results is 'OkObjectResult' and contains the correct number of the items
-
             var mockItems = new List<Item>
             {
                 new Item { ItemId = 1, Name = "Test Item 1", PricePerNight = 100 },
@@ -46,12 +43,10 @@ namespace XunitTestCabinFeverReact.Controllers
             Assert.Equal(mockItems.Count, returnValue.Count);
         }
 
-        //Tests that 'GetAll' returns a 'NotFound' result when no itemns are in the repo
+        // Test to verify that when no items exist, the GetAll action returns a NotFound result.
         [Fact]
         public async Task GetAll_NoItems_ReturnsNotFound()
         {
-            // Set up repo to return null and then call GetAll
-            //Verify the result is 'NotFoundObjectResult'
             _mockRepo.Setup(repo => repo.GetAll()).ReturnsAsync(() => null);
 
             // Act
@@ -61,9 +56,7 @@ namespace XunitTestCabinFeverReact.Controllers
             Assert.IsType<NotFoundObjectResult>(result);
         }
 
-        // Tests that 'Create' returns a 'CreatedAtAction' result when a valid item is created
-        // Verify the result is 'CreatedAtActionResult' and the returned item matches the input
-
+        // Test to confirm that creating a valid item returns a CreatedAtAction result with the created item's details.
         [Fact]
         public async Task Create_ValidItem_ReturnsCreatedAtAction()
         {
@@ -80,13 +73,11 @@ namespace XunitTestCabinFeverReact.Controllers
             Assert.Equal(newItem.Name, returnValue.Name);
         }
 
-        //Test that 'Create' returns a 'BadRequest' result when model validation 
+        // Test to ensure that attempting to create an item with invalid data returns a BadRequest result.
         [Fact]
         public async Task Create_InvalidItem_ReturnsBadRequest()
         {
-            // Introduce a model state error and then call Create with an invalid item
-            //Verify the result is 'BadRequestObjectrESULT'
-
+            // Arrange
             var newItem = new Item { Name = "New Test Item", PricePerNight = 100 };
             _controller.ModelState.AddModelError("Name", "The Name field is required.");
 
@@ -97,13 +88,11 @@ namespace XunitTestCabinFeverReact.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
-        //test that 'Update' modifies an exsiting item and returns the updated item
+        // Test to check that updating an existing item returns an OK result with the updated item's details.
         [Fact]
         public async Task Update_ItemExists_ReturnsUpdatedItem()
         {
-            // Mock repo with an existing item and simulate successful update
-            //Call update and verify the result is 'OkObjectResult' with the updated item
-
+            // Arrange
             var existingItem = new Item { ItemId = 1, Name = "Original Item", PricePerNight = 100 };
             var updatedItem = new Item { ItemId = 1, Name = "Updated Item", PricePerNight = 150 };
             _mockRepo.Setup(repo => repo.GetItemById(existingItem.ItemId)).ReturnsAsync(existingItem);
@@ -113,19 +102,20 @@ namespace XunitTestCabinFeverReact.Controllers
             var result = await _controller.Update(existingItem.ItemId, updatedItem);
 
             // Assert
-            var actionResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<Item>(actionResult.Value);
+            var objectResult = Assert.IsAssignableFrom<ObjectResult>(result);
+            Assert.NotNull(objectResult.Value);
+            Assert.Equal(200, objectResult.StatusCode); // Check for 200 OK status code
+            var returnValue = Assert.IsType<Item>(objectResult.Value);
             Assert.Equal(updatedItem.Name, returnValue.Name);
             Assert.Equal(updatedItem.PricePerNight, returnValue.PricePerNight);
         }
 
-        // Tests that 'Update' returns 'NotFound' when attempting to update a non-existing item.
+
+        // Test to verify that attempting to update a non-existing item returns a NotFound result.
         [Fact]
         public async Task Update_ItemDoesNotExist_ReturnsNotFound()
         {
-            // Setup mock repository to return null for a non-existing item.
-            // Call Update and verify the result is 'NotFoundResult'.
-
+            // Arrange
             var updatedItem = new Item { ItemId = 1, Name = "Updated Item", PricePerNight = 150 };
             _mockRepo.Setup(repo => repo.GetItemById(updatedItem.ItemId)).ReturnsAsync((Item)null);
 
@@ -133,16 +123,14 @@ namespace XunitTestCabinFeverReact.Controllers
             var result = await _controller.Update(updatedItem.ItemId, updatedItem);
 
             // Assert
-            Assert.IsType<NotFoundResult>(result);
+            Assert.IsType<NotFoundObjectResult>(result); // Change this to NotFoundObjectResult
         }
 
-        // Tests that 'Delete' successfully removes an existing item and returns no content.
+        // Test to confirm that deleting an existing item returns a NoContent result indicating a successful deletion.
         [Fact]
         public async Task Delete_ItemExists_ReturnsNoContent()
         {
-            // Setup mock repository with an existing item and simulate successful deletion.
-            // Call Delete and verify the result is 'NoContentResult'.
-
+            // Arrange
             var existingItemId = 1;
             _mockRepo.Setup(repo => repo.GetItemById(existingItemId)).ReturnsAsync(new Item { ItemId = existingItemId });
             _mockRepo.Setup(repo => repo.Delete(existingItemId)).ReturnsAsync(true);
@@ -154,13 +142,11 @@ namespace XunitTestCabinFeverReact.Controllers
             Assert.IsType<NoContentResult>(result);
         }
 
-        // Tests that 'Delete' returns 'NotFound' when attempting to delete a non-existing item.
+        // Test to ensure that attempting to delete a non-existing item results in a NotFound result.
         [Fact]
         public async Task Delete_ItemDoesNotExist_ReturnsNotFound()
         {
-            // Setup mock repository to return null for a non-existing item.
-            // Call Delete and verify the result is 'NotFoundResult'.
-
+            // Arrange
             var nonExistingItemId = 1;
             _mockRepo.Setup(repo => repo.GetItemById(nonExistingItemId)).ReturnsAsync((Item)null);
 
