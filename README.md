@@ -9,7 +9,7 @@
     </header>
     <div class="container">
         <h2>Overview</h2>
-        <p></p>Welcome to our Cabin Rental web application, designed to provide a convenient and user-friendly platform for cabin owners to list their properties and for potential renters to find, explore, and book their ideal Norwegian cabin experience now with React as the front-end!. This ReadMe guide will walk you through how the application works and its key functionalities.</p>
+        <p></p>Welcome to our Cabin Rental web application, designed to provide a convenient and user-friendly platform for cabin owners to list their properties and for potential renters to find, explore, and book their ideal Norwegian cabin experience now with React as the front-end! This ReadMe guide will walk you through how the application works and its key functionalities.</p>
     </div>
     
 
