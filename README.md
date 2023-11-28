@@ -9,7 +9,7 @@
     </header>
     <div class="container">
         <h2>Overview</h2>
-        <p></p>Welcome to our Cabin Rental web application, designed to provide a convenient and user-friendly platform for cabin owners to list their properties and for potential renters to find, explore, and book their ideal Norwegian cabin experience now with React as the front-end!. This ReadMe guide will walk you through how the application works and its key functionalities.</p>
+        <p></p>Welcome to our Cabin Rental web application, designed to provide a convenient and user-friendly platform for cabin owners to list their properties and for potential renters to find, explore, and book their ideal Norwegian cabin experience now with React as the front-end! This ReadMe guide will walk you through how the application works and its key functionalities.</p>
     </div>
     
 
@@ -59,8 +59,8 @@
 
 <h2>Choosing a Location in Norway</h2>
         <ul>
-            <li>The platform allows you to choose a specific location in Norway.</li>
-            <li>Based on your selection, you will see a list of cabins available in that area.</li>
+            <li>The platform allows you to search for a specific location in Norway.</li>
+            <li>Based on your search, you will see a list of cabins available in that area.</li>
             <li>The platform calculates the total cost for the selected cabin, including cleaning fees.</li>
         </ul>
  <p>We hope you enjoy your experience on our Cabin Rental web application, exploring the beautiful Norwegian culture through our cabin listings. If you have any questions or encounter any issues, please feel free to reach out for assistance. Happy cabin hunting!</p>

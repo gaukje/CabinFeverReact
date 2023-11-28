@@ -2,6 +2,7 @@
 using CabinFeverReact.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -26,6 +27,9 @@ public class OrderController : Controller
     [HttpGet("GetAll")]
     public async Task<IActionResult> GetAll()
     {
+        var orders = await _itemDbContext.Orders.ToListAsync();
+        return Ok(orders);
+        /*
         try
         {
             _logger.LogInformation("Order before saving: {@Order}");
@@ -58,6 +62,7 @@ public class OrderController : Controller
             _logger.LogError(ex, "An error occurred while getting orders.");
             return StatusCode(500, "Internal server error");
         }
+        */
     }
 
     // Action method to retriece date ranges for a specific item.
@@ -85,7 +90,45 @@ public class OrderController : Controller
         return Ok(dateList);
     }
 
-    // Her kan du legge til flere API endepunkter for å opprette, oppdatere og slette ordre, osv.
+    // POST: api/Order/Create
+    [HttpPost("Create")]
+    public async Task<IActionResult> Create([FromBody] Order order)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        order.UserId = userId;
+
+        _logger.LogInformation("Order before saving: {@Order}", order);
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            _itemDbContext.Orders.Add(order);
+            await _itemDbContext.SaveChangesAsync();
+            return Ok(new { orderId = order.OrderId });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred while saving order: {@Order}", order);
+            return StatusCode(500, "Internal server error");
+        }
+    }
+
+    // GET: api/Order/OrderConfirmation
+    [HttpGet("OrderConfirmation")]
+    public IActionResult OrderConfirmation(int orderId)
+    {
+        var order = _itemDbContext.Orders.FirstOrDefault(o => o.OrderId == orderId);
+        if (order == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(order);
+    }
 }
 
 

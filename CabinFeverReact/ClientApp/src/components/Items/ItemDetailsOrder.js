@@ -3,7 +3,7 @@ import { ItemService } from './../services/ItemService';
 import { useParams } from 'react-router-dom';
 import axios from 'axios'; // Import axios
 import { OrderService } from '../services/OrderService';
-
+import { useAuth } from '../../AuthContext'; // Update the path accordingly
 
 const ItemDetailsOrder = ({ item }) => {
     const [selectedFromDate, setSelectedFromDate] = useState('');
@@ -24,6 +24,8 @@ const ItemDetailsOrder = ({ item }) => {
     const [errorDateOverlap, setErrorDateOverlap] = useState('');
 
     const [isLoading, setIsLoading] = useState(true);
+
+    const { currentUser } = useAuth();
 
     const controllDate = (fromDate, toDate) => {
         const fromDateObj = new Date(fromDate);
@@ -193,6 +195,30 @@ const ItemDetailsOrder = ({ item }) => {
         return <div>Loading...</div>; // You can replace this with a loading spinner or any other loading indicator
     }
 
+    const handleSubmit = async (event) => {
+        event.preventDefault(); // Prevents the default form submission
+
+        // Create an order object based on your Order type
+        const order = {
+            UserId: currentUser?.UserId, 
+            ItemId: item.ItemId,
+            FromDate: new Date(selectedFromDate),
+            ToDate: new Date(selectedToDate),
+            Guests: Number(selectedGuests),
+            TotalPrice: Number(totalPrice),
+        };
+
+        try {
+            // Call the createOrder function from OrderService
+            const response = await OrderService.createOrder(order);
+            console.log('Order created:', response);
+            // Handle the response, e.g., redirecting the user or showing a success message
+        } catch (error) {
+            console.error('Error creating order:', error);
+            // Handle the error, e.g., showing an error message to the user
+        }
+    };
+
     return (
         <div>
             <div className="bg-light border border-dark-subtle rounded-3 p-4">
@@ -200,41 +226,40 @@ const ItemDetailsOrder = ({ item }) => {
                     <b>{formatCurrency(item.Price)} per night</b>
                 </div>
 
-                <form asp-controller="Order" asp-action="Create" method="post" id="reservationForm">
-                    <div className="section mb-4">
-                        <input type="hidden" name="ItemId" value="@Model.Id" />
-                        <div className="row mb-2">
-                            <div className="col-sm-6">
-                                <div className="form-group">
-                                    <label htmlFor="FromDate">Check-In</label>
-                                    <input
-                                        name="FromDate"
-                                        className="form-control"
-                                        id="fromDate"
-                                        min={new Date().toISOString().split('T')[0]}
-                                        value={selectedFromDate}
-                                        placeholder="Add dates"
-                                        readOnly
-                                    />
-                                    <span className="text-danger"></span>
-                                </div>
-                            </div>
-                            <div className="col-sm-6">
-                                <div className="form-group">
-                                    <label htmlFor="ToDate">Checkout</label>
-                                    <input
-                                        name="ToDate"
-                                        className="form-control"
-                                        id="toDate"
-                                        min={new Date().toISOString().split('T')[0]}
-                                        value={selectedToDate}
-                                        placeholder="Add dates"
-                                        readOnly
-                                    />
-                                    <span className="text-danger"></span>
-                                </div>
+                <form onSubmit={handleSubmit} id="reservationForm">
+                    <input type="hidden" name="ItemId" value={item.ItemId} />
+                    <div className="row mb-2">
+                        <div className="col-sm-6">
+                            <div className="form-group">
+                                <label htmlFor="FromDate">Check-In</label>
+                                <input
+                                    name="FromDate"
+                                    className="form-control"
+                                    id="fromDate"
+                                    min={new Date().toISOString().split('T')[0]}
+                                    value={selectedFromDate}
+                                    placeholder="Add dates"
+                                    readOnly
+                                />
+                                <span className="text-danger"></span>
                             </div>
                         </div>
+                        <div className="col-sm-6">
+                            <div className="form-group">
+                                <label htmlFor="ToDate">Checkout</label>
+                                <input
+                                    name="ToDate"
+                                    className="form-control"
+                                    id="toDate"
+                                    min={new Date().toISOString().split('T')[0]}
+                                    value={selectedToDate}
+                                    placeholder="Add dates"
+                                    readOnly
+                                />
+                                <span className="text-danger"></span>
+                            </div>
+                        </div>
+                    
 
                         <div className="row">
                             <div className="form-group">
@@ -269,79 +294,80 @@ const ItemDetailsOrder = ({ item }) => {
                                 <span className="text-danger"></span>
                             </div>
                         </div>
+                
+
+                        <p><span className="text-danger" id="errorDateOverlap">{errorDateOverlap}</span></p>
+
+                        <div className={`section mb-4 ${showListReserve ? "" : "d-none"}`} id="listReserve">
+                            <div className="row">
+                                <div className="col-7">
+                                    <p>{formatCurrency(item.Price)} &#215; {timeDifference} {timeDifference > 1 ? 'nights' : 'night'}</p>
+                                </div>
+                                <div className="col-5 text-end">
+                                    <p>{costPerNight}</p>
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-7">
+                                    <p>Cleaning fee</p>
+                                </div>
+                                <div className="col-5 text-end">
+                                    <p>{cleaningFee}</p>
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-7">
+                                    <p>Service fee</p>
+                                </div>
+                                <div className="col-5 text-end">
+                                    <p>{serviceFee}</p>
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-7">
+                                    <p>Taxes</p>
+                                </div>
+                                <div className="col-5 text-end">
+                                    <p>{taxes}</p>
+                                </div>
+                            </div>
+
+                            <hr className="hr hr-blurry" />
+
+                            <div className="row">
+                                <div className="col-7">
+                                    <b>Total</b>
+                                </div>
+                                <div className="col-5 text-end">
+                                    <b>{totalPriceString}</b>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="form-group d-none">
+                            <label htmlFor="TotalPrice">Total Price</label>
+                            <input
+                                name="TotalPrice"
+                                type="number"
+                                step="0.01"
+                                className="form-control"
+                                id="totalPrice"
+                                value={totalPrice}
+                            />
+                            <span className="text-danger">@ViewData["TotalPriceError"]</span>
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="btn btn-primary w-100"
+                            disabled={!(selectedFromDate && selectedToDate && selectedGuests && showListReserve)}
+                        >
+                            Reserve
+                        </button>
                     </div>
-
-                    <p><span className="text-danger" id="errorDateOverlap">{errorDateOverlap}</span></p>
-
-                    <div className={`section mb-4 ${showListReserve ? "" : "d-none"}`} id="listReserve">
-                        <div className="row">
-                            <div className="col-7">
-                                <p>{formatCurrency(item.Price)} &#215; {timeDifference} {timeDifference > 1 ? 'nights' : 'night'}</p>
-                            </div>
-                            <div className="col-5 text-end">
-                                <p>{costPerNight}</p>
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col-7">
-                                <p>Cleaning fee</p>
-                            </div>
-                            <div className="col-5 text-end">
-                                <p>{cleaningFee}</p>
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col-7">
-                                <p>Service fee</p>
-                            </div>
-                            <div className="col-5 text-end">
-                                <p>{serviceFee}</p>
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col-7">
-                                <p>Taxes</p>
-                            </div>
-                            <div className="col-5 text-end">
-                                <p>{taxes}</p>
-                            </div>
-                        </div>
-
-                        <hr className="hr hr-blurry" />
-
-                        <div className="row">
-                            <div className="col-7">
-                                <b>Total</b>
-                            </div>
-                            <div className="col-5 text-end">
-                                <b>{totalPriceString}</b>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="form-group d-none">
-                        <label htmlFor="TotalPrice">Total Price</label>
-                        <input
-                            name="TotalPrice"
-                            type="number"
-                            step="0.01"
-                            className="form-control"
-                            id="totalPrice"
-                            value={totalPrice}
-                        />
-                        <span className="text-danger">@ViewData["TotalPriceError"]</span>
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="btn btn-primary w-100"
-                        disabled={!(selectedFromDate && selectedToDate && selectedGuests && showListReserve)}
-                    >
-                        Reserve
-                    </button>
                 </form>
             </div>
         </div>

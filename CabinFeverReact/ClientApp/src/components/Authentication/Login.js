@@ -24,7 +24,7 @@ const Login = () => {
             }
         } catch (error) {
             console.error('Login failed:', error);
-            setErrorMessage('Incorrect username or password');
+            setErrorMessage('Incorrect e-mail address or password');
             // Handle login failure
         }
     };
@@ -36,7 +36,7 @@ const Login = () => {
                     type="text"
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
-                    placeholder="Username" />
+                    placeholder="E-mail" />
                 <input
                     type="password"
                     value={password}
