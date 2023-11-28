@@ -42,18 +42,26 @@ namespace CabinFeverReact.Services
             return await _userManager.CheckPasswordAsync(identityUser, user.Password);
         }
 
-        public string GenerateTokenString(LoginUser user)
+        public async Task<string> GenerateTokenString(LoginUser user)
         {
-            var claims = new List<Claim>
+            var identityUser = await _userManager.FindByEmailAsync(user.UserName);
+            if (identityUser == null)
             {
-                new Claim(ClaimTypes.Email, user.UserName),
-                new Claim(ClaimTypes.Role, "Admin"),
-            };
+                throw new Exception("User not found.");
+            }
+
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Email, identityUser.Email),
+        new Claim(ClaimTypes.Role, "Admin"),
+        // Legg til en claim for brukerens ID
+        new Claim(ClaimTypes.NameIdentifier, identityUser.Id)
+    };
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection
                 ("Jwt:Key").Value));
 
-            var signingCred = new SigningCredentials(securityKey, 
+            var signingCred = new SigningCredentials(securityKey,
                 SecurityAlgorithms.HmacSha512Signature);
 
             var securityToken = new JwtSecurityToken(
@@ -61,7 +69,7 @@ namespace CabinFeverReact.Services
                 expires: DateTime.Now.AddMinutes(60),
                 issuer: _config.GetSection("Jwt:Issuer").Value,
                 audience: _config.GetSection("Jwt:Audience").Value,
-                signingCredentials:signingCred);
+                signingCredentials: signingCred);
 
             string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
             return tokenString;

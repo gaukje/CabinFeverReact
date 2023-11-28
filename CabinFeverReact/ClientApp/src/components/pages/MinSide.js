@@ -1,39 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../AuthContext';
 import { OrderService } from '../services/OrderService';
+import OrderHistory from '../Order/OrderHistory'; // Import the OrderHistory component
+import { getEmailFromToken } from '../../utils/authHelpers'
 
 const MinSide = () => {
     const [orders, setOrders] = useState([]);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
-        OrderService.getOrders()
-            .then(fetchedOrders => {
-                const ordersArray = fetchedOrders.$values || [];
-                console.log('Orders:', JSON.stringify(ordersArray, null, 2)); // Skriver ut ordreinformasjonen
-                setOrders(ordersArray);
-            })
-            .catch(error => {
-                console.error('Failed to fetch orders:', error);
-            });
-    }, []);
+        if (token) {
+            const email = getEmailFromToken(token);
+            OrderService.getUserOrders(email, token)
+                .then(fetchedOrders => {
+                    // Sjekk om ordredataen inneholder $values nøkkel
+                    const ordersArray = fetchedOrders.$values || fetchedOrders;
+                    setOrders(ordersArray);
+                })
+                .catch(error => {
+                    console.error('Failed to fetch orders:', error);
+                });
+        }
+    }, [token]);
+
+    console.log("Orders to display:", orders);
 
     return (
         <div>
             <h1>Min Side</h1>
             <div>
                 {orders.length > 0 ? (
-                    orders.map(order => (
-                        <div key={order.orderId}>
-                            {/* Render detaljer for hver ordre, eksempel: */}
-                            <p>Order ID: {order.orderId}</p>
-                            {/* Legg til flere detaljer om ordren som du ønsker å vise */}
-                        </div>
-                    ))
+                    <OrderHistory orders={orders} /> // Send ordre til OrderHistory komponent
                 ) : (
                     <p>Ingen ordre å vise.</p>
                 )}
             </div>
         </div>
     );
-}
+};
 
 export default MinSide;
+

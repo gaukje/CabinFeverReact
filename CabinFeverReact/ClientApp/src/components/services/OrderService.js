@@ -25,44 +25,46 @@ const getDateRange = async (itemId) => {
     }
 }
 
+const getUserOrders = async (email, token) => {
+    try {
+        const response = await axios.get(`${baseUrl}/GetUserOrdersByEmail`, {
+            headers: {
+                Authorization: `Bearer ${token}` // Bruk token som er sendt som parameter
+            },
+            params: {
+                email: email // Send e-postadressen som en parameter
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching user orders:', error);
+        throw error;
+    }
+};
+
+
+
+
+
 // Du kan legge til flere funksjoner for å håndtere oppretting, oppdatering og sletting av ordre
 const createOrder = async (newOrder) => {
-    try {
-        const response = await axios.post(`${baseUrl}/Create`, newOrder);
-        return response.data;
-    } catch (error) {
-        console.error('Error creating order:', error);
-        throw error;
-    }
+    // Implementer funksjonalitet for å opprette en ny ordre
 };
 
-/*
 const updateOrder = async (orderId, updatedOrder) => {
-    try {
-        const response = await axios.put(`${baseUrl}/Update/${orderId}`, updatedOrder);
-        return response.data;
-    } catch (error) {
-        console.error('Error updating order:', error);
-        throw error;
-    }
+    // Implementer funksjonalitet for å oppdatere en eksisterende ordre
 };
-
 
 const deleteOrder = async (orderId) => {
-    try {
-        const response = await axios.delete(`${baseUrl}/Delete/${orderId}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error deleting order:', error);
-        throw error;
-    }
+    // Implementer funksjonalitet for å slette en ordre
 };
-*/
 
 export const OrderService = {
     getOrders,
     createOrder,
-    //updateOrder,
-    //deleteOrder,
+    updateOrder,
+    deleteOrder,
     getDateRange,
+    getUserOrders,
 };
+

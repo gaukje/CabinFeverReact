@@ -2,7 +2,6 @@
 using CabinFeverReact.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -27,9 +26,6 @@ public class OrderController : Controller
     [HttpGet("GetAll")]
     public async Task<IActionResult> GetAll()
     {
-        var orders = await _itemDbContext.Orders.ToListAsync();
-        return Ok(orders);
-        /*
         try
         {
             _logger.LogInformation("Order before saving: {@Order}");
@@ -62,7 +58,6 @@ public class OrderController : Controller
             _logger.LogError(ex, "An error occurred while getting orders.");
             return StatusCode(500, "Internal server error");
         }
-        */
     }
 
     // Action method to retriece date ranges for a specific item.
@@ -90,46 +85,91 @@ public class OrderController : Controller
         return Ok(dateList);
     }
 
-    // POST: api/Order/Create
-    [HttpPost("Create")]
-    public async Task<IActionResult> Create([FromBody] Order order)
+    // GET: api/Order/GetUserOrders/{userId}
+    [HttpGet("GetUserOrders/{userId}")]
+    public async Task<IActionResult> GetUserOrders(string userId)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        order.UserId = userId;
-
-        _logger.LogInformation("Order before saving: {@Order}", order);
-
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
         try
         {
-            _itemDbContext.Orders.Add(order);
-            await _itemDbContext.SaveChangesAsync();
-            return Ok(new { orderId = order.OrderId });
+            var orders = await _itemDbContext.Orders
+                .Where(o => o.UserId == userId)
+                .Select(order => new
+                {
+                    order.OrderId,
+                    order.OrderDate,
+                    order.UserId,
+                    order.TotalPrice,
+                    order.ItemId,
+                    order.FromDate,
+                    order.ToDate,
+                    order.Guests
+                })
+                .ToListAsync();
+
+            if (!orders.Any())
+            {
+                _logger.LogWarning("No orders found for user: {UserId}", userId);
+                return NotFound($"No orders found for user: {userId}");
+            }
+
+            return Ok(orders);
         }
-        catch (Exception ex)
+        catch (System.Exception ex)
         {
-            _logger.LogError(ex, "Error occurred while saving order: {@Order}", order);
+            _logger.LogError(ex, "An error occurred while getting orders for user: {UserId}", userId);
             return StatusCode(500, "Internal server error");
         }
     }
 
-    // GET: api/Order/OrderConfirmation
-    [HttpGet("OrderConfirmation")]
-    public IActionResult OrderConfirmation(int orderId)
+    // GET: api/Order/GetUserOrdersByEmail
+    [HttpGet("GetUserOrdersByEmail")]
+    public async Task<IActionResult> GetUserOrdersByEmail(string email)
     {
-        var order = _itemDbContext.Orders.FirstOrDefault(o => o.OrderId == orderId);
-        if (order == null)
+        try
         {
-            return NotFound();
-        }
+            var user = await _itemDbContext.Users
+                            .FirstOrDefaultAsync(u => u.UserName == email); // Endret fra Email til UserName
 
-        return Ok(order);
+            if (user == null)
+            {
+                _logger.LogWarning("User not found with username: {Email}", email);
+                return NotFound($"User not found with username: {email}");
+            }
+
+            var orders = await _itemDbContext.Orders
+                .Where(o => o.UserId == user.Id)
+                .Select(order => new
+                {
+                    order.OrderId,
+                    order.OrderDate,
+                    order.UserId,
+                    order.TotalPrice,
+                    order.ItemId,
+                    order.FromDate,
+                    order.ToDate,
+                    order.Guests
+                })
+                .ToListAsync();
+
+            if (!orders.Any())
+            {
+                _logger.LogWarning("No orders found for user: {Email}", email);
+                return NotFound($"No orders found for user with username: {email}");
+            }
+
+            return Ok(orders);
+        }
+        catch (System.Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while getting orders for user: {Email}", email);
+            return StatusCode(500, "Internal server error");
+        }
     }
+
+
+
 }
+
 
 
 

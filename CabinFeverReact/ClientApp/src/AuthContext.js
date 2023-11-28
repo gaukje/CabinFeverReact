@@ -7,9 +7,11 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
+    // Oppdatert login-funksjon
     const login = (token) => {
+        console.log('Storing token:', token);
         localStorage.setItem('token', token);
-        setCurrentUser({ token });
+        setCurrentUser({ token: token });
     };
 
     const logout = () => {
@@ -27,6 +29,7 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     );
 };
+
 
 
 /*

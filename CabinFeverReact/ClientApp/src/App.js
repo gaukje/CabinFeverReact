@@ -29,12 +29,12 @@ const App = () => {
                     <Route path="/pages/about" element={<About />} />
                     <Route path="/pages/contact" element={<Contact />} />
                     <Route path="/Items/Rentals" element={<Rentals />} />
-                    
-                    {/*<Route path="/Items/Details/:id" element={<ItemDetails />} />
-                    <Route path="/Items/Create" element={<ProtectedRoute><ItemCreate /></ProtectedRoute>} />
-                    <Route path="/Items/Edit/:id" element={<ProtectedRoute><ItemEdit /></ProtectedRoute>} />
-                    <Route path="/Items/Delete/:id" element={<ProtectedRoute><ItemDelete /></ProtectedRoute>} />
-                    */}
+
+                    {/*<Route path="/Items/Details/:id" element={<ItemDetails />} />*/}
+                    {/*<Route path="/Items/Create" element={<ProtectedRoute><ItemCreate /></ProtectedRoute>} />*/}
+                    {/*<Route path="/Items/Edit/:id" element={<ProtectedRoute><ItemEdit /></ProtectedRoute>} />*/}
+                    {/*<Route path="/Items/Delete/:id" element={<ProtectedRoute><ItemDelete /></ProtectedRoute>} />*/}
+
                     <Route path="/Items/Details/:id" element={<ItemDetails />} />
                     <Route path="/Items/Create" element={<ItemCreate />} />
                     <Route path="/Items/Edit/:id" element={<ItemEdit />} />
