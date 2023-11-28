@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import ImageBanner from '../ImageBanner';
+
 
 const Register = () => {
     const [userName, setUserName] = useState('');
@@ -44,22 +46,7 @@ const Register = () => {
 
     return (
         <div>
-            {/* Banner */}
-            <div className="banner-secondary">
-                <div className="banner-secondary-container">
-                    {/* Midlertidig */}
-                    <img src="/images/login_background.jpg" id="banner-image" alt="Banner" />
-
-                </div>
-                <div className="row">
-                    <div className="col-12 d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle">
-                        <div className="text-center">
-                            {/* The text */}
-                            <h1 className="text-white">Register</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ImageBanner imageSrc="/images/banners/wide-shot-brown-house-surrounded-by-forest-spruce-trees-clouds.jpg" titleText="Register"></ImageBanner>
 
             <div class="container my-5">
                 <div class="row">

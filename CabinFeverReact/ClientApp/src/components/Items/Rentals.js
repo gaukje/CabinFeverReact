@@ -48,7 +48,7 @@ const Rentals = () => {
             <div className="banner-secondary">
                 <div className="banner-secondary-container">
                     <img
-                        src="https://images.pexels.com/photos/1724228/pexels-photo-1724228.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                        src="/images/banners/pexels-photo-1724228.jpeg"
                         id="banner-image"
                         alt="Banner Image"
                     />
