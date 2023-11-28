@@ -60,8 +60,7 @@ const Login = () => {
                                             className="form-control"
                                             type="text"
                                             value={userName}
-                                            onChange={(e) => setUserName(e.target.value)}
-                                            placeholder="E-mail" />
+                                            onChange={(e) => setUserName(e.target.value)} />
                                         <label for="floatingInput">E-mail address</label>
 
                                     </div>
@@ -70,8 +69,7 @@ const Login = () => {
                                             className="form-control"
                                             type="password"
                                             value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            placeholder="Password" />
+                                            onChange={(e) => setPassword(e.target.value)} />
                                         <label for="floatingInput">Password</label>
                                     </div>
                                     <p><span className="text-danger" id="errorMessage">{errorMessage}</span></p>

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const Register = () => {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const [repeatPassword, setRepeatPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ const Register = () => {
             return;
         }
 
-        if (password !== repeatPassword) {
+        if (password !== confirmPassword) {
             console.error('The passwords do not match');
             setErrorMessage('The passwords do not match');
             return;
@@ -44,28 +44,61 @@ const Register = () => {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
-                    placeholder="E-mail"
-                />
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                />
-                <input
-                    type="password"
-                    value={repeatPassword}
-                    onChange={(e) => setRepeatPassword(e.target.value)}
-                    placeholder="Repeat password"
-                />
-                <button type="submit">Register</button>
-            </form>
-            <p><span className="text-danger" id="errorMessage">{errorMessage}</span></p>
+            {/* Banner */}
+            <div className="banner-secondary">
+                <div className="banner-secondary-container">
+                    {/* Midlertidig */}
+                    <img src="/images/login_background.jpg" id="banner-image" alt="Banner" />
+
+                </div>
+                <div className="row">
+                    <div className="col-12 d-flex align-items-center justify-content-center position-absolute top-50 start-50 translate-middle">
+                        <div className="text-center">
+                            {/* The text */}
+                            <h1 className="text-white">Register</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container my-5">
+                <div class="row">
+                    <div class="col-md-4">
+                        <form onSubmit={handleSubmit}>
+                            <h2>Create a new account</h2>
+                            <hr />
+                            <div className="form-floating mb-2">
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    value={userName}
+                                    onChange={(e) => setUserName(e.target.value)} />
+                                <label for="floatingInput">E-mail address</label>
+                            </div>
+                            <div className="form-floating mb-2">
+                                <input
+                                    className="form-control"
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)} />
+                                <label for="floatingInput">Password</label>
+                            </div>
+                            <div className="form-floating mb-2">
+                                <input
+                                    className="form-control"
+                                    type="password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)} />
+                                <label for="floatingInput">Confirm password</label>
+                            </div>
+                            <p><span className="text-danger" id="errorMessage">{errorMessage}</span></p>
+
+                            <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     );
