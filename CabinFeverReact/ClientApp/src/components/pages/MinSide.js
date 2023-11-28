@@ -13,7 +13,7 @@ const MinSide = () => {
             const email = getEmailFromToken(token);
             OrderService.getUserOrders(email, token)
                 .then(fetchedOrders => {
-                    // Sjekk om ordredataen inneholder $values nøkkel
+                    // Sjekk om ordredataen inneholder $values nï¿½kkel
                     const ordersArray = fetchedOrders.$values || fetchedOrders;
                     setOrders(ordersArray);
                 })
@@ -32,7 +32,7 @@ const MinSide = () => {
                 {orders.length > 0 ? (
                     <OrderHistory orders={orders} /> // Send ordre til OrderHistory komponent
                 ) : (
-                    <p>Ingen ordre å vise.</p>
+                    <p>Ingen ordre Ã¥ vise.</p>
                 )}
             </div>
         </div>
