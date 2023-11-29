@@ -1,10 +1,13 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, loading } = useAuth();
+
+    if (loading) {
+        return <div>Loading...</div>; // Or any other loading indicator
+    }
 
     if (!isAuthenticated()) {
         return <Navigate to="/Login" />;

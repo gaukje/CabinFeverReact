@@ -7,16 +7,16 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
+    const [loading, setLoading] = useState(true); // Add a loading state
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        console.log('Retrieved token:', token);
-        if (token)
-        {
+        if (token) {
             const userId = authHelpers.getUserIdFromToken(token);
             const email = authHelpers.getEmailFromToken(token);
             setCurrentUser({ token, userId, email });
         }
+        setLoading(false); // Set loading to false after checking the token
     }, []);
 
     const login = (token) => {
@@ -36,8 +36,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ currentUser, isAuthenticated, login, logout }}>
-            {children}
+        <AuthContext.Provider value={{ currentUser, isAuthenticated, login, logout, loading }}>
+            {!loading && children} {/* Render children only when not loading */}
         </AuthContext.Provider>
     );
 };
