@@ -10,9 +10,12 @@ const Rentals = () => {
     const [filteredItems, setFilteredItems] = useState([]);
     // state for search term
     const [searchTerm, setSearchTerm] = useState('');
-
+    // state for loading
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        // change loading state
+        setIsLoading(true);
         // get items from service
         ItemService.getItems()
             .then(fetchedItems => {
@@ -24,9 +27,13 @@ const Rentals = () => {
                 setItems(itemsArray);
                 // initially filtered items are same as all items
                 setFilteredItems(itemsArray);
+                // change loading state
+                setIsLoading(false);
             })
             .catch(error => {
                 console.error('Failed to fetch items:', error);
+                // change loading state
+                setIsLoading(false);
             });
     }, []);
 
@@ -95,7 +102,9 @@ const Rentals = () => {
             
             <div className="container my-5 pb-5">
                 <div className="row row-cols-1 row-cols-md-3 g-4" id="itemContainer">
-                    {filteredItems.length > 0 ? (
+                    {isLoading ? (
+                        <p>Loading...</p> // Show "Loading..." while fetching data
+                    ) : filteredItems.length > 0 ? (
                         filteredItems.map(item => (
                             <div className="item" data-location={item.Location} key={item.ItemId}>
                                 <ItemCard item={item} />
