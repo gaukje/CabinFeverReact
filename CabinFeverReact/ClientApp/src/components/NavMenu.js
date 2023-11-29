@@ -58,17 +58,12 @@ class NavMenu extends Component {
                         <ul className="navbar-nav">
                             {isAuthenticated() ? (
                                 <>
-                                    <div className="navbar-text text-light mr-3">
-                                        {emailPart}
-                                    </div>
-
                                     <NavItem>
                                         <NavLink tag={Link} className="text-light" to="/Items/Create">List your property</NavLink>
                                     </NavItem>
 
                                     <li class="nav-item dropdown d-none d-sm-block">
-                                        <a class="btn btn-dark dropdown-toggle bi bi-person-circle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">&#9;</a>
-
+                                        <a class="btn btn-dark dropdown-toggle bi bi-person-circle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">&#9; {emailPart}</a>
                                         <ul class="dropdown-menu bg-dark border-0" aria-labelledby="dropdownMenuLink">
                                             <li>
                                                 <NavItem>
