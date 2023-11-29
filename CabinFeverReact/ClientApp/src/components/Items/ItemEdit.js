@@ -40,7 +40,7 @@ const ItemEdit = () => {
         try {
             await ItemService.updateItem(id, item);
             console.log('Item updated successfully');
-            navigate('/Items/Rentals');
+            navigate('/MinSide');
         } catch (error) {
             console.error('Error updating item:', error);
         }
@@ -113,7 +113,7 @@ const ItemEdit = () => {
                 </div>
                 <button type="submit" className="btn btn-primary">Update Item</button>
 
-                <button onClick={() => navigate(-1)} type="button" className="btn btn-secondary">
+                <button onClick={() => navigate('/MinSide')} type="button" className="btn btn-secondary">
                     Cancel
                 </button>
             </form>

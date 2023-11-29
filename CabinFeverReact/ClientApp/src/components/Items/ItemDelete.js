@@ -25,7 +25,7 @@ const ItemDelete = () => {
         setIsDeleting(true);
         try {
             await ItemService.deleteItem(id);
-            navigate('/Items/Rentals');
+            navigate('/MinSide');
         } catch (error) {
             console.error('Error deleting item:', error);
             setIsDeleting(false);
@@ -50,7 +50,7 @@ const ItemDelete = () => {
                 <button onClick={handleDelete} type="button" className="btn btn-danger me-2" disabled={isDeleting}>
                     {isDeleting ? 'Deleting...' : 'Delete'}
                 </button>
-                <button onClick={() => navigate(-1)} type="button" className="btn btn-secondary">
+                <button onClick={() => navigate('/MinSide')} type="button" className="btn btn-secondary">
                     Cancel
                 </button>
             </div>
