@@ -194,6 +194,9 @@ const ItemDetailsOrder = ({ item }) => {
                 console.log('Detailed properties:', JSON.stringify(dateArray, null, 2));
                 setListReservedDates(dateArray);
                 setIsLoading(false);
+
+                console.log("currentUser.userId", currentUser.userId);
+                console.log("item.UserId", item.UserId)
             })
             .catch((error) => {
                 console.error('Failed to fetch items:', error);
@@ -390,9 +393,9 @@ const ItemDetailsOrder = ({ item }) => {
                     <button
                         type="submit"
                         className="btn btn-primary w-100"
-                        disabled={!(selectedFromDate && selectedToDate && selectedGuests && showListReserve)}
+                        disabled={item.UserId === currentUser.userId || !(selectedFromDate && selectedToDate && selectedGuests && showListReserve)}
                     >
-                        {currentUser && currentUser.userId ? 'Reserve' : 'Log in to reserve'}
+                        {currentUser && currentUser.userId ? (item.UserId === currentUser.userId ? 'You cannot reserve your own property' : 'Reserve') : 'Log in to reserve'}
                     </button>
                 </form>
             </div>

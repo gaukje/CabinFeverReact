@@ -33,7 +33,7 @@ const MinSide = () => {
 
     return (
         <div>
-            <ImageBanner imageSrc="https://img.freepik.com/free-photo/cozy-glow-illuminates-modern-winter-living-room-generated-by-ai_188544-16425.jpg?t=st=1701222483~exp=1701226083~hmac=b5506c865a039baaddc7529860ca82b1de03a28274cbefad745d4ef3639a4399&w=1800" titleText="My profile"></ImageBanner>
+            <ImageBanner imageSrc="/images/banners/cozy-glow-illuminates-modern-winter-living-room-generated-by-ai_188544-16425.jpg" titleText="My profile"></ImageBanner>
 
             <div className="container my-5">
                 <div className="mb-5">
