@@ -4,8 +4,7 @@ import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from '
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import { AuthContext } from '../AuthContext';
-
-
+import { jwtDecode } from "jwt-decode";
 
 class NavMenu extends Component {
     static contextType = AuthContext; // Set the context type
@@ -29,18 +28,13 @@ class NavMenu extends Component {
     }
 
     render() {
-        const context = this.context;
+        const { isAuthenticated } = this.context; // Use this.context
+        let emailPart = "";
 
-
-        if (!context) {
-            console.error("AuthContext not found");
-            return null; // or some fallback UI
+        // Remove the standalone context check, it's not necessary since you're using this.context
+        if (isAuthenticated && this.context.currentUser && this.context.currentUser.email) {
+            emailPart = this.context.currentUser.email.split('@')[0];
         }
-
-        const { isAuthenticated } = context;
-
-        console.log("Context:", context);
-        console.log("Is Authenticated:", context.isAuthenticated());
 
         return (
             <header>
@@ -64,6 +58,10 @@ class NavMenu extends Component {
                         <ul className="navbar-nav">
                             {isAuthenticated() ? (
                                 <>
+                                    <div className="navbar-text text-light mr-3">
+                                        {emailPart}
+                                    </div>
+
                                     <NavItem>
                                         <NavLink tag={Link} className="text-light" to="/Items/Create">List your property</NavLink>
                                     </NavItem>
