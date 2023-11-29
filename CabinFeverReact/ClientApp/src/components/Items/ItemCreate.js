@@ -14,6 +14,36 @@ const ItemCreate = () => {
         UserId: '', // You may need to obtain this from the user's session or context
         IsAvailable: true, // Assuming you want new items to be available by default
     });
+
+    const setCustomValidityMessages = () => {
+        // Select all required inputs and textareas
+        const requiredFields = document.querySelectorAll('[required]');
+
+        requiredFields.forEach(field => {
+            // Set the message for each required field
+            field.oninvalid = function (e) {
+                if (field.value === '') {
+                    e.target.setCustomValidity('Please fill out this field');
+                }
+            };
+            field.oninput = function (e) {
+                // Clear custom validity message when the user starts typing
+                e.target.setCustomValidity('');
+            };
+        });
+    };
+
+    useEffect(() => {
+        // Set custom validation messages when the component mounts
+        setCustomValidityMessages();
+
+        // Also reset the custom validation for the file input
+        const fileInput = document.querySelector('input[type="file"]');
+        if (fileInput) {
+            fileInput.setCustomValidity('');
+        }
+    }, []);
+
     const navigate = useNavigate();
 
     const [selectedFile, setSelectedFile] = useState(null);
@@ -21,15 +51,48 @@ const ItemCreate = () => {
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         const newValue = event.target.type === 'number' ? Number(value) : value;
+
+        if (name === "PricePerNight") {
+            if (newValue <= 0) {
+                event.target.setCustomValidity('Price must be greater than 0 ');
+            } else {
+                event.target.setCustomValidity(''); // Clear custom message for valid input
+            }
+        }
+
+        if (name === "Capacity" && newValue < 1) {
+            event.target.setCustomValidity('The value must be greater than or equal to 1.');
+        } else {
+            event.target.setCustomValidity(''); // Clear custom message for valid input
+        }
+
         setItem({ ...item, [name]: newValue });
     };
 
     const handleFileChange = (event) => {
-        setSelectedFile(event.target.files[0]);
+        const file = event.target.files[0];
+        setSelectedFile(file);
+
+        if (!file) {
+            // If no file is selected, set the custom validity message.
+            event.target.setCustomValidity('Please upload an image.');
+        } else {
+            // If a file is selected, clear any custom validity messages.
+            event.target.setCustomValidity('');
+        }
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        // Check if a file is selected and set custom validity before submitting
+        const fileInput = document.querySelector('input[type="file"]');
+        if (!selectedFile) {
+            fileInput.setCustomValidity('Please upload an image.');
+            fileInput.reportValidity(); // This will show the custom validation message
+            return; // Prevent the form from submitting
+        } else {
+            fileInput.setCustomValidity(''); // Clear any custom message
+        }
 
         let newItemData = { ...item };
 
@@ -129,6 +192,7 @@ const ItemCreate = () => {
                         className="form-control"
                         required
                         placeholder="0"
+                        min="1"
                     />
                 </div>
                 <div className="form-group mb-4">
@@ -143,7 +207,7 @@ const ItemCreate = () => {
                     ></textarea>
                 </div>
                 <div className="form-group mb-4">
-                    <label>Select an image to upload</label>
+                    <label>Select an image to upload</label><span className="text-danger">*</span>
                     <input
                         type="file"
                         name="file"
@@ -161,6 +225,7 @@ const ItemCreate = () => {
                         className="form-control"
                         min="1" // Minimum value
                         max="10" // Set a maximum value if needed
+                        required
                     />
                 </div>
 

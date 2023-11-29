@@ -7,20 +7,28 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace XunitTestCabinFeverReact.Controllers
 {
     public class ItemControllerTest
     {
         private readonly Mock<IItemRepository> _mockRepo;
+        private readonly Mock<UserManager<IdentityUser>> _mockUserManager; // Mock for UserManager
         private readonly Mock<ILogger<ItemController>> _mockLogger;
+        private readonly Mock<ItemDbContext> _mockItemDbContext; // Mock for ItemDbContext
         private readonly ItemController _controller;
 
         public ItemControllerTest()
         {
             _mockRepo = new Mock<IItemRepository>();
+            _mockUserManager = new Mock<UserManager<IdentityUser>>( // Assuming you have a UserStore for the constructor
+                new Mock<IUserStore<IdentityUser>>().Object,
+                null, null, null, null, null, null, null, null);
             _mockLogger = new Mock<ILogger<ItemController>>();
-            _controller = new ItemController(_mockRepo.Object, _mockLogger.Object);
+            _mockItemDbContext = new Mock<ItemDbContext>(new DbContextOptions<ItemDbContext>()); // Assuming you have DbContextOptions for the constructor
+            _controller = new ItemController(_mockRepo.Object, _mockUserManager.Object, _mockLogger.Object, _mockItemDbContext.Object);
         }
 
         // Test to ensure that when items exist, the GetAll action returns an OK result with a list of items.
