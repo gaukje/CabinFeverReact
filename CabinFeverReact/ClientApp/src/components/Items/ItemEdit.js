@@ -112,6 +112,10 @@ const ItemEdit = () => {
                     />
                 </div>
                 <button type="submit" className="btn btn-primary">Update Item</button>
+
+                <button onClick={() => navigate(-1)} type="button" className="btn btn-secondary">
+                    Cancel
+                </button>
             </form>
         </div>
     );
