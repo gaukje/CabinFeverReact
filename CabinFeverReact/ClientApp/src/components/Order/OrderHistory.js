@@ -1,16 +1,20 @@
 import React from 'react';
 
+// component for showing order history
 const OrderHistory = ({ orders }) => {
+    // function to get order status based on dates
     const getOrderStatus = (order) => {
         const today = new Date();
         const fromDate = new Date(order.fromDate);
         const toDate = new Date(order.toDate);
 
+        // checking if order is upcoming, ongoing, or completed
         if (today < fromDate) return "Upcoming";
         if (today > toDate) return "Completed";
         return "Ongoing";
     };
 
+    // rendering the order history in a table
     return (
         <div className="table-responsive">
             <table className="table table-striped">

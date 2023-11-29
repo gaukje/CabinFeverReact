@@ -22,6 +22,7 @@ import OrderConfirmation from './components/Order/OrderConfirmation';
 
 const App = () => {
     return (
+        // wrap everything inside AuthProvider for authentication context
         <AuthProvider>
             <div>
                 <NavMenu />

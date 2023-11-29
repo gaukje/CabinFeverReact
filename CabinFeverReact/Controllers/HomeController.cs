@@ -11,17 +11,21 @@ namespace CabinFeverReact.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    // this controller manages the home page related functionalities
     public class HomeController : ControllerBase
     {
+        // logger and itemRepository for managing logging and item data
         private readonly ILogger<HomeController> _logger;
         private readonly IItemRepository _itemRepository;
 
+        // constructor to initialize logger and item repository
         public HomeController(ILogger<HomeController> logger, IItemRepository itemRepository)
         {
             _logger = logger;
             _itemRepository = itemRepository;
         }
 
+        // get method to retrieve items
         [HttpGet("items")]
         public async Task<IActionResult> GetItems()
         {
@@ -37,6 +41,7 @@ namespace CabinFeverReact.Controllers
             }
         }
 
+        // get method to retrieve rentals for the user
         [HttpGet("rentals")]
         public async Task<IActionResult> GetRentals()
         {
@@ -55,7 +60,7 @@ namespace CabinFeverReact.Controllers
         }
 
         // About and Contact endpoints can be removed if these pages are static and handled by React.
-
+        // method for fetching user specific page (MinSide)
         [HttpGet("minside")]
         public async Task<IActionResult> GetMinSide()
         {

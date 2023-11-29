@@ -3,6 +3,7 @@ import { Item } from '../Items/item.ts';
 const baseUrl = `${ window.location.protocol }//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}/api/item`;
 console.log("ItemService");
 
+// function to get all items
 const getItems = async () => {
     try {
         const response = await axios.get(`${baseUrl}/GetAll`);
@@ -13,6 +14,7 @@ const getItems = async () => {
     }
 };
 
+// function to create a new item
 const createItem = async (newItem) => {
     try {
         const response = await axios.post(`${baseUrl}/Create`, newItem);
@@ -23,6 +25,7 @@ const createItem = async (newItem) => {
     }
 };
 
+// function to get item by id
 const getItemById = async (itemId) => {
     try {
         const response = await axios.get(`${baseUrl}/${itemId}`);
@@ -32,6 +35,7 @@ const getItemById = async (itemId) => {
     }
 };
 
+// function to update an item
 const updateItem = async (itemId, newItem) => {
     try {
         const response = await axios.put(`${baseUrl}/update/${itemId}`, newItem);
@@ -41,6 +45,7 @@ const updateItem = async (itemId, newItem) => {
     }
 };
 
+// function to delete an item
 const deleteItem = async (itemId) => {
     try {
         const response = await axios.delete(`${baseUrl}/delete/${itemId}`);
@@ -50,6 +55,7 @@ const deleteItem = async (itemId) => {
     }
 };
 
+// function to upload an image
 const uploadImage = async (formData) => {
     try {
         const response = await axios.post(`${baseUrl}/Upload`, formData, {
@@ -64,6 +70,7 @@ const uploadImage = async (formData) => {
     }
 };
 
+// function to get items for a specific user
 const getUserItems = async (userEmail, token) => {
     try {
         const response = await axios.get(`${baseUrl}/GetUserItems`, {
@@ -79,6 +86,7 @@ const getUserItems = async (userEmail, token) => {
     }
 };
 
+// exporting the item service functions
 export const ItemService = {
     getItems,
     createItem,
