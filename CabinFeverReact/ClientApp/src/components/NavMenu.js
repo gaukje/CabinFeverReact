@@ -104,26 +104,3 @@ class NavMenu extends Component {
 }
 
 export default NavMenu;
-/*
-<AuthContext.Consumer>
-    {({ isAuthenticated }) => (
-        <ul className="navbar-nav">
-            {!isAuthenticated() && (
-                <>
-                    <NavItem>
-                        <NavLink tag={Link} className="text-light" to="/register">Register</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} className="text-light" to="/login">Login</NavLink>
-                    </NavItem>
-                </>
-            )}
-            {isAuthenticated() && (
-                <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/MinSide">Min Side</NavLink>
-                </NavItem>
-            )}
-        </ul>
-    )}
-</AuthContext.Consumer>
-*/

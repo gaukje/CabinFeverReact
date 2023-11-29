@@ -61,20 +61,4 @@ public class UserController : ControllerBase
         // returning bad request if login fails
         return BadRequest();
     }
-    /*
-    [HttpPost("Login")]
-    public async Task<IActionResult> Login(LoginUser user)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-        if (await _userService.Login(user))
-        {
-            var tokenString = _userService.GenerateTokenString(user);
-            return Ok(new { token = tokenString });
-        }
-        return BadRequest();
-    }
-    */
 }
