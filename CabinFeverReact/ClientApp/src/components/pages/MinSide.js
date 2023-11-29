@@ -39,7 +39,7 @@ const MinSide = () => {
 
             <div className="container my-5">
                 <div className="mb-5">
-                    <h2>Your properties</h2>
+                    <h2 className="mb-3">Your properties</h2>
                     {isLoading ? (
                         <p>Loading...</p>
                     ) : (
