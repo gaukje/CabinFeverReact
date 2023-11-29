@@ -86,6 +86,7 @@ const getUserItems = async (userEmail, token) => {
     }
 };
 
+// function to get item and username by id
 const getItemWithUser = async (itemId) => {
     try {
         const response = await axios.get(`${baseUrl}/Get/${itemId}`);

@@ -31,7 +31,7 @@ public class ItemController : ControllerBase
     {
         _logger.LogInformation("Attempting to find user with UserName: {Email}", email);
 
-        // Finner brukeren basert på UserName (som inneholder e-postadressen)
+        // finds the user based on UserName (which includes the email)
         var user = await _itemDbContext.Users
                         .FirstOrDefaultAsync(u => u.UserName == email);
 
@@ -44,7 +44,7 @@ public class ItemController : ControllerBase
 
         _logger.LogInformation("User found with UserName: {Email}, UserId: {UserId}", email, user.Id);
 
-        // Henter items knyttet til brukerens ID direkte ved hjelp av ItemDbContext
+        // Fetching items connected to the users Id directly with ItemDbContext
         var items = await _itemDbContext.Items
                         .Where(i => i.UserId == user.Id)
                         .ToListAsync();
@@ -217,16 +217,23 @@ public class ItemController : ControllerBase
         return Ok(new { imageUrl = "/" + dbPath.Replace("\\", "/") });
     }
 
+    // Gets all items including the corresponding UserName
     [HttpGet("Get/{id}")]
     public async Task<IActionResult> GetItemWithUserById(int id)
     {
+        // Calls the item repository to get the item along with its associated username
         var itemWithUserName = await _itemRepository.GetItemWithUserName(id);
+
+        // Checks if the item or associated username is null, indicating the item was not found
         if (itemWithUserName?.Item == null)
         {
+            // Returns a NotFound response if the item is not found
             return NotFound($"Item with id {id} not found.");
         }
 
+        // Returns the item with its associated username if found
         return Ok(itemWithUserName);
     }
+
 
 }

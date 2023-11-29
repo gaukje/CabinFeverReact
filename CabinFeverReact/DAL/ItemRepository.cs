@@ -18,18 +18,20 @@ public class ItemRepository : IItemRepository
         _logger = logger;
     }
 
+    // Method to retrieve all items by userId
     public async Task<IEnumerable<Item>> GetItemsByUserId(string userId)
     {
         try
         {
+            // Retrieve items associated with the specified userId using a LINQ query
             var items = await _db.Items
                 .Where(item => item.UserId == userId)
                 .ToListAsync();
 
-            // Logger informasjon om antall hentede items
+            // Log information about the number of items retrieved
             _logger.LogInformation("[ItemRepository] Retrieved {Count} items for user ID {UserId}", items.Count, userId);
 
-            // Logger detaljer om hvert hentet item (valgfritt, avhengig av behovet for detaljert logging)
+            // Optionally log details about each retrieved item (useful for detailed logging)
             foreach (var item in items)
             {
                 _logger.LogInformation("Item: {ItemId}, Name: {Name}, UserId: {UserId}", item.ItemId, item.Name, item.UserId);
@@ -39,10 +41,12 @@ public class ItemRepository : IItemRepository
         }
         catch (Exception e)
         {
+            // Log any errors encountered during the operation and return an empty list
             _logger.LogError("[ItemRepository] Error fetching items for user ID {UserId}: {Message}", userId, e.Message);
             return new List<Item>();
         }
     }
+
 
 
     // Method to retrieve all items asynchronously
@@ -186,38 +190,50 @@ public class ItemRepository : IItemRepository
         return orders;
     }
 
+    // Method to retrieve an item with a UserName
     public async Task<ItemWithUserName> GetItemWithUserName(int itemId)
     {
         try
         {
+            // Attempt to find the item with the given itemId in the database
             var item = await _db.Items.FindAsync(itemId);
+
+            // If the item is found
             if (item != null)
             {
+                // Attempt to find the user associated with the item's UserId
                 var user = await _db.Users.FindAsync(item.UserId);
+
+                // If the user is found
                 if (user != null)
                 {
-                    // Logger informasjon om det hentede itemet og brukeren
+                    // Log information about the retrieved item and its owner
                     _logger.LogInformation("[ItemRepository] Retrieved item: {ItemId}, Name: {Name}, Owned by User: {UserName}", item.ItemId, item.Name, user.UserName);
 
-                    // Returner et nytt objekt som inkluderer brukernavnet
-                    return new ItemWithUserName { Item = item, UserName = user?.UserName };
+                    // Return a new object including the item details and the owner's username
+                    return new ItemWithUserName { Item = item, UserName = user.UserName };
                 }
                 else
                 {
+                    // Log a warning if the user is not found
                     _logger.LogWarning("[ItemRepository] User not found for ItemId: {ItemId}", itemId);
                 }
             }
             else
             {
+                // Log a warning if the item is not found
                 _logger.LogWarning("[ItemRepository] Item not found with ItemId: {ItemId}", itemId);
             }
         }
         catch (Exception e)
         {
+            // Log an error if an exception occurs during the operation
             _logger.LogError("[ItemRepository] Error fetching item with ItemId {ItemId}: {Message}", itemId, e.Message);
         }
 
+        // Return null if the item or user is not found, or an exception occurs
         return null;
     }
+
 
 }
