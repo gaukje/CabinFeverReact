@@ -86,6 +86,16 @@ const getUserItems = async (userEmail, token) => {
     }
 };
 
+const getItemWithUser = async (itemId) => {
+    try {
+        const response = await axios.get(`${baseUrl}/Get/${itemId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching item with user:', error);
+        throw error;
+    }
+};
+
 // exporting the item service functions
 export const ItemService = {
     getItems,
@@ -95,4 +105,5 @@ export const ItemService = {
     deleteItem,
     uploadImage,
     getUserItems,
+    getItemWithUser,
 };

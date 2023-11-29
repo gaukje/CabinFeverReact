@@ -217,4 +217,16 @@ public class ItemController : ControllerBase
         return Ok(new { imageUrl = "/" + dbPath.Replace("\\", "/") });
     }
 
+    [HttpGet("Get/{id}")]
+    public async Task<IActionResult> GetItemWithUserById(int id)
+    {
+        var itemWithUserName = await _itemRepository.GetItemWithUserName(id);
+        if (itemWithUserName?.Item == null)
+        {
+            return NotFound($"Item with id {id} not found.");
+        }
+
+        return Ok(itemWithUserName);
+    }
+
 }

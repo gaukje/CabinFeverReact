@@ -185,4 +185,39 @@ public class ItemRepository : IItemRepository
 
         return orders;
     }
+
+    public async Task<ItemWithUserName> GetItemWithUserName(int itemId)
+    {
+        try
+        {
+            var item = await _db.Items.FindAsync(itemId);
+            if (item != null)
+            {
+                var user = await _db.Users.FindAsync(item.UserId);
+                if (user != null)
+                {
+                    // Logger informasjon om det hentede itemet og brukeren
+                    _logger.LogInformation("[ItemRepository] Retrieved item: {ItemId}, Name: {Name}, Owned by User: {UserName}", item.ItemId, item.Name, user.UserName);
+
+                    // Returner et nytt objekt som inkluderer brukernavnet
+                    return new ItemWithUserName { Item = item, UserName = user?.UserName };
+                }
+                else
+                {
+                    _logger.LogWarning("[ItemRepository] User not found for ItemId: {ItemId}", itemId);
+                }
+            }
+            else
+            {
+                _logger.LogWarning("[ItemRepository] Item not found with ItemId: {ItemId}", itemId);
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("[ItemRepository] Error fetching item with ItemId {ItemId}: {Message}", itemId, e.Message);
+        }
+
+        return null;
+    }
+
 }
