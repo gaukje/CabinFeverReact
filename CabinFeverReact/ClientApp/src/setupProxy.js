@@ -8,7 +8,7 @@ const context =  [
     "/api/item",
     "/api/order",
     "/api/home",
-    "/api/User" // Added this line
+    "/api/User" 
 ];
 
 module.exports = function(app) {

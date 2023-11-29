@@ -18,8 +18,6 @@ import Footer from './components/Items/Footer';
 import ProtectedRoute from './components/Authentication/ProtectedRoute';
 import { AuthProvider } from './AuthContext';
 
-import OrderConfirmation from './components/Order/OrderConfirmation';
-
 
 const App = () => {
     return (
@@ -41,8 +39,6 @@ const App = () => {
                     <Route path="/Items/Create" element={<ItemCreate />} />
                     <Route path="/Items/Edit/:id" element={<ItemEdit />} />
                     <Route path="/Items/Delete/:id" element={<ItemDelete />} />
-
-                    <Route path="Orders/Confirmation" element={<OrderConfirmation />} />
 
                     <Route path="/MinSide" element={<ProtectedRoute><MinSide /></ProtectedRoute>} />
                     <Route path="/Register" element={<Register />} />

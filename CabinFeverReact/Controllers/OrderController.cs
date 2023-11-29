@@ -2,6 +2,7 @@
 using CabinFeverReact.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -60,6 +61,31 @@ public class OrderController : Controller
         }
     }
 
+    [HttpPost("Create")]
+    public async Task<IActionResult> Create([FromBody] Order order)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        order.UserId = userId;
+
+        _logger.LogInformation("Order before saving: {@Order}", order);
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            _itemDbContext.Orders.Add(order);
+            await _itemDbContext.SaveChangesAsync();
+            return Ok(new { orderId = order.OrderId });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred while saving order: {@Order}", order);
+            return StatusCode(500, "Internal server error");
+        }
+    }
 
 
     // Action method to retriece date ranges for a specific item.
