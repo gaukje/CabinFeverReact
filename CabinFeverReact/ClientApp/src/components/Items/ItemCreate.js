@@ -2,6 +2,7 @@
 import { ItemService } from './../services/ItemService';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getUserIdFromToken } from '../../utils/authHelpers'; 
 
 const ItemCreate = () => {
     const [item, setItem] = useState({
@@ -41,6 +42,16 @@ const ItemCreate = () => {
         const fileInput = document.querySelector('input[type="file"]');
         if (fileInput) {
             fileInput.setCustomValidity('');
+        }
+    }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const userId = getUserIdFromToken(token);
+            if (userId) {
+                setItem(prevItem => ({ ...prevItem, UserId: userId })); // Set UserId
+            }
         }
     }, []);
 
