@@ -389,7 +389,7 @@ const ItemDetailsOrder = ({ item }) => {
                         className="btn btn-primary w-100"
                         disabled={!(selectedFromDate && selectedToDate && selectedGuests && showListReserve)}
                     >
-                        Reserve
+                        {currentUser && currentUser.userId ? 'Reserve' : 'Log in to reserve'}
                     </button>
                 </form>
             </div>
