@@ -105,10 +105,43 @@ const deleteItem = async (itemId) => {
     }
 };
 
+const uploadImage = async (formData) => {
+    try {
+        // Make sure to adjust the URL if necessary
+        const response = await axios.post(`${baseUrl}/Upload`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        throw error;
+    }
+};
+
+const getUserItems = async (userEmail, token) => {
+    try {
+        const response = await axios.get(`${baseUrl}/GetUserItems`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            params: { email: userEmail }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching items:', error);
+        throw error;
+    }
+};
+
+
 export const ItemService = {
     getItems,
     createItem,
     getItemById,
     updateItem,
     deleteItem,
+    uploadImage,
+    getUserItems,
 };

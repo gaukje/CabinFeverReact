@@ -3,25 +3,28 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import { ItemService } from '../services/ItemService';
 
-const ItemList = () => {
+const ItemList = ({ userEmail }) => {
     const [items, setItems] = useState([]);
+    const token = localStorage.getItem('token'); // Hent token fra localStorage eller context
 
     useEffect(() => {
-        ItemService.getItems()
-            .then(fetchedItems => {
-                // Sjekker direkte om $values nøkkelen eksisterer og er et array
-                if (fetchedItems && fetchedItems.$values && Array.isArray(fetchedItems.$values)) {
-                    setItems(fetchedItems.$values);
-                } else {
-                    console.error('Received data is not in expected format:', fetchedItems);
+        if (userEmail && token) {
+            ItemService.getUserItems(userEmail, token)
+                .then(fetchedItems => {
+                    if (fetchedItems && fetchedItems.$values && Array.isArray(fetchedItems.$values)) {
+                        setItems(fetchedItems.$values);
+                        console.log('Items fetched for user:', fetchedItems.$values);
+                    } else {
+                        console.error('Unexpected response format:', fetchedItems);
+                        setItems([]);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching items for user:', error);
                     setItems([]);
-                }
-            })
-            .catch(error => {
-                console.error('Failed to fetch items:', error);
-                setItems([]);
-            });
-    }, []);
+                });
+        }
+    }, [userEmail, token]);
     return (
         <div className="table-responsive">
             <table className='table table-striped'>
