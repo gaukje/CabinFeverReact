@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ItemService } from './../services/ItemService';
+import axios from 'axios';
 
 const ItemEdit = () => {
     const [item, setItem] = useState({
@@ -32,6 +33,43 @@ const ItemEdit = () => {
         fetchItem();
     }, [id]);
 
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleFileChange = async (event) => {
+        const file = event.target.files[0];
+        setSelectedFile(file);
+
+        if (!file) {
+            event.target.setCustomValidity('Please upload an image.');
+        } else {
+            event.target.setCustomValidity('');
+            try {
+                // Upload the file and get the URL, then update item state
+                const imageUrl = await uploadImageAndGetUrl(file);
+                setItem({ ...item, ImageUrl: imageUrl });
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                // Handle error (e.g., set an error state, show an alert)
+            }
+        }
+    };
+
+    const uploadImageAndGetUrl = async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+            const uploadResponse = await axios.post('/api/item/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            return uploadResponse.data.imageUrl; // or just "/images/..."
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            throw error; // This will prevent further execution in the calling function
+        }
+    };
+
     const handleInvalid = (event) => {
         event.target.setCustomValidity('Please fill out this field.');
     };
@@ -55,6 +93,16 @@ const ItemEdit = () => {
             // If there are errors, update the errors state and do not submit
             setErrors(newErrors);
             return;
+        }
+
+        if (selectedFile) {
+            try {
+                const imageUrl = await uploadImageAndGetUrl(selectedFile);
+                setItem({ ...item, ImageUrl: imageUrl });
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                return;
+            }
         }
 
         try {
@@ -131,6 +179,14 @@ const ItemEdit = () => {
                         required
                     />
                     {errors.Description && <div className="invalid-feedback">{errors.Description}</div>}
+                </div>
+                <div className="form-group mb-2">
+                    <label>Select an image to upload</label>
+                    <input
+                        type="file"
+                        onChange={handleFileChange}
+                        className="form-control"
+                    />
                 </div>
                 <div className="form-group mb-2">
                     <label>Capacity</label><span className="text-danger">*</span>

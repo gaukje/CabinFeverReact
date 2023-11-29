@@ -119,7 +119,10 @@ public class ItemRepository : IItemRepository
         // Copy the values from 'item' to 'existingItem' as needed.
         existingItem.Name = item.Name;
         existingItem.PricePerNight = item.PricePerNight;
-        // ... copy other fields as necessary.
+        existingItem.Capacity = item.Capacity;
+        existingItem.Description = item.Description;
+        existingItem.Location = item.Location;
+        existingItem.ImageUrl = item.ImageUrl;
 
         try
         {
