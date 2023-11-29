@@ -15,10 +15,10 @@ const Login = () => {
         event.preventDefault();
         try {
             const response = await axios.post('/api/User/Login', { userName, password });
-            if (response.data && response.data.token && response.data.token.result) {
+            console.log("API response:", response.data); // Log the entire response
+
+            if (response.data && response.data.token) {
                 console.log('Logged in successfully');
-                console.log('Login response:', response.data);
-                console.log('Login.js: response.data.token.result:', response.data.token.result);
                 login(response.data.token, response.data.userId, response.data.email);
                 navigate('/MinSide');
             } else {
@@ -27,7 +27,6 @@ const Login = () => {
         } catch (error) {
             console.error('Login failed:', error);
             setErrorMessage('Incorrect e-mail address or password');
-
         }
     };
 

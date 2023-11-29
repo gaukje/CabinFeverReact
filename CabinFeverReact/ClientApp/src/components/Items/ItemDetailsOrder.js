@@ -213,8 +213,8 @@ const ItemDetailsOrder = ({ item }) => {
         const order = {
             UserId: currentUser.userId,
             ItemId: item.ItemId,
-            FromDate: convertToUTC(new Date(selectedFromDate)),
-            ToDate: convertToUTC(new Date(selectedToDate)),
+            FromDate: new Date(selectedFromDate),
+            ToDate: new Date(selectedToDate),
             Guests: Number(selectedGuests),
             TotalPrice: Number(totalPrice),
         };
