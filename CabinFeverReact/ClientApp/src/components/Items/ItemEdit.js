@@ -3,9 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ItemService } from './../services/ItemService';
 import axios from 'axios';
 
-//item edit component
+// this is our item edit component
 const ItemEdit = () => {
-    // state for item details
     const [item, setItem] = useState({
         Name: '',
         Price: '',
@@ -33,7 +32,6 @@ const ItemEdit = () => {
                 // set item in state
                 setItem(fetchedItem);
             } catch (error) {
-                 // log any errors
                 console.error('Error fetching item:', error);
             }
         };
@@ -42,12 +40,14 @@ const ItemEdit = () => {
         fetchItem();
     }, [id]);
 
-        // state for the selected file
+    // state for the selected file
     const [selectedFile, setSelectedFile] = useState(null);
 
     // handles when a file is selected
     const handleFileChange = async (event) => {
+        // get the file from the event
         const file = event.target.files[0];
+        // set the file in state
         setSelectedFile(file);
 
         // if no file, set validation message
@@ -57,7 +57,7 @@ const ItemEdit = () => {
             // reset validation message
             event.target.setCustomValidity('');
             try {
-                // upload the image and get url
+                // Upload the file and get the URL, then update item state
                 const imageUrl = await uploadImageAndGetUrl(file);
                 // set the image url in item state
                 setItem({ ...item, ImageUrl: imageUrl });
@@ -68,6 +68,7 @@ const ItemEdit = () => {
     };
 
     // uploads image and returns url
+
     const uploadImageAndGetUrl = async (file) => {
         const formData = new FormData();
         formData.append('file', file);
@@ -78,7 +79,7 @@ const ItemEdit = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            // return the image url
+             // return the image url
             return uploadResponse.data.imageUrl;
         } catch (error) {
             console.error('Error uploading image:', error);
@@ -97,11 +98,12 @@ const ItemEdit = () => {
         event.target.setCustomValidity('');
         // get name and value from event
         const { name, value } = event.target;
-        // update item state with new value
+         // update item state with new value
         setItem({ ...item, [name]: value });
     };
 
     // handles form submission
+
     const handleSubmit = async (event) => {
         // prevent default form behavior
         event.preventDefault();
@@ -130,11 +132,11 @@ const ItemEdit = () => {
             }
         }
 
-        // try updating the item
+         // try updating the item
         try {
             await ItemService.updateItem(id, item);
             console.log('Item updated successfully');
-            // navigate to another MinSide
+            // navigate to MinSid
             navigate('/MinSide');
         } catch (error) {
             console.error('Error updating item:', error);
