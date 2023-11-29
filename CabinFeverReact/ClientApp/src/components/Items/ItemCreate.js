@@ -7,13 +7,13 @@ import { getUserIdFromToken } from '../../utils/authHelpers';
 const ItemCreate = () => {
     const [item, setItem] = useState({
         Name: '',
-        PricePerNight: '', // This should be a number if the server expects a decimal
+        PricePerNight: '',
         Capacity: 1,
         Description: '',
         Location: '',
-        ImageUrl: '', // You need to handle file upload and possibly store the image URL
-        UserId: '', // You may need to obtain this from the user's session or context
-        IsAvailable: true, // Assuming you want new items to be available by default
+        ImageUrl: '',
+        UserId: '',
+        IsAvailable: true,
     });
 
     const setCustomValidityMessages = () => {
