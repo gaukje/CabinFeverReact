@@ -14,7 +14,7 @@ const OrderHistory = ({ orders }) => {
 
     return (
         <div className="table-responsive">
-            <table className="table table-bordered">
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>Order ID</th>

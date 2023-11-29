@@ -15,19 +15,6 @@ const getOrders = async () => {
     }
 };
 
-const createOrder = async (newOrder) => {
-    try {
-        const response = await axios.post(`${baseUrl}/Create`, newOrder);
-        return response.data;
-    } catch (error) {
-        console.error('Error creating order:', error);
-        throw error;
-    }
-};
-
-
-
-
 const getDateRange = async (itemId) => {
     try {
         const response = await axios.get(`${baseUrl}/GetDateRange?itemId=${itemId}`);
@@ -37,7 +24,6 @@ const getDateRange = async (itemId) => {
         throw error;
     }
 }
-
 
 const getUserOrders = async (email, token) => {
     try {
@@ -58,6 +44,12 @@ const getUserOrders = async (email, token) => {
 
 
 
+
+
+// Du kan legge til flere funksjoner for å håndtere oppretting, oppdatering og sletting av ordre
+const createOrder = async (newOrder) => {
+    // Implementer funksjonalitet for å opprette en ny ordre
+};
 
 const updateOrder = async (orderId, updatedOrder) => {
     // Implementer funksjonalitet for å oppdatere en eksisterende ordre
