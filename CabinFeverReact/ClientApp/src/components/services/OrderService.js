@@ -54,8 +54,6 @@ const createOrder = async (newOrder) => {
 export const OrderService = {
     getOrders,
     createOrder,
-    updateOrder,
-    deleteOrder,
     getDateRange,
     getUserOrders,
 };
