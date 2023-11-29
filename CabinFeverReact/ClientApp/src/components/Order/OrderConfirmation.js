@@ -35,7 +35,7 @@ const OrderConfirmation = () => {
                             <a className="btn btn-primary" href="/">Back to Home</a>
                         </div>
 
-                        {item && ( // Conditionally render when 'item' is available
+                        {item && (
                             <div className="col-md-4 bg-white border border-dark-subtle rounded p-4">
                                 <div className="row mb-4">
                                     <div className="col-md-8">

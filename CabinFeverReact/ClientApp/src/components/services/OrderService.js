@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Order } from '../../types/order.ts';
 
-// Anta at backend API for ordre er tilgjengelig på /api/order
 const baseUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}/api/order`;
 console.log("OrderService");
 
@@ -29,10 +28,10 @@ const getUserOrders = async (email, token) => {
     try {
         const response = await axios.get(`${baseUrl}/GetUserOrdersByEmail`, {
             headers: {
-                Authorization: `Bearer ${token}` // Bruk token som er sendt som parameter
+                Authorization: `Bearer ${token}`
             },
             params: {
-                email: email // Send e-postadressen som en parameter
+                email: email
             }
         });
         return response.data;
@@ -42,7 +41,6 @@ const getUserOrders = async (email, token) => {
     }
 };
 
-
 const createOrder = async (newOrder) => {
     try {
         const response = await axios.post(`${baseUrl}/Create`, newOrder);
@@ -51,15 +49,6 @@ const createOrder = async (newOrder) => {
         console.error('Error creating order:', error);
         throw error;
     }
-};
-
-
-const updateOrder = async (orderId, updatedOrder) => {
-    // Implementer funksjonalitet for å oppdatere en eksisterende ordre
-};
-
-const deleteOrder = async (orderId) => {
-    // Implementer funksjonalitet for å slette en ordre
 };
 
 export const OrderService = {

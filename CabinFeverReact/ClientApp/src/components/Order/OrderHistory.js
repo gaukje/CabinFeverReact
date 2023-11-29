@@ -1,7 +1,6 @@
 import React from 'react';
 
 const OrderHistory = ({ orders }) => {
-    // Helper function to calculate order status
     const getOrderStatus = (order) => {
         const today = new Date();
         const fromDate = new Date(order.fromDate);

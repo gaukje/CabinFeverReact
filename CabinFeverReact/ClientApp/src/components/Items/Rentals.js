@@ -12,7 +12,7 @@ const Rentals = () => {
         ItemService.getItems()
             .then(fetchedItems => {
                 const itemsArray = fetchedItems.$values || [];
-                console.log('Detailed properties:', JSON.stringify(itemsArray[0], null, 2)); // Burde vise de faktiske ""properties
+                console.log('Detailed properties:', JSON.stringify(itemsArray[0], null, 2));
                 setItems(itemsArray);
                 setFilteredItems(itemsArray);
             })
@@ -29,7 +29,7 @@ const Rentals = () => {
         }
 
         const filtered = items.filter(item => {
-            const itemLocation = item.Location?.trim().toLowerCase(); // Bruk Location (PascalCase)
+            const itemLocation = item.Location?.trim().toLowerCase();
             return itemLocation?.includes(lowerCaseSearchTerm);
         });
 

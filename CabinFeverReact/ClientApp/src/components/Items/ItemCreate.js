@@ -50,7 +50,7 @@ const ItemCreate = () => {
         if (token) {
             const userId = getUserIdFromToken(token);
             if (userId) {
-                setItem(prevItem => ({ ...prevItem, UserId: userId })); // Set UserId
+                setItem(prevItem => ({ ...prevItem, UserId: userId }));
             }
         }
     }, []);
@@ -99,8 +99,8 @@ const ItemCreate = () => {
         const fileInput = document.querySelector('input[type="file"]');
         if (!selectedFile) {
             fileInput.setCustomValidity('Please upload an image.');
-            fileInput.reportValidity(); // This will show the custom validation message
-            return; // Prevent the form from submitting
+            fileInput.reportValidity();
+            return;
         } else {
             fileInput.setCustomValidity(''); // Clear any custom message
         }
@@ -148,11 +148,10 @@ const ItemCreate = () => {
                 },
             });
             console.log('uploadRespone.data.imageUrl: ', uploadResponse.data.imageUrl);
-            // Assuming the server response contains the imageUrl field with the correct URL
-            return uploadResponse.data.imageUrl; // or just "/images/..."
+            return uploadResponse.data.imageUrl;
         } catch (error) {
             console.error('Error uploading image:', error);
-            throw error; // This will prevent further execution in the calling function
+            throw error;
         }
     };
 
@@ -234,8 +233,8 @@ const ItemCreate = () => {
                         value={item.Capacity}
                         onChange={handleInputChange}
                         className="form-control"
-                        min="1" // Minimum value
-                        max="10" // Set a maximum value if needed
+                        min="1"
+                        max="10"
                         required
                     />
                 </div>

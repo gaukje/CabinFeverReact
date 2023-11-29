@@ -8,7 +8,6 @@ const Contact = () => {
         <div>
             <ImageBanner imageSrc="images/banners/pexels-photo-513710.jpeg" titleText="Contact" ></ImageBanner>
 
-            {/* Contact information */}
             <div className="container pb-5 w-75">
                 <div className="container my-5">
                     <h2>Customers and renters</h2>

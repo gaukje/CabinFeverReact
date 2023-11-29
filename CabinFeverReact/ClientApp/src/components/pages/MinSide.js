@@ -9,13 +9,13 @@ import ImageBanner from '../ImageBanner';
 
 const MinSide = () => {
     const [orders, setOrders] = useState([]);
-    const [userEmail, setUserEmail] = useState(null); // Legger til en tilstand for e-post
+    const [userEmail, setUserEmail] = useState(null);
     const token = localStorage.getItem('token');
 
     useEffect(() => {
         if (token) {
             const email = getEmailFromToken(token);
-            setUserEmail(email); // Setter e-post tilstanden
+            setUserEmail(email);
             if (email) {
                 OrderService.getUserOrders(email, token)
                     .then(fetchedOrders => {
@@ -31,7 +31,6 @@ const MinSide = () => {
 
     console.log("Orders to display:", orders);
 
-    // Resten av komponenten er uendret
     return (
         <div>
             <ImageBanner imageSrc="https://img.freepik.com/free-photo/cozy-glow-illuminates-modern-winter-living-room-generated-by-ai_188544-16425.jpg?t=st=1701222483~exp=1701226083~hmac=b5506c865a039baaddc7529860ca82b1de03a28274cbefad745d4ef3639a4399&w=1800" titleText="My profile"></ImageBanner>
@@ -39,7 +38,7 @@ const MinSide = () => {
             <div className="container my-5">
                 <div className="mb-5">
                     <h2>Your properties</h2>
-                    {userEmail && <ItemList userEmail={userEmail} />} {/* Sjekker om userEmail er tilgjengelig før rendering */}
+                    {userEmail && <ItemList userEmail={userEmail} />}
                 </div>
 
                 <div className="mb-5">
