@@ -13,12 +13,14 @@ using System.Text;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
-    
-    public UserController(IUserService userService)
+    private readonly UserManager<IdentityUser> _userManager;
+
+    public UserController(IUserService userService, UserManager<IdentityUser> userManager)
     {
         _userService = userService;
+        _userManager = userManager;
     }
-    
+
     [HttpPost("Register")]
     public async Task<IActionResult> Register(LoginUser user)
     {
@@ -38,9 +40,26 @@ public class UserController : ControllerBase
         }
         if (await _userService.Login(user))
         {
+            var tokenString = await _userService.GenerateTokenString(user);
+            var identityUser = await _userManager.FindByEmailAsync(user.UserName);
+            return Ok(new { token = tokenString, userId = identityUser.Id, email = identityUser.Email });
+        }
+        return BadRequest();
+    }
+    /*
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login(LoginUser user)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+        if (await _userService.Login(user))
+        {
             var tokenString = _userService.GenerateTokenString(user);
             return Ok(new { token = tokenString });
         }
         return BadRequest();
     }
+    */
 }

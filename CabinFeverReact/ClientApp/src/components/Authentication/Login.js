@@ -17,8 +17,9 @@ const Login = () => {
             const response = await axios.post('/api/User/Login', { userName, password });
             if (response.data && response.data.token && response.data.token.result) {
                 console.log('Logged in successfully');
+                console.log('Login response:', response.data);
                 console.log('Login.js: response.data.token.result:', response.data.token.result);
-                login(response.data.token.result);
+                login(response.data.token, response.data.userId, response.data.email);
                 navigate('/MinSide');
             } else {
                 throw new Error('Token not found in response');

@@ -43,13 +43,16 @@ const getUserOrders = async (email, token) => {
 };
 
 
-
-
-
-// Du kan legge til flere funksjoner for å håndtere oppretting, oppdatering og sletting av ordre
 const createOrder = async (newOrder) => {
-    // Implementer funksjonalitet for å opprette en ny ordre
+    try {
+        const response = await axios.post(`${baseUrl}/Create`, newOrder);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating order:', error);
+        throw error;
+    }
 };
+
 
 const updateOrder = async (orderId, updatedOrder) => {
     // Implementer funksjonalitet for å oppdatere en eksisterende ordre
