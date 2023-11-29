@@ -3,23 +3,32 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import { ItemService } from '../services/ItemService';
 
+// item list component taking user email as prop
 const ItemList = ({ userEmail }) => {
+    // state for storing items
     const [items, setItems] = useState([]);
+    // get token from local storage
     const token = localStorage.getItem('token');
 
+    // effect runs when userEmail or token changes
     useEffect(() => {
+        // check if we have both user email and token
         if (userEmail && token) {
+            // call service to get user's items
             ItemService.getUserItems(userEmail, token)
                 .then(fetchedItems => {
+                    // if items are in expected format, set them to state
                     if (fetchedItems && fetchedItems.$values && Array.isArray(fetchedItems.$values)) {
                         setItems(fetchedItems.$values);
                         console.log('Items fetched for user:', fetchedItems.$values);
                     } else {
+                        // log and handle unexpected response format
                         console.error('Unexpected response format:', fetchedItems);
                         setItems([]);
                     }
                 })
                 .catch(error => {
+                    // log any errors and clear items
                     console.error('Error fetching items for user:', error);
                     setItems([]);
                 });

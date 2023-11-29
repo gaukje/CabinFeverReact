@@ -4,27 +4,36 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
 
 const Login = () => {
+    // useAuth for login function
     const { login } = useAuth();
+    // states for username and password
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
+     // for navigation after login
     const navigate = useNavigate();
 
+    // error message state
     const [errorMessage, setErrorMessage] = useState('');
 
+    // handle form submit for login
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            // sending login details to server
             const response = await axios.post('/api/User/Login', { userName, password });
             console.log("API response:", response.data); // Log the entire response
 
+            // check if token received and login
             if (response.data && response.data.token) {
                 console.log('Logged in successfully');
                 login(response.data.token, response.data.userId, response.data.email);
                 navigate('/MinSide');
             } else {
+                // if no token found, throw error
                 throw new Error('Token not found in response');
             }
         } catch (error) {
+            // log error and set error message
             console.error('Login failed:', error);
             setErrorMessage('Incorrect e-mail address or password');
         }

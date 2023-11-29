@@ -5,19 +5,26 @@ import ItemDetailsDescription from './ItemDetailsDescription';
 import ItemDetailsOrder from './ItemDetailsOrder';
 
 const ItemDetails = () => {
+    // getting id from url parameters
     const { id } = useParams();
+    // state for storing item details
     const [item, setItem] = useState(null);
 
+    // effect to fetch item details when component loads
     useEffect(() => {
+        // calling item service to get item by id
         ItemService.getItemById(id)
             .then(data => {
+                // setting item details to state
                 setItem(data);
             })
             .catch(error => {
+                // logging error if fetching item fails
                 console.error('Error fetching item details:', error);
             });
     }, [id]);
 
+    // if item not loaded yet -->show loading
     if (!item) {
         return <div>Loading...</div>;
     }

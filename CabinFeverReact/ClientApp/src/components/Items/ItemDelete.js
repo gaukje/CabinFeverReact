@@ -3,17 +3,23 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ItemService } from './../services/ItemService';
 
 const ItemDelete = () => {
+    // states for deletion status and item
     const [isDeleting, setIsDeleting] = useState(false);
     const [item, setItem] = useState(null);
+    // for navigation after delete
     const navigate = useNavigate();
+    // getting id from params
     const { id } = useParams();
 
+    // effect to fetch item on component load
     useEffect(() => {
         const fetchItem = async () => {
             try {
+                // fetching item by id
                 const fetchedItem = await ItemService.getItemById(id);
                 setItem(fetchedItem);
             } catch (error) {
+                // logging error if fetch fails
                 console.error('Error fetching item:', error);
             }
         };
@@ -21,17 +27,21 @@ const ItemDelete = () => {
         fetchItem();
     }, [id]);
 
+    // handle delete action
     const handleDelete = async () => {
         setIsDeleting(true);
         try {
+            // deleting the item
             await ItemService.deleteItem(id);
             navigate('/MinSide');
         } catch (error) {
+            // logging error and stop deleting state
             console.error('Error deleting item:', error);
             setIsDeleting(false);
         }
     };
 
+    // if item not loaded yet -> show loading
     if (!item) {
         return <div>Loading...</div>;
     }

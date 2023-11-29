@@ -7,12 +7,13 @@ import { useAuth } from '../../AuthContext';
 import { OrderConfirmation } from '../Order/OrderConfirmation';
 
 const ItemDetailsOrder = ({ item }) => {
+    // states for selected dates, guests and price calculation
     const [selectedFromDate, setSelectedFromDate] = useState('');
     const [selectedToDate, setSelectedToDate] = useState('');
     const [selectedGuests, setSelectedGuests] = useState('');
 
+    // states for price details
     const [timeDifference, setTimeDifference] = useState(0);
-
     const [costPerNight, setCostPerNight] = useState('')
     const [cleaningFee, setCleaningFee] = useState('');
     const [serviceFee, setServiceFee] = useState('');
@@ -20,18 +21,23 @@ const ItemDetailsOrder = ({ item }) => {
     const [totalPrice, setTotalPrice] = useState(0)
     const [totalPriceString, setTotalPriceString] = useState('')
 
+     // states for reservation list and errors
     const [showListReserve, setShowListReserve] = useState(false);
     const [listReservedDates, setListReservedDates] = useState([]);
     const [errorDateOverlap, setErrorDateOverlap] = useState('');
 
+     // state for loading indicator
     const [isLoading, setIsLoading] = useState(true);
 
+    // get current user from auth context
     const { currentUser } = useAuth();
 
+    // for navigation
     const navigate = useNavigate();
 
-
+    // function to control date selection
     const controllDate = (fromDate, toDate) => {
+         //creating date objects from selected dates
         const fromDateObj = new Date(fromDate);
         const toDateObj = new Date(toDate);
 
@@ -69,10 +75,12 @@ const ItemDetailsOrder = ({ item }) => {
         }
     };
 
+    //formating currancy to norwegian kr
     const formatCurrency = (value) => {
         return value.toLocaleString('nb-NO', { style: 'currency', currency: 'NOK' }).replace('kr', '').trim() + " kr";
     }
 
+    // increment and decrement functions for guests
     const handleIncrementGuests = () => {
         if (selectedGuests < item.Capacity) {
             setSelectedGuests(Number(selectedGuests) + 1);
@@ -85,7 +93,9 @@ const ItemDetailsOrder = ({ item }) => {
         }
     };
 
+    // effect for price calculation
     useEffect(() => {
+        // calculations for cost per night, cleaning fee, service fee, taxes, and total price
         var price = item.Price;
 
         var pricePerNight = price * timeDifference;
@@ -106,7 +116,9 @@ const ItemDetailsOrder = ({ item }) => {
 
     }, [timeDifference]);
 
-    useEffect(() => { 
+        // effect to calculate date difference
+    useEffect(() => {
+        // calculate the time difference between selected dates
         const fromDateTimestamp = new Date(selectedFromDate).getTime();
         const toDateTimestamp = new Date(selectedToDate).getTime();
 
@@ -122,7 +134,7 @@ const ItemDetailsOrder = ({ item }) => {
 
     }, [selectedToDate]);
 
-
+    // effect to fetch reserved dates
     useEffect(() => {
         // Initialize the attributes of the check-in calendar
         window.jQuery("#fromDate").datepicker({

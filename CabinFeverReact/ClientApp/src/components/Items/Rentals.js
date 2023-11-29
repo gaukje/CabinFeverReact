@@ -2,18 +2,27 @@
 import ItemCard from './ItemCard';
 import { ItemService } from '../services/ItemService';
 
-
+//Rentals component
 const Rentals = () => {
+    // state for all items
     const [items, setItems] = useState([]);
+    // state for items that match search
     const [filteredItems, setFilteredItems] = useState([]);
+    // state for search term
     const [searchTerm, setSearchTerm] = useState('');
 
+
     useEffect(() => {
+        // get items from service
         ItemService.getItems()
             .then(fetchedItems => {
+                // get items array or empty array if not present
                 const itemsArray = fetchedItems.$values || [];
+                // log first item details for debugging
                 console.log('Detailed properties:', JSON.stringify(itemsArray[0], null, 2));
+                // set items in state
                 setItems(itemsArray);
+                // initially filtered items are same as all items
                 setFilteredItems(itemsArray);
             })
             .catch(error => {
@@ -22,24 +31,34 @@ const Rentals = () => {
     }, []);
 
 
+    // filters items based on search term
     const filterItemsBySearchTerm = (searchTerm) => {
+        // trim and lower case the search term
         const lowerCaseSearchTerm = searchTerm.trim().toLowerCase();
+        // if no search term, return all items
         if (!lowerCaseSearchTerm) {
             return items;
         }
 
+        // filter items where location includes search term
         const filtered = items.filter(item => {
             const itemLocation = item.Location?.trim().toLowerCase();
             return itemLocation?.includes(lowerCaseSearchTerm);
         });
 
+        // return filtered list
         return filtered;
     };
 
+    // handles change in search input
     const handleSearchChange = (e) => {
+        // get new search term from event
         const newSearchTerm = e.target.value;
+        // set new search term in state
         setSearchTerm(newSearchTerm);
+        // get filtered items based on new search term
         const filtered = filterItemsBySearchTerm(newSearchTerm);
+         // set filtered items in state
         setFilteredItems(filtered);
     };
 

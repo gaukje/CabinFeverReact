@@ -3,15 +3,16 @@ import { ItemService } from './../services/ItemService';
 
 import { useLocation } from 'react-router-dom';
 
-// order confirmation component
+// component for order confirmation
 const OrderConfirmation = () => {
-    // using location to get state from the router
+
+// using location to get state from router
     const location = useLocation();
 
     // state for storing item details
     const [item, setItem] = useState(null);
 
-    // getting order details from location state
+   // getting order details from location state
     const { order, extraOrderDetails } = location.state;
 
     // effect to fetch item details when component loads
@@ -19,14 +20,14 @@ const OrderConfirmation = () => {
         // calling item service to get item by id
         ItemService.getItemById(order.ItemId)
             .then(data => {
-            // setting item details to state
+               // setting item details to state
                 setItem(data);
             })
             .catch(error => {
-                // logging error if fetching item fail
+                // logging error if fetching item fails
                 console.error('Error fetching item details:', error);
             });
-    }, [order.ItemId]); //dependency array with item id
+    }, [order.ItemId]);
 
     return (
         <div>

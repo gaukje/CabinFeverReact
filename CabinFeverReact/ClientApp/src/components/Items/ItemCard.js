@@ -2,11 +2,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// component for displaying an item card
 const ItemCard = ({ item }) => {
+   // check if item is undefined and show message if it is
     if (!item) {
         return <div className="col">Item is undefined</div>;
     }
 
+    // function to format currency to Norwegian Krone
     function formatCurrency(value) {
         return value.toLocaleString('nb-NO', { style: 'currency', currency: 'NOK' }).replace('kr', '').trim() + " kr";
     }
