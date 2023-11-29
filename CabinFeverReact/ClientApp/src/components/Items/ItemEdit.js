@@ -15,6 +15,9 @@ const ItemEdit = () => {
 
     const navigate = useNavigate();
     const { id } = useParams();
+    // Initialize errors state here
+    const [errors, setErrors] = useState({});
+
 
     useEffect(() => {
         const fetchItem = async () => {
@@ -29,13 +32,30 @@ const ItemEdit = () => {
         fetchItem();
     }, [id]);
 
+    const handleInvalid = (event) => {
+        event.target.setCustomValidity('Please fill out this field.');
+    };
+
     const handleInputChange = (event) => {
+        event.target.setCustomValidity(''); // clear the custom validity message
         const { name, value } = event.target;
         setItem({ ...item, [name]: value });
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        const newErrors = {};
+        if (!item.Name.trim()) newErrors.Name = 'Name is required.';
+        if (!item.Price || item.Price <= 0) newErrors.Price = 'Price is required and must be greater than 0.';
+        if (!item.Description.trim()) newErrors.Description = 'Description is required.';
+        if (!item.Capacity || item.Capacity <= 0) newErrors.Capacity = 'Capacity is required and must be greater than 0.';
+
+        if (Object.keys(newErrors).length > 0) {
+            // If there are errors, update the errors state and do not submit
+            setErrors(newErrors);
+            return;
+        }
 
         try {
             await ItemService.updateItem(id, item);
@@ -51,13 +71,18 @@ const ItemEdit = () => {
             <h2>Edit Item</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group mb-2">
-                    <label>Name</label>
+                    <label>Name</label><span className="text-danger">*</span>
                     <input
+                        type="text"
                         name="Name"
                         value={item.Name}
                         onChange={handleInputChange}
-                        className="form-control"
+                        onInvalid={handleInvalid}
+                        className={`form-control ${errors.Name ? 'is-invalid' : ''}`}
+                        required
                     />
+                    {errors.Name && <div className="invalid-feedback">{errors.Name}</div>}
+                    </div>
                     <div className="form-group mb-2">
                         <label>Location</label><span className="text-danger">*</span>
                         <select
@@ -81,35 +106,44 @@ const ItemEdit = () => {
                             <option value="Viken">Viken</option>
                         </select>
                     </div>
-                </div>
+                
                 <div className="form-group mb-2">
-                    <label>Price per Night</label>
+                    <label>Price per Night</label><span className="text-danger">*</span>
                     <input
                         type="number"
                         name="Price"
                         value={item.Price}
                         onChange={handleInputChange}
-                        className="form-control"
+                        onInvalid={handleInvalid}
+                        className={`form-control ${errors.Price ? 'is-invalid' : ''}`}
+                        required
                     />
+                    {errors.Price && <div className="invalid-feedback">{errors.Price}</div>}
                 </div>
                 <div className="form-group mb-2">
-                    <label>Description</label>
+                    <label>Description</label><span className="text-danger">*</span>
                     <textarea
                         name="Description"
                         value={item.Description}
                         onChange={handleInputChange}
-                        className="form-control"
+                        onInvalid={handleInvalid}
+                        className={`form-control ${errors.Description ? 'is-invalid' : ''}`}
+                        required
                     />
+                    {errors.Description && <div className="invalid-feedback">{errors.Description}</div>}
                 </div>
                 <div className="form-group mb-2">
-                    <label>Capacity</label>
+                    <label>Capacity</label><span className="text-danger">*</span>
                     <input
                         type="number"
                         name="Capacity"
                         value={item.Capacity}
                         onChange={handleInputChange}
-                        className="form-control"
+                        onInvalid={handleInvalid}
+                        className={`form-control ${errors.Capacity ? 'is-invalid' : ''}`}
+                        required
                     />
+                    {errors.Capacity && <div className="invalid-feedback">{errors.Capacity}</div>}
                 </div>
                 <button type="submit" className="btn btn-primary">Update Item</button>
 
