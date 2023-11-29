@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+
 import { ItemService } from '../services/ItemService';
 
 const ItemList = () => {
@@ -21,17 +23,17 @@ const ItemList = () => {
             });
     }, []);
     return (
-        <div className="container table-responsive">
+        <div className="table-responsive">
             <table className='table table-striped'>
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th>Price Per Night</th>
-                        <th>Description</th>
-                        <th>Image</th>
-                        <th>Actions</th>
+                        <th className="col-sm-1">Id</th>
+                        <th className="col-sm-1">Name</th>
+                        <th className="col-sm-1">Location</th>
+                        <th className="col-sm-1">Price Per Night</th>
+                        <th className="col-sm-2">Description</th>
+                        <th className="col-sm-1">Image</th>
+                        <th className="col-sm-1">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,8 +51,9 @@ const ItemList = () => {
                             </td>
                             <td>
                                 {/* Link-komponentene må oppdateres til å jobbe med din router, for eksempel React Router */}
-                                <a style={{ color: '#007A6E' }}>Update</a>
-                                <a style={{ color: '#007A6E' }}>Delete</a>
+                                <a className="btn btn-primary m-1 w-100" href={`/Items/Edit/${item.ItemId}`}>Update</a>
+                                <a className="btn btn-danger m-1 w-100" href={`/Items/Delete/${item.ItemId}`}>Delete</a>
+
                             </td>
                         </tr>
                     ))}
