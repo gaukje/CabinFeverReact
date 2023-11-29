@@ -62,8 +62,6 @@ const getItems = async () => {
 };
 
 
-
-
 const createItem = async (newItem) => {
     try {
         const response = await axios.post(`${baseUrl}/Create`, newItem);
@@ -105,10 +103,26 @@ const deleteItem = async (itemId) => {
     }
 };
 
+const uploadImage = async (formData) => {
+    try {
+        // Make sure to adjust the URL if necessary
+        const response = await axios.post(`${baseUrl}/Upload`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        throw error;
+    }
+};
+
 export const ItemService = {
     getItems,
     createItem,
     getItemById,
     updateItem,
     deleteItem,
+    uploadImage,
 };

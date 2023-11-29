@@ -107,7 +107,6 @@ public class ItemController : Controller
         return NoContent();
     }
 
-    // POST: api/Item/Upload
     [HttpPost("Upload")]
     public async Task<IActionResult> Upload(IFormFile file)
     {
@@ -116,18 +115,26 @@ public class ItemController : Controller
             return BadRequest("No file uploaded.");
         }
 
-        var folderName = "images"; // Folder name without 'wwwroot'
-        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp/public", folderName);
+        var folderName = "images";
+        var wwwRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+        var pathToSave = Path.Combine(wwwRootPath, folderName);
+        var clientAppPath = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp/public", folderName);
 
         if (!Directory.Exists(pathToSave))
         {
             Directory.CreateDirectory(pathToSave);
         }
 
+        if (!Directory.Exists(clientAppPath))
+        {
+            Directory.CreateDirectory(clientAppPath);
+        }
+
         var fileName = Path.GetFileNameWithoutExtension(file.FileName);
         var extension = Path.GetExtension(file.FileName);
         var uniqueFileName = $"{fileName}_{DateTime.Now.Ticks}{extension}";
         var filePath = Path.Combine(pathToSave, uniqueFileName);
+        var newFilePath = Path.Combine(clientAppPath, uniqueFileName);
         var dbPath = Path.Combine(folderName, uniqueFileName); // This is the relative path
 
         using (var stream = new FileStream(filePath, FileMode.Create))
@@ -135,7 +142,11 @@ public class ItemController : Controller
             await file.CopyToAsync(stream);
         }
 
-        // Return the relative URL path to the uploaded file
+        // Move the file from wwwroot/images to ClientApp/public/images
+        System.IO.File.Move(filePath, newFilePath);
+
+        // Return the relative URL path to the uploaded file in wwwroot/images
         return Ok(new { imageUrl = "/" + dbPath.Replace("\\", "/") });
     }
+
 }
