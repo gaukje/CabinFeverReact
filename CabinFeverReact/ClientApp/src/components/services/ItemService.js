@@ -62,6 +62,8 @@ const getItems = async () => {
 };
 
 
+
+
 const createItem = async (newItem) => {
     try {
         const response = await axios.post(`${baseUrl}/Create`, newItem);
@@ -118,6 +120,22 @@ const uploadImage = async (formData) => {
     }
 };
 
+const getUserItems = async (userEmail, token) => {
+    try {
+        const response = await axios.get(`${baseUrl}/GetUserItems`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            params: { email: userEmail }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching items:', error);
+        throw error;
+    }
+};
+
+
 export const ItemService = {
     getItems,
     createItem,
@@ -125,4 +143,5 @@ export const ItemService = {
     updateItem,
     deleteItem,
     uploadImage,
+    getUserItems,
 };

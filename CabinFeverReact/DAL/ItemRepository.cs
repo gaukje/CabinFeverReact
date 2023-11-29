@@ -18,6 +18,33 @@ public class ItemRepository : IItemRepository
         _logger = logger;
     }
 
+    public async Task<IEnumerable<Item>> GetItemsByUserId(string userId)
+    {
+        try
+        {
+            var items = await _db.Items
+                .Where(item => item.UserId == userId)
+                .ToListAsync();
+
+            // Logger informasjon om antall hentede items
+            _logger.LogInformation("[ItemRepository] Retrieved {Count} items for user ID {UserId}", items.Count, userId);
+
+            // Logger detaljer om hvert hentet item (valgfritt, avhengig av behovet for detaljert logging)
+            foreach (var item in items)
+            {
+                _logger.LogInformation("Item: {ItemId}, Name: {Name}, UserId: {UserId}", item.ItemId, item.Name, item.UserId);
+            }
+
+            return items;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("[ItemRepository] Error fetching items for user ID {UserId}: {Message}", userId, e.Message);
+            return new List<Item>();
+        }
+    }
+
+
     // Method to retrieve all items asynchronously
     public async Task<IEnumerable<Item>?> GetAll()
     {

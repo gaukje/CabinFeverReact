@@ -1,18 +1,60 @@
-﻿using CabinFeverReact.DAL;
+﻿using Microsoft.AspNetCore.Identity;
 using CabinFeverReact.Models;
 using Microsoft.AspNetCore.Mvc;
+using CabinFeverReact.DAL;
+using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ItemController : Controller
+public class ItemController : ControllerBase
 {
     private readonly IItemRepository _itemRepository;
+    private readonly UserManager<IdentityUser> _userManager;
     private readonly ILogger<ItemController> _logger;
-    public ItemController(IItemRepository itemRepository, ILogger<ItemController> logger)
+    private readonly ItemDbContext _itemDbContext;
+
+    public ItemController(IItemRepository itemRepository, UserManager<IdentityUser> userManager, ILogger<ItemController> logger, ItemDbContext itemDbContext)
     {
         _itemRepository = itemRepository;
+        _userManager = userManager;
         _logger = logger;
+        _itemDbContext = itemDbContext;
     }
+
+    [HttpGet("GetUserItems")]
+    public async Task<IActionResult> GetUserItems(string email)
+    {
+        _logger.LogInformation("Attempting to find user with UserName: {Email}", email);
+
+        // Finner brukeren basert på UserName (som inneholder e-postadressen)
+        var user = await _itemDbContext.Users
+                        .FirstOrDefaultAsync(u => u.UserName == email);
+
+        if (user == null)
+        {
+            _logger.LogWarning("User not found with UserName: {Email}", email);
+            return NotFound($"User not found with username: {email}");
+        }
+
+        _logger.LogInformation("User found with UserName: {Email}, UserId: {UserId}", email, user.Id);
+
+        // Henter items knyttet til brukerens ID direkte ved hjelp av ItemDbContext
+        var items = await _itemDbContext.Items
+                        .Where(i => i.UserId == user.Id)
+                        .ToListAsync();
+
+        if (!items.Any())
+        {
+            _logger.LogWarning("No items found for user with UserName: {Email}", email);
+            return NotFound("No items found for this user");
+        }
+
+        _logger.LogInformation("{ItemCount} items found for user with UserName: {Email}", items.Count(), email);
+        return Ok(items);
+    }
+
+
 
     [HttpGet("GetAll")]
     public async Task<IActionResult> GetAll()

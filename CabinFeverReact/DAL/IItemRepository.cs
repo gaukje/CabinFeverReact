@@ -11,5 +11,6 @@ public interface IItemRepository
     Task<bool> Update(Item item);    // Method to update an item as an asynchronous operation
     Task<bool> Delete(int id);      // Method to delete an item by ID as an asynchronous operation
     Task<IEnumerable<Order>> GetOrdersForUser(string userId); // Method to get orders for a user based on their user ID as an asynchronous operation
+    Task<IEnumerable<Item>> GetItemsByUserId(string userId);
 
 }
