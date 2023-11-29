@@ -205,7 +205,7 @@ const ItemDetailsOrder = ({ item }) => {
         event.preventDefault(); // Prevents the default form submission
 
         if (!currentUser || !currentUser.userId) {
-            console.error('User ID is not available');
+            navigate('/Login');
             return;
         }
 
