@@ -1,9 +1,9 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { ItemService } from './../services/ItemService';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import axios
+import axios from 'axios';
 import { OrderService } from '../services/OrderService';
-import { useAuth } from '../../AuthContext'; // Update the path accordingly
+import { useAuth } from '../../AuthContext';
 import { OrderConfirmation } from '../Order/OrderConfirmation';
 
 const ItemDetailsOrder = ({ item }) => {
@@ -20,8 +20,8 @@ const ItemDetailsOrder = ({ item }) => {
     const [totalPrice, setTotalPrice] = useState(0)
     const [totalPriceString, setTotalPriceString] = useState('')
 
-    const [showListReserve, setShowListReserve] = useState(false); // Initialize visibility state
-    const [listReservedDates, setListReservedDates] = useState([]); // Initialize an empty array for reserved dates
+    const [showListReserve, setShowListReserve] = useState(false);
+    const [listReservedDates, setListReservedDates] = useState([]);
     const [errorDateOverlap, setErrorDateOverlap] = useState('');
 
     const [isLoading, setIsLoading] = useState(true);
@@ -50,24 +50,22 @@ const ItemDetailsOrder = ({ item }) => {
             if (listReservedDates.includes(currentDateStr)) {
                 // Sets the overlap flag to true if an overlap is found
                 overlapFound = true;
-                // Exits the loop since an overlap has been detected
                 break;
             }
         }
 
-        // You can now use the 'overlapFound' variable to handle the overlap status as needed
         if (overlapFound) {
             // Handle overlap case
             console.log('Overlap found!');
-            setErrorDateOverlap('Please choose alternative dates, as the selected dates are overlapping with existing reservations.'); // Set the error message
-            setShowListReserve(false); // Show "listReserve" when changing "Checkout" date
+            setErrorDateOverlap('Please choose alternative dates, as the selected dates are overlapping with existing reservations.');
+            setShowListReserve(false);
 
 
         } else {
             // Handle non-overlap case
             console.log('No overlap found.');
-            setErrorDateOverlap(''); // Clear the error message
-            setShowListReserve(true); // Hide "listReserve" when changing "Checkout" date
+            setErrorDateOverlap('');
+            setShowListReserve(true);
         }
     };
 
@@ -86,7 +84,6 @@ const ItemDetailsOrder = ({ item }) => {
             setSelectedGuests(Number(selectedGuests) - 1);
         }
     };
-
 
     useEffect(() => {
         var price = item.Price;
@@ -139,7 +136,7 @@ const ItemDetailsOrder = ({ item }) => {
 
             onSelect: function (fromDate) {
                 console.log("Handle From Date called: ", fromDate);
-                setSelectedFromDate(fromDate); // Update the selectedFromDate state
+                setSelectedFromDate(fromDate);
 
                 // Calculate the validation for the checkout date by adding one day to the selected date from the check-in input
                 var fromDateAddOneDay = new Date(new Date(fromDate).setDate(new Date(fromDate).getDate() + 1));
@@ -155,15 +152,14 @@ const ItemDetailsOrder = ({ item }) => {
                     },
                     onSelect: function (toDate) {
                         console.log("Handle To Date called: ", toDate);
-                        setSelectedToDate(toDate); // Update the selectedFromDate state
+                        setSelectedToDate(toDate);
 
-                        // Call the controllDate function and check its result
                         controllDate(fromDate, toDate);
                     }
                 });
 
                 setSelectedToDate('');
-                setShowListReserve(false); // Hide "listReserve" when changing "Check-In" date
+                setShowListReserve(false);
             }
         });
 
@@ -180,23 +176,22 @@ const ItemDetailsOrder = ({ item }) => {
     }, [listReservedDates]);
 
     useEffect(() => {
-        // Load the data you need first
         OrderService.getDateRange(item.ItemId)
             .then((fetchedItems) => {
                 const dateArray = fetchedItems.$values || [];
                 console.log('Detailed properties:', JSON.stringify(dateArray, null, 2));
                 setListReservedDates(dateArray);
-                setIsLoading(false); // Set isLoading to false once the data is loaded
+                setIsLoading(false);
             })
             .catch((error) => {
                 console.error('Failed to fetch items:', error);
-                setIsLoading(false); // Set isLoading to false in case of an error
+                setIsLoading(false);
             });
     }, []);
 
     // Render the component conditionally based on the isLoading state
     if (isLoading) {
-        return <div>Loading...</div>; // You can replace this with a loading spinner or any other loading indicator
+        return <div>Loading...</div>;
     }
 
 
@@ -229,16 +224,12 @@ const ItemDetailsOrder = ({ item }) => {
         };
 
         try {
-
-            // Call the createOrder function from OrderService
             const response = await OrderService.createOrder(order);
             console.log('Order created:', order);
-            // Handle the response, e.g., redirecting the user or showing a success message
             navigate('/Orders/Confirmation', { state: { order, extraOrderDetails } });
 
         } catch (error) {
             console.error('Error creating order:', error);
-            // Handle the error, e.g., showing an error message to the user
         }
     };
 

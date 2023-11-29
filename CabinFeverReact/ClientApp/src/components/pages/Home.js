@@ -5,17 +5,14 @@ import Welcome from '../welcome';
 import Carousel from '../carousel';
 import { ItemService } from '../services/ItemService';
 
-
-// Home.js
 const Home = () => {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
         ItemService.getItems()
             .then(fetchedItems => {
-                // Randomise the fetched list to simulate social media algorithm
                 const itemsArray = (fetchedItems.$values || []).sort(() => Math.random() - 0.5);
-                console.log('Detailed properties:', JSON.stringify(itemsArray[0], null, 2)); // Burde vise de faktiske ""properties
+                console.log('Detailed properties:', JSON.stringify(itemsArray[0], null, 2));
                 setItems(itemsArray);
             })
             .catch(error => {
@@ -27,11 +24,9 @@ const Home = () => {
         <div>
             <Banner />
             <Welcome />
-            <Carousel itemsList={items} /> {/* Pass the itemsList prop */}
-            {/* Add more components as needed */}
+            <Carousel itemsList={items} />
         </div>
     );
 };
-
 
 export default Home;

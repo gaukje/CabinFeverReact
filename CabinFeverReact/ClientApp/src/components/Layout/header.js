@@ -15,9 +15,7 @@ const Header = () => {
                         <Nav.Link as={Link} to="/" className="text-light">Home</Nav.Link>
                         <Nav.Link as={Link} to="/rentals" className="text-light">Rentals</Nav.Link>
                         <Nav.Link as={Link} to="/about" className="text-light">About</Nav.Link>
-                        {/* Add more Nav.Link items as needed */}
                     </Nav>
-                    {/* Add your login partial here */}
                 </Navbar.Collapse>
             </Navbar>
         </header>

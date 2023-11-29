@@ -6,7 +6,6 @@ const About = () => {
         <div>
             <ImageBanner imageSrc="/images/banners/pexels-photo-5365875.jpeg" titleText="About"></ImageBanner>
 
-            {/* About content */}
             <div className="container my-5 w-75 pb-5">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel

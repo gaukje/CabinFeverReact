@@ -16,7 +16,6 @@ const ItemEdit = () => {
 
     const navigate = useNavigate();
     const { id } = useParams();
-    // Initialize errors state here
     const [errors, setErrors] = useState({});
 
 
@@ -49,7 +48,6 @@ const ItemEdit = () => {
                 setItem({ ...item, ImageUrl: imageUrl });
             } catch (error) {
                 console.error('Error uploading image:', error);
-                // Handle error (e.g., set an error state, show an alert)
             }
         }
     };
@@ -63,10 +61,10 @@ const ItemEdit = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            return uploadResponse.data.imageUrl; // or just "/images/..."
+            return uploadResponse.data.imageUrl;
         } catch (error) {
             console.error('Error uploading image:', error);
-            throw error; // This will prevent further execution in the calling function
+            throw error;
         }
     };
 
@@ -75,7 +73,7 @@ const ItemEdit = () => {
     };
 
     const handleInputChange = (event) => {
-        event.target.setCustomValidity(''); // clear the custom validity message
+        event.target.setCustomValidity('');
         const { name, value } = event.target;
         setItem({ ...item, [name]: value });
     };
@@ -90,7 +88,6 @@ const ItemEdit = () => {
         if (!item.Capacity || item.Capacity <= 0) newErrors.Capacity = 'Capacity is required and must be greater than 0.';
 
         if (Object.keys(newErrors).length > 0) {
-            // If there are errors, update the errors state and do not submit
             setErrors(newErrors);
             return;
         }

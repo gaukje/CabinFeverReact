@@ -5,7 +5,7 @@ import { ItemService } from '../services/ItemService';
 
 const ItemList = ({ userEmail }) => {
     const [items, setItems] = useState([]);
-    const token = localStorage.getItem('token'); // Hent token fra localStorage eller context
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         if (userEmail && token) {
@@ -53,7 +53,6 @@ const ItemList = ({ userEmail }) => {
                                 </div>
                             </td>
                             <td>
-                                {/* Link-komponentene må oppdateres til å jobbe med din router, for eksempel React Router */}
                                 <a className="btn btn-primary m-1 w-100" href={`/Items/Edit/${item.ItemId}`}>Update</a>
                                 <a className="btn btn-danger m-1 w-100" href={`/Items/Delete/${item.ItemId}`}>Delete</a>
 
