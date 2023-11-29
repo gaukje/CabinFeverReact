@@ -17,7 +17,6 @@ import Login from './components/Authentication/Login';
 import Footer from './components/Items/Footer';
 import ProtectedRoute from './components/Authentication/ProtectedRoute';
 import { AuthProvider } from './AuthContext';
-
 import OrderConfirmation from './components/Order/OrderConfirmation';
 
 

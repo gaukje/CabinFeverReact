@@ -68,8 +68,6 @@ class NavMenu extends Component {
                                         <NavLink tag={Link} className="text-light" to="/Items/Create">List your property</NavLink>
                                     </NavItem>
 
-
-
                                     <li class="nav-item dropdown d-none d-sm-block">
                                         <a class="btn btn-dark dropdown-toggle bi bi-person-circle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">&#9;</a>
 
@@ -93,15 +91,7 @@ class NavMenu extends Component {
                                             <NavLink tag={Link} className="text-light" to="/">Logout</NavLink>
                                         </NavItem>
                                     </div>
-
-
-
-
-
-
                                 </>
-
-
                             ) : (
                                 <>
                                     <NavItem>
