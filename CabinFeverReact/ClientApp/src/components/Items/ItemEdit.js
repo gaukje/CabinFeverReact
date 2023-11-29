@@ -112,8 +112,8 @@ const ItemEdit = () => {
     };
 
     return (
-        <div className="container my-4">
-            <h2>Edit Item</h2>
+        <div className="container col-lg-8 my-5">
+            <h2 className="pt-3 mb-3">Edit Item</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group mb-2">
                     <label>Name</label><span className="text-danger">*</span>
@@ -153,7 +153,7 @@ const ItemEdit = () => {
                     </div>
                 
                 <div className="form-group mb-2">
-                    <label>Price per Night</label><span className="text-danger">*</span>
+                    <label>Price per night</label><span className="text-danger">*</span>
                     <input
                         type="number"
                         name="Price"
@@ -173,19 +173,21 @@ const ItemEdit = () => {
                         onChange={handleInputChange}
                         onInvalid={handleInvalid}
                         className={`form-control ${errors.Description ? 'is-invalid' : ''}`}
+                        rows="5"
                         required
                     />
                     {errors.Description && <div className="invalid-feedback">{errors.Description}</div>}
                 </div>
                 <div className="form-group mb-2">
                     <label>Select an image to upload</label>
+                    <span className="text-danger">*</span>
                     <input
                         type="file"
                         onChange={handleFileChange}
                         className="form-control"
                     />
                 </div>
-                <div className="form-group mb-2">
+                <div className="form-group mb-4">
                     <label>Capacity</label><span className="text-danger">*</span>
                     <input
                         type="number"
@@ -198,9 +200,9 @@ const ItemEdit = () => {
                     />
                     {errors.Capacity && <div className="invalid-feedback">{errors.Capacity}</div>}
                 </div>
-                <button type="submit" className="btn btn-primary">Update Item</button>
+                <button type="submit" className="btn btn-primary">Update</button>
 
-                <button onClick={() => navigate('/MinSide')} type="button" className="btn btn-secondary">
+                <button onClick={() => navigate('/MinSide')} type="button" className="btn btn-secondary mx-1">
                     Cancel
                 </button>
             </form>

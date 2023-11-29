@@ -37,8 +37,8 @@ const ItemDelete = () => {
     }
 
     return (
-        <div className="container my-4">
-            <h2>Are you sure you want to delete this item?</h2>
+        <div className="container col-lg-8 my-5">
+            <h2 className="pt-3 mb-3">Are you sure you want to delete this item?</h2>
             <div>
 
                 <p><strong>Name:</strong> {item.Name}</p>
@@ -46,11 +46,11 @@ const ItemDelete = () => {
                 <p><strong>Description:</strong> {item.Description}</p>
 
             </div>
-            <div className="d-flex justify-content-center">
-                <button onClick={handleDelete} type="button" className="btn btn-danger me-2" disabled={isDeleting}>
+            <div className="d-flex">
+                <button onClick={handleDelete} type="button" className="btn btn-danger" disabled={isDeleting}>
                     {isDeleting ? 'Deleting...' : 'Delete'}
                 </button>
-                <button onClick={() => navigate('/MinSide')} type="button" className="btn btn-secondary">
+                <button onClick={() => navigate('/MinSide')} type="button" className="btn btn-secondary mx-1">
                     Cancel
                 </button>
             </div>

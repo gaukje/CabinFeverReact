@@ -156,8 +156,8 @@ const ItemCreate = () => {
     };
 
     return (
-        <div className="container my-4">
-            <h2 className="mb-3">Create New Item</h2>
+        <div className="container col-lg-8 my-5">
+            <h2 className="pt-3 mb-3">Create New Item</h2>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <div className="form-group mb-2">
                     <label>Name</label><span className="text-danger">*</span>
@@ -201,11 +201,10 @@ const ItemCreate = () => {
                         onChange={handleInputChange}
                         className="form-control"
                         required
-                        placeholder="0"
                         min="1"
                     />
                 </div>
-                <div className="form-group mb-4">
+                <div className="form-group mb-2">
                     <label>Description</label><span className="text-danger">*</span>
                     <textarea
                         name="Description"
@@ -216,7 +215,7 @@ const ItemCreate = () => {
                         required
                     ></textarea>
                 </div>
-                <div className="form-group mb-4">
+                <div className="form-group mb-2">
                     <label>Select an image to upload</label><span className="text-danger">*</span>
                     <input
                         type="file"
@@ -225,8 +224,9 @@ const ItemCreate = () => {
                         className="form-control"
                     />
                 </div>
-                <div className="form-group mb-2">
+                <div className="form-group mb-4">
                     <label>Capacity</label>
+                    <span className="text-danger">*</span>
                     <input
                         type="number"
                         name="Capacity"
@@ -240,7 +240,7 @@ const ItemCreate = () => {
                 </div>
 
                 <button type="submit" className="btn btn-primary">Create</button>
-                <button type="button" onClick={() => navigate(-1)} className="btn btn-secondary">Cancel</button>
+                <button type="button" onClick={() => navigate(-1)} className="btn btn-secondary mx-1">Cancel</button>
             </form>
         </div>
     );
