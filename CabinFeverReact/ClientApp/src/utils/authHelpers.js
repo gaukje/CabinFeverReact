@@ -23,4 +23,4 @@ const getEmailFromToken = (token) => {
     }
 };
 
-export { getEmailFromToken }
+export { getEmailFromToken, getUserIdFromToken }

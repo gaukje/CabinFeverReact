@@ -105,7 +105,7 @@ const ItemDetailsOrder = ({ item }) => {
 
     }, [timeDifference]);
 
-    useEffect(() => { 
+    useEffect(() => {
         const fromDateTimestamp = new Date(selectedFromDate).getTime();
         const toDateTimestamp = new Date(selectedToDate).getTime();
 
@@ -200,7 +200,7 @@ const ItemDetailsOrder = ({ item }) => {
 
         // Create an order object based on your Order type
         const order = {
-            UserId: currentUser?.UserId, 
+            UserId: currentUser?.UserId,
             ItemId: item.ItemId,
             FromDate: new Date(selectedFromDate),
             ToDate: new Date(selectedToDate),
@@ -259,7 +259,7 @@ const ItemDetailsOrder = ({ item }) => {
                                 <span className="text-danger"></span>
                             </div>
                         </div>
-                    
+
 
                         <div className="row">
                             <div className="form-group">
@@ -294,7 +294,7 @@ const ItemDetailsOrder = ({ item }) => {
                                 <span className="text-danger"></span>
                             </div>
                         </div>
-                
+
 
                         <p><span className="text-danger" id="errorDateOverlap">{errorDateOverlap}</span></p>
 
