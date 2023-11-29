@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import * as authHelpers from './utils/authHelpers';
 
 export const AuthContext = createContext();
 
@@ -8,18 +9,21 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
-        // Check for an existing token in local storage when the component mounts
         const token = localStorage.getItem('token');
-        if (token) {
-            setCurrentUser({ token });
+        console.log('Retrieved token:', token);
+        if (token)
+        {
+            const userId = authHelpers.getUserIdFromToken(token);
+            const email = authHelpers.getEmailFromToken(token);
+            setCurrentUser({ token, userId, email });
         }
     }, []);
 
-    // Oppdatert login-funksjon
     const login = (token) => {
-        console.log('Storing token:', token);
         localStorage.setItem('token', token);
-        setCurrentUser({ token: token });
+        const userId = authHelpers.getUserIdFromToken(token);
+        const email = authHelpers.getEmailFromToken(token);
+        setCurrentUser({ token, userId, email });
     };
 
     const logout = () => {
@@ -38,43 +42,48 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-
-
 /*
-import { AuthProvider } from './AuthContext'; // Adjust the path based on your file structure
+import React, { createContext, useState, useEffect, useContext } from 'react';
 
-const App = () => {
-  return (
-    <AuthProvider>
-      { Rest of your app component }
-    </AuthProvider >
-  );
-};
+export const AuthContext = createContext();
 
-export default App;
+export const useAuth = () => useContext(AuthContext);
 
-Using useAuth Hook:
+export const AuthProvider = ({ children }) => {
+    const [currentUser, setCurrentUser] = useState(null);
 
-    You can now use the useAuth hook in any component to access the authentication state and functions.
-    For example, in ProtectedRoute, you can use useAuth to determine if a user is authenticated.
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        const email = localStorage.getItem('email');
+        if (token) {
+            setCurrentUser({ token, userId, email });
+        }
+    }, []);
 
-javascript
+    // Oppdatert login-funksjon
+    const login = (token, userId, email) => {
+        console.log('Storing token and user details:', token, userId, email);
+        localStorage.setItem('token', token);
+        localStorage.setItem('userId', userId); // Store userId in local storage
+        localStorage.setItem('email', email); // Store email in local storage
+        setCurrentUser({ token, userId, email });
+    };
 
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { useAuth } from './AuthContext'; // Adjust the path based on your file structure
 
-const ProtectedRoute = ({ component: Component, ...rest }) => {
-    const { currentUser } = useAuth();
-    const isAuthenticated = currentUser != null;
+    const logout = () => {
+        localStorage.removeItem('token');
+        setCurrentUser(null);
+    };
+
+    const isAuthenticated = () => {
+        return currentUser != null;
+    };
 
     return (
-        <Route {...rest} render={(props) => (
-            isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
-        )} />
+        <AuthContext.Provider value={{ currentUser, isAuthenticated, login, logout }}>
+            {children}
+        </AuthContext.Provider>
     );
 };
-
-export default ProtectedRoute;
-
 */

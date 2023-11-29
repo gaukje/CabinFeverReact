@@ -204,12 +204,17 @@ const ItemDetailsOrder = ({ item }) => {
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevents the default form submission
 
+        if (!currentUser || !currentUser.userId) {
+            console.error('User ID is not available');
+            return;
+        }
+
         // Create an order object based on your Order type
         const order = {
-            UserId: currentUser?.UserId, 
+            UserId: currentUser.userId,
             ItemId: item.ItemId,
-            FromDate: new Date(selectedFromDate),
-            ToDate: new Date(selectedToDate),
+            FromDate: convertToUTC(new Date(selectedFromDate)),
+            ToDate: convertToUTC(new Date(selectedToDate)),
             Guests: Number(selectedGuests),
             TotalPrice: Number(totalPrice),
         };

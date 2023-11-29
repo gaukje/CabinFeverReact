@@ -60,6 +60,22 @@ public class OrderController : Controller
         }
     }
 
+    // POST: api/Order/Create
+    [HttpPost("Create")]
+    public async Task<IActionResult> CreateOrder([FromBody] Order newOrder)
+    {
+        try
+        {
+            _itemDbContext.Orders.Add(newOrder);
+            await _itemDbContext.SaveChangesAsync();
+            return Ok(newOrder); 
+        }
+        catch (System.Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while creating the order.");
+            return StatusCode(500, "Internal server error");
+        }
+    }
 
 
     // Action method to retriece date ranges for a specific item.
