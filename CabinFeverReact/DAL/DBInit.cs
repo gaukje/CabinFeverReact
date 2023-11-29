@@ -23,8 +23,7 @@ public class DBInit
             var users = new List<IdentityUser>
         {
             new IdentityUser { UserName = "user1@example.com", Email = "user1@example.com" },
-            new IdentityUser { UserName = "user2@example.com", Email = "user2@example.com" },
-            new IdentityUser { UserName = "jakob@mail.no", Email = "jakob@mail.no" }
+            new IdentityUser { UserName = "user2@example.com", Email = "user2@example.com" }
         };
 
             foreach (var user in users)
