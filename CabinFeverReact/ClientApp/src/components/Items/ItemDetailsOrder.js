@@ -1,9 +1,10 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { ItemService } from './../services/ItemService';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Import axios
 import { OrderService } from '../services/OrderService';
 import { useAuth } from '../../AuthContext'; // Update the path accordingly
+import { OrderConfirmation } from '../Order/OrderConfirmation';
 
 const ItemDetailsOrder = ({ item }) => {
     const [selectedFromDate, setSelectedFromDate] = useState('');
@@ -26,6 +27,9 @@ const ItemDetailsOrder = ({ item }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const { currentUser } = useAuth();
+
+    const navigate = useNavigate();
+
 
     const controllDate = (fromDate, toDate) => {
         const fromDateObj = new Date(fromDate);
@@ -105,7 +109,7 @@ const ItemDetailsOrder = ({ item }) => {
 
     }, [timeDifference]);
 
-    useEffect(() => {
+    useEffect(() => { 
         const fromDateTimestamp = new Date(selectedFromDate).getTime();
         const toDateTimestamp = new Date(selectedToDate).getTime();
 
@@ -195,12 +199,14 @@ const ItemDetailsOrder = ({ item }) => {
         return <div>Loading...</div>; // You can replace this with a loading spinner or any other loading indicator
     }
 
+
+
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevents the default form submission
 
         // Create an order object based on your Order type
         const order = {
-            UserId: currentUser?.UserId,
+            UserId: currentUser?.UserId, 
             ItemId: item.ItemId,
             FromDate: new Date(selectedFromDate),
             ToDate: new Date(selectedToDate),
@@ -208,11 +214,23 @@ const ItemDetailsOrder = ({ item }) => {
             TotalPrice: Number(totalPrice),
         };
 
+        const extraOrderDetails = {
+            PricePerNightString: `${formatCurrency(item.Price)} × ${timeDifference} ${timeDifference > 1 ? 'nights' : 'night'}`,
+            PricePerNight: costPerNight,
+            CleaningFee: cleaningFee,
+            ServiceFee: serviceFee,
+            Taxes: taxes,
+            TotalPrice: totalPriceString,
+        };
+
         try {
+
             // Call the createOrder function from OrderService
             const response = await OrderService.createOrder(order);
-            console.log('Order created:', response);
+            console.log('Order created:', order);
             // Handle the response, e.g., redirecting the user or showing a success message
+            navigate('/Orders/Confirmation', { state: { order, extraOrderDetails } });
+
         } catch (error) {
             console.error('Error creating order:', error);
             // Handle the error, e.g., showing an error message to the user
@@ -259,115 +277,115 @@ const ItemDetailsOrder = ({ item }) => {
                                 <span className="text-danger"></span>
                             </div>
                         </div>
+                    </div>
+                    
 
+                    <div className="row">
+                        <div className="form-group">
+                            <label htmlFor="Guests">Guests</label>
+                            <div className="input-group">
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-secondary"
+                                    onClick={handleDecrementGuests}
+                                >
+                                    <i class="bi bi-dash"></i>
+                                </button>
+                                <input
+                                    name="Guests"
+                                    type="number"
+                                    className="form-control text-center"
+                                    min="1"
+                                    max={item.Capacity}
+                                    value={selectedGuests}
+                                    onChange={(e) => setSelectedGuests(e.target.value)}
+                                    placeholder="Add guests"
+                                    readOnly
+                                />
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-secondary"
+                                    onClick={handleIncrementGuests}
+                                >
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </div>
+                            <span className="text-danger"></span>
+                        </div>
+                    </div>
+                
+
+                    <p><span className="text-danger" id="errorDateOverlap">{errorDateOverlap}</span></p>
+
+                    <div className={`section mb-4 ${showListReserve ? "" : "d-none"}`} id="listReserve">
+                        <div className="row">
+                            <div className="col-7">
+                                <p>{formatCurrency(item.Price)} &#215; {timeDifference} {timeDifference > 1 ? 'nights' : 'night'}</p>
+                            </div>
+                            <div className="col-5 text-end">
+                                <p>{costPerNight}</p>
+                            </div>
+                        </div>
 
                         <div className="row">
-                            <div className="form-group">
-                                <label htmlFor="Guests">Guests</label>
-                                <div className="input-group">
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-secondary"
-                                        onClick={handleDecrementGuests}
-                                    >
-                                        <i class="bi bi-dash"></i>
-                                    </button>
-                                    <input
-                                        name="Guests"
-                                        type="number"
-                                        className="form-control text-center"
-                                        min="1"
-                                        max={item.Capacity}
-                                        value={selectedGuests}
-                                        onChange={(e) => setSelectedGuests(e.target.value)}
-                                        placeholder="Add guests"
-                                        readOnly
-                                    />
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-secondary"
-                                        onClick={handleIncrementGuests}
-                                    >
-                                        <i class="bi bi-plus-lg"></i>
-                                    </button>
-                                </div>
-                                <span className="text-danger"></span>
+                            <div className="col-7">
+                                <p>Cleaning fee</p>
+                            </div>
+                            <div className="col-5 text-end">
+                                <p>{cleaningFee}</p>
                             </div>
                         </div>
 
-
-                        <p><span className="text-danger" id="errorDateOverlap">{errorDateOverlap}</span></p>
-
-                        <div className={`section mb-4 ${showListReserve ? "" : "d-none"}`} id="listReserve">
-                            <div className="row">
-                                <div className="col-7">
-                                    <p>{formatCurrency(item.Price)} &#215; {timeDifference} {timeDifference > 1 ? 'nights' : 'night'}</p>
-                                </div>
-                                <div className="col-5 text-end">
-                                    <p>{costPerNight}</p>
-                                </div>
+                        <div className="row">
+                            <div className="col-7">
+                                <p>Service fee</p>
                             </div>
-
-                            <div className="row">
-                                <div className="col-7">
-                                    <p>Cleaning fee</p>
-                                </div>
-                                <div className="col-5 text-end">
-                                    <p>{cleaningFee}</p>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-7">
-                                    <p>Service fee</p>
-                                </div>
-                                <div className="col-5 text-end">
-                                    <p>{serviceFee}</p>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-7">
-                                    <p>Taxes</p>
-                                </div>
-                                <div className="col-5 text-end">
-                                    <p>{taxes}</p>
-                                </div>
-                            </div>
-
-                            <hr className="hr hr-blurry" />
-
-                            <div className="row">
-                                <div className="col-7">
-                                    <b>Total</b>
-                                </div>
-                                <div className="col-5 text-end">
-                                    <b>{totalPriceString}</b>
-                                </div>
+                            <div className="col-5 text-end">
+                                <p>{serviceFee}</p>
                             </div>
                         </div>
 
-                        <div className="form-group d-none">
-                            <label htmlFor="TotalPrice">Total Price</label>
-                            <input
-                                name="TotalPrice"
-                                type="number"
-                                step="0.01"
-                                className="form-control"
-                                id="totalPrice"
-                                value={totalPrice}
-                            />
-                            <span className="text-danger">@ViewData["TotalPriceError"]</span>
+                        <div className="row">
+                            <div className="col-7">
+                                <p>Taxes</p>
+                            </div>
+                            <div className="col-5 text-end">
+                                <p>{taxes}</p>
+                            </div>
                         </div>
 
-                        <button
-                            type="submit"
-                            className="btn btn-primary w-100"
-                            disabled={!(selectedFromDate && selectedToDate && selectedGuests && showListReserve)}
-                        >
-                            Reserve
-                        </button>
+                        <hr className="hr hr-blurry" />
+
+                        <div className="row">
+                            <div className="col-7">
+                                <b>Total</b>
+                            </div>
+                            <div className="col-5 text-end">
+                                <b>{totalPriceString}</b>
+                            </div>
+                        </div>
                     </div>
+
+                    <div className="form-group d-none">
+                        <label htmlFor="TotalPrice">Total Price</label>
+                        <input
+                            name="TotalPrice"
+                            type="number"
+                            step="0.01"
+                            className="form-control"
+                            id="totalPrice"
+                            value={totalPrice}
+                        />
+                        <span className="text-danger">@ViewData["TotalPriceError"]</span>
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="btn btn-primary w-100"
+                        disabled={!(selectedFromDate && selectedToDate && selectedGuests && showListReserve)}
+                    >
+                        Reserve
+                    </button>
                 </form>
             </div>
         </div>
