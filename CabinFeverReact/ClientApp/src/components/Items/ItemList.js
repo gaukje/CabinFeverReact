@@ -35,41 +35,47 @@ const ItemList = ({ userEmail }) => {
         }
     }, [userEmail, token]);
     return (
-        <div className="table-responsive">
-            <table className='table table-striped'>
-                <thead>
-                    <tr>
-                        <th className="col-sm-1">Id</th>
-                        <th className="col-sm-1">Name</th>
-                        <th className="col-sm-1">Location</th>
-                        <th className="col-sm-1">Price Per Night</th>
-                        <th className="col-sm-2">Description</th>
-                        <th className="col-sm-1">Image</th>
-                        <th className="col-sm-1">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {items.map(item => (
-                        <tr key={item.ItemId}>
-                            <td>{item.ItemId}</td>
-                            <td>{item.Name}</td>
-                            <td>{item.Location}</td>
-                            <td>{`${item.Price} NOK`}</td>
-                            <td className="item-description">{item.Description}</td>
-                            <td>
-                                <div className="ratio ratio-16x9">
-                                    <img src={item.ImageUrl} alt={item.Name} />
-                                </div>
-                            </td>
-                            <td>
-                                <a className="btn btn-primary m-1 w-100" href={`/Items/Edit/${item.ItemId}`}>Update</a>
-                                <a className="btn btn-danger m-1 w-100" href={`/Items/Delete/${item.ItemId}`}>Delete</a>
+        <div>
+            {items.length === 0 ? (
+                <p>No properties to display.</p>
+            ) : (
+                <div className="table-responsive">
+                    <table className='table table-striped'>
+                        <thead>
+                            <tr>
+                                <th className="col-sm-1">Id</th>
+                                <th className="col-sm-1">Name</th>
+                                <th className="col-sm-1">Location</th>
+                                <th className="col-sm-1">Price Per Night</th>
+                                <th className="col-sm-2">Description</th>
+                                <th className="col-sm-1">Image</th>
+                                <th className="col-sm-1">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {items.map(item => (
+                                <tr key={item.ItemId}>
+                                    <td>{item.ItemId}</td>
+                                    <td>{item.Name}</td>
+                                    <td>{item.Location}</td>
+                                    <td>{`${item.Price} NOK`}</td>
+                                    <td className="item-description">{item.Description}</td>
+                                    <td>
+                                        <div className="ratio ratio-16x9">
+                                            <img src={item.ImageUrl} alt={item.Name} />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a className="btn btn-primary m-1 w-100" href={`/Items/Edit/${item.ItemId}`}>Update</a>
+                                        <a className="btn btn-danger m-1 w-100" href={`/Items/Delete/${item.ItemId}`}>Delete</a>
 
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 };

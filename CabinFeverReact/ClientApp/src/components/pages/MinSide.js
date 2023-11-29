@@ -6,10 +6,10 @@ import ItemList from '../Items/ItemList';
 import { getEmailFromToken } from '../../utils/authHelpers';
 import ImageBanner from '../ImageBanner';
 
-
 const MinSide = () => {
     const [orders, setOrders] = useState([]);
     const [userEmail, setUserEmail] = useState(null);
+    const [isLoading, setIsLoading] = useState(true); // Add isLoading state
     const token = localStorage.getItem('token');
 
     useEffect(() => {
@@ -21,9 +21,11 @@ const MinSide = () => {
                     .then(fetchedOrders => {
                         const ordersArray = fetchedOrders.$values || fetchedOrders;
                         setOrders(ordersArray);
+                        setIsLoading(false); // Set isLoading to false when data is loaded
                     })
                     .catch(error => {
                         console.error('Failed to fetch orders:', error);
+                        setIsLoading(false); // Set isLoading to false on error as well
                     });
             }
         }
@@ -38,20 +40,26 @@ const MinSide = () => {
             <div className="container my-5">
                 <div className="mb-5">
                     <h2>Your properties</h2>
-                    {userEmail && <ItemList userEmail={userEmail} />}
+                    {isLoading ? (
+                        <p>Loading...</p>
+                    ) : (
+                        userEmail && <ItemList userEmail={userEmail} />
+                    )}
                 </div>
 
                 <div className="mb-5">
                     <h2 className="mb-3">Order history</h2>
-                    {orders.length > 0 ? (
-                        <OrderHistory orders={orders} />
+                    {isLoading ? (
+                        <p>Loading...</p>
                     ) : (
-                        <p>Ingen ordre å vise.</p>
+                        orders.length > 0 ? (
+                            <OrderHistory orders={orders} />
+                        ) : (
+                            <p>No orders to display.</p>
+                        )
                     )}
                 </div>
             </div>
-
-            
         </div>
     );
 };
