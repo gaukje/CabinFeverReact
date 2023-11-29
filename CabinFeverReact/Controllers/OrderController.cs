@@ -156,6 +156,7 @@ public class OrderController : Controller
 
             var orders = await _itemDbContext.Orders
                 .Where(o => o.UserId == user.Id)
+                .Include(o => o.Item)
                 .Select(order => new
                 {
                     order.OrderId,
@@ -165,7 +166,8 @@ public class OrderController : Controller
                     order.ItemId,
                     order.FromDate,
                     order.ToDate,
-                    order.Guests
+                    order.Guests,
+                    ItemName = order.Item.Name
                 })
                 .ToListAsync();
 

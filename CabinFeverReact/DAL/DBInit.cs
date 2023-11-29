@@ -16,14 +16,15 @@ public class DBInit
 
         // Ensure the database is created.
         context.Database.EnsureCreated();
-        
+
         // Add users if they don't exist.
         if (!context.Users.Any())
         {
             var users = new List<IdentityUser>
         {
             new IdentityUser { UserName = "user1@example.com", Email = "user1@example.com" },
-            new IdentityUser { UserName = "user2@example.com", Email = "user2@example.com" }
+            new IdentityUser { UserName = "user2@example.com", Email = "user2@example.com" },
+            new IdentityUser { UserName = "jakob@mail.no", Email = "jakob@mail.no" }
         };
 
             foreach (var user in users)
@@ -59,7 +60,7 @@ public class DBInit
                     Description = "Nothing else like the coziest cabin in Haugesund perfect for a romantic get away.",
                     ImageUrl = "/images/hytte_stock_2.jpg",
                     UserId = user1Id,
-                    Capacity = 2,
+                    Capacity = 6,
                     Location = "Vestland"
                 },
 
@@ -101,7 +102,7 @@ public class DBInit
                     ImageUrl = "/images/hytte_stock_14.jpg",
                     UserId = user2Id,
                     Capacity = 5,
-                    Location = "Troms"
+                    Location = "Troms og Finnmark"
                 },
             };
             context.AddRange(items);
@@ -151,9 +152,9 @@ public class DBInit
             {
                 new Order
                 {
-                    OrderDate = DateTime.UtcNow,  // Use UTC timestamp
-                    TotalPrice = 4000,
-                    ItemId = 1,
+                    OrderDate = DateTime.UtcNow.AddDays(-7).AddHours(-3).AddMinutes(15),  // Use UTC timestamp
+                    TotalPrice = 19500,
+                    ItemId = 5,
                     FromDate = DateTime.UtcNow,  // Use UTC timestamp
                     ToDate = DateTime.UtcNow.AddDays(5),  // Use UTC timestamp
                     UserId = user1Id,
@@ -161,19 +162,9 @@ public class DBInit
                 },
                 new Order
                 {
-                    OrderDate = DateTime.UtcNow,  // Use UTC timestamp
-                    TotalPrice = 3000,
-                    ItemId = 2,
-                    FromDate = DateTime.UtcNow,  // Use UTC timestamp
-                    ToDate = DateTime.UtcNow.AddDays(3),  // Use UTC timestamp
-                    UserId = user2Id,
-                    Guests = 4
-                },
-                new Order
-                {
-                    OrderDate = DateTime.UtcNow,  // Use UTC timestamp
-                    TotalPrice = 5000,
-                    ItemId = 2,
+                    OrderDate = DateTime.UtcNow.AddDays(-12).AddHours(-1).AddMinutes(45),  // Use UTC timestamp
+                    TotalPrice = 12000,
+                    ItemId = 3,
                     // Set FromDate to a date in the past (e.g., 5 days ago)
                     FromDate = DateTime.UtcNow.AddDays(-5),  // Use UTC timestamp
                     // Set ToDate to a date in the past (e.g., 2 days ago)
@@ -183,9 +174,19 @@ public class DBInit
                 },
                 new Order
                 {
-                    OrderDate = DateTime.UtcNow,  // Use UTC timestamp
-                    TotalPrice = 9500,
+                    OrderDate = DateTime.UtcNow.AddDays(-10).AddHours(2).AddMinutes(30),  // Use UTC timestamp
+                    TotalPrice = 9000,
                     ItemId = 2,
+                    FromDate = DateTime.UtcNow,  // Use UTC timestamp
+                    ToDate = DateTime.UtcNow.AddDays(3),  // Use UTC timestamp
+                    UserId = user2Id,
+                    Guests = 4
+                },
+                new Order
+                {
+                    OrderDate = DateTime.UtcNow.AddDays(-15).AddHours(4).AddMinutes(10),  // Use UTC timestamp
+                    TotalPrice = 7200,
+                    ItemId = 4,
                     // Set FromDate to a future date (e.g., 5 days from now)
                     FromDate = DateTime.UtcNow.AddDays(5),  // Use UTC timestamp
                     // Set ToDate to a future date (e.g., 8 days from now)
@@ -196,8 +197,6 @@ public class DBInit
             };
             context.AddRange(orders);
             context.SaveChanges();
-
         }
-
     }
 }

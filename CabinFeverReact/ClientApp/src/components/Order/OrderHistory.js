@@ -38,7 +38,7 @@ const OrderHistory = ({ orders }) => {
                         return (
                             <tr key={order.orderId}>
                                 <td>{order.orderId}</td>
-                                <td>{order.item?.name || 'N/A'}</td>
+                                <td>{order.itemName || 'N/A'}</td>
                                 <td>{localOrderDate}</td>
                                 <td>{fromDate ? fromDate.toLocaleDateString() : 'N/A'}</td>
                                 <td>{toDate ? toDate.toLocaleDateString() : 'N/A'}</td>
