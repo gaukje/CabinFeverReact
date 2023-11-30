@@ -393,7 +393,7 @@ const ItemDetailsOrder = ({ item }) => {
                     <button
                         type="submit"
                         className="btn btn-primary w-100"
-                        disabled={item.UserId === currentUser.userId || !(selectedFromDate && selectedToDate && selectedGuests && showListReserve)}
+                        disabled={currentUser && currentUser.userId ? (item.UserId === currentUser.userId) : true || !(selectedFromDate && selectedToDate && selectedGuests && showListReserve)}
                     >
                         {currentUser && currentUser.userId ? (item.UserId === currentUser.userId ? 'You cannot reserve your own property' : 'Reserve') : 'Log in to reserve'}
                     </button>
